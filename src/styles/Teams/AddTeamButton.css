@@ -1,0 +1,15 @@
+/* AddTeamButton.css */
+.add-team-button {
+    width: 100% !important;
+    padding: 30px !important;
+    background-color: #f0f0f0 !important; ; /* Cinza claro */
+    display: flex !important;; /* Utiliza flexbox para alinhar conteúdo */
+    justify-content: flex-start !important;; /* Alinha o conteúdo à esquerda */
+    align-items: center !important;; /* Centraliza verticalmente o ícone e o texto */
+    color: #000 !important; /* Preto */
+  }
+  
+  .add-team-button .MuiSvgIcon-root {
+    color: rgb(255, 255, 255); 
+  }
+  

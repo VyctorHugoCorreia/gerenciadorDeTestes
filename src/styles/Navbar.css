@@ -1,0 +1,28 @@
+/* navbar.css */
+.navbar {
+    background-color: #5cbc4c;
+    padding: 10px;
+    color: #fff;
+    padding: 30px;
+  }
+  
+  .navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar ul li {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  .navbar ul li:last-child {
+    margin-right: 0; /* Remove a margem direita do último item */
+  }
+  
+  .navbar ul li a {
+    text-decoration: none;
+    color: #fff;
+  }
+  

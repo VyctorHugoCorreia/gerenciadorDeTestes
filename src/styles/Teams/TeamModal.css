@@ -1,0 +1,52 @@
+/* TeamModal.css */
+.team-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 559px;
+  height: 268px;
+  background-color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.team-modal-input {
+  width: calc(100% - 40px);
+  margin-bottom: 20px;
+}
+
+.team-modal-button {
+  margin-top: 10px !important;
+  width: 160px;
+  height: 50px;
+  background-color: #1082BE !important;
+}
+
+/* Estilo para o botão desabilitado */
+.team-modal-button:disabled {
+  background-color: #ccc !important;
+  color: #666 !important;
+  cursor: not-allowed;
+}
+
+.select-dropdown {
+  width: calc(100% - 40px);
+  margin-bottom: 20px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 16px;
+  outline: none;
+  appearance: none; /* Remove o estilo padrão do sistema operacional */
+  -webkit-appearance: none; /* Para navegadores WebKit como o Chrome e Safari */
+  -moz-appearance: none; /* Para Firefox */
+  background-image: none; /* Remove a imagem de fundo do dropdown */
+  height: 59px;
+}
+
+.select-dropdown:focus {
+  border-color: #1976d2;
+}
