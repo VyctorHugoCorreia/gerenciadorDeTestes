@@ -54,11 +54,35 @@ class ProductService {
     }
   }
 
-  static async searchProducts(searchValue: string): Promise<any[]> {
-    // Lógica para buscar produtos com base no valor de busca (searchValue)
-    // Retorne os produtos filtrados
-    return []; // Substitua por sua lógica de busca real
+
+  static async searchProducts(searchValue?: string): Promise<any> {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/produto?descProduto=${searchValue}`);
+      return response.data;
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        throw axiosError.response?.data ?? axiosError.message;
+      } else {
+        throw error;
+      }
+    }
   }
+
+  static async getProductsByTeam(searchValue?: string): Promise<any> {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/produto?idTime=${searchValue}`);
+      return response.data;
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        throw axiosError.response?.data ?? axiosError.message;
+      } else {
+        throw error;
+      }
+    }
+  }
+  
 
 
   static async editProduct(productId : number, descProduto: string) {
