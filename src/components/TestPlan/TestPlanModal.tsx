@@ -7,6 +7,7 @@ import FeatureService from '../../services/FeatureService';
 import ProductDropDown from '../Dropdown/ProductDropDown';
 import TextField from '@mui/material/TextField';
 import ProductService from '../../services/ProductService';
+import TestPlanService from '../../services/TestPlanService';
 
 export interface Product {
   idTproduto: number;
@@ -26,11 +27,11 @@ export interface Feature {
   };
 }
 
-export interface FeatureModalProps {
+export interface TestPlanModalProps {
   open: boolean;
   onClose: () => void;
-  fetchFeatures: () => void;
-  selectedFeature?: {
+  fetchTestPlan: () => void;
+  selectedTestPlan?: {
     id: number;
     name: string;
     idTime: { idTime: number; nomeTime: string };
@@ -38,15 +39,15 @@ export interface FeatureModalProps {
   } | null;
 }
 
-const FeatureModal: React.FC<FeatureModalProps> = ({
+const TestPlanModal: React.FC<TestPlanModalProps> = ({
   open,
   onClose,
-  fetchFeatures,
-  selectedFeature,
+  fetchTestPlan,
+  selectedTestPlan,
 }) => {
   const [error, setError] = useState<string>('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [featureName, setFeatureName] = useState<string>('');
+  const [TestPlanName, setTestPlanName] = useState<string>('');
   const [selectedTeam, setSelectedTeam] = useState<{
     idTime: number;
     nomeTime: string;
@@ -57,31 +58,31 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
   const [resetProductDropdown, setResetProductDropdown] = useState(false);
 
   useEffect(() => {
-    if (open && selectedFeature) {
+    if (open && selectedTestPlan) {
       setError('');
-      setIsButtonDisabled(!selectedFeature.name);
-      setFeatureName(selectedFeature.name || '');
-      setSelectedTeam(selectedFeature.idTime || null);
-      setSelectedTeamId(selectedFeature.idTime?.idTime || null);
+      setIsButtonDisabled(!selectedTestPlan.name);
+      setTestPlanName(selectedTestPlan.name || '' )
+      setSelectedTeam(selectedTestPlan.idTime || null);
+      setSelectedTeamId(selectedTestPlan.idTime?.idTime || null);
       setSelectedProductId(null);
     } else {
       setError('');
       setIsButtonDisabled(true);
-      setFeatureName('');
+      setTestPlanName('');
       setSelectedTeam(null);
       setSelectedTeamId(null);
       setSelectedProductId(null);
     }
-  }, [open, selectedFeature]);
+  }, [open, selectedTestPlan]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFeatureName(event.target.value);
+    setTestPlanName(event.target.value);
     setError('');
     setIsButtonDisabled(event.target.value === '');
   };
 
   const handleSelectTeam = async (team: { idTime: number; nomeTime: string } | string) => {
-    if (!selectedFeature) {
+    if (!selectedTestPlan) {
       if (typeof team === 'string') {
         setIsButtonDisabled(true);
         setSelectedTeam(null);
@@ -108,16 +109,16 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
     }
   };
 
-  const handleAddFeature = async () => {
+  const handleAddTestPlan = async () => {
     try {
       if (selectedTeam && selectedProductId !== null) {
-        await FeatureService.addFeature(selectedTeam.idTime, selectedProductId, featureName);
-        setFeatureName('');
+        await TestPlanService.addTestPlan(selectedTeam.idTime, selectedProductId, TestPlanName);
+        setTestPlanName('');
         setSelectedTeam(null);
         setSelectedTeamId(null);
         setSelectedProductId(null);
         onClose();
-        fetchFeatures();
+        fetchTestPlan();
       } else {
         setError('Selecione um time e um produto');
       }
@@ -126,15 +127,15 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
     }
   };
 
-  const handleEditFeature = async () => {
+  const handleEditTestPlan = async () => {
     try {
-      if (selectedTeam && selectedFeature) {
-        await FeatureService.editFeature(selectedFeature.id, selectedFeature.idTime.idTime, selectedFeature.idTproduto.idTproduto, featureName);
-        setFeatureName('');
+      if (selectedTeam && selectedTestPlan) {
+        await TestPlanService.editTestPlan(selectedTestPlan.id, selectedTestPlan.idTime.idTime, selectedTestPlan.idTproduto.idTproduto, TestPlanName);
+        setTestPlanName('');
         setSelectedTeam(null);
         setSelectedTeamId(null);
         onClose();
-        fetchFeatures();
+        fetchTestPlan();
       } else {
         setError('Selecione um time');
       }
@@ -143,7 +144,7 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
     }
   };
 
-  const isEditing = !!selectedFeature;
+  const isEditing = !!selectedTestPlan;
 
   return (
     <Modal
@@ -154,7 +155,7 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
     >
       <div className="team-modal">
         <h2 id="team-modal-title">
-          {selectedFeature ? 'Editar funcionalidade' : 'Adicionar nova funcionalidade'}
+          {selectedTestPlan ? 'Editar plano de testes' : 'Adicionar novo plano de teste'}
         </h2>
         <TeamsDropDown
           onSelectTeam={handleSelectTeam}
@@ -174,9 +175,9 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
 
         <TextField
           className="team-modal-input"
-          id="feature-name"
-          placeholder="Preencha o nome da funcionalidade"
-          value={featureName}
+          id="test-plan-name"
+          placeholder="Preencha o nome do plano de testes"
+          value={TestPlanName}
           onChange={handleInputChange}
         />
         {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -184,14 +185,14 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
           className="team-modal-button"
           variant="contained"
           color="primary"
-          onClick={selectedFeature ? handleEditFeature : handleAddFeature}
+          onClick={selectedTestPlan ? handleEditTestPlan : handleAddTestPlan}
           disabled={isButtonDisabled}
         >
-          {selectedFeature ? 'Editar' : 'Cadastrar'}
+          {selectedTestPlan ? 'Editar' : 'Cadastrar'}
         </Button>
       </div>
     </Modal>
   );
 };
 
-export default FeatureModal;
+export default TestPlanModal;

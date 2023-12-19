@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import TeamRegisteredTab from './components/Teams/TeamRegisteredTab'; // Importe o componente TimesCadastradosTab
 import ProductRegisteredTab from './components/Products/ProductRegisteredTab';
 import FeatureRegisteredTab from './components/Feature/FeatureRegisteredTab';
+import TestPlanRegisteredTab from './components/TestPlan/TestPlanRegisteredTab';
 
 const App: React.FC = () => {
   const [tabValue, setTabValue] = React.useState(0);
@@ -23,6 +24,7 @@ const App: React.FC = () => {
         <Tab label="Produtos cadastrados" />
         <Tab label="Funcionalidades cadastradas" />
       </Tabs>
+      {tabValue === 1 && <TestPlanRegisteredTab />}
       {tabValue === 3 && <TeamRegisteredTab />}
       {tabValue === 4 && <ProductRegisteredTab />}
       {tabValue === 5 && <FeatureRegisteredTab />}
