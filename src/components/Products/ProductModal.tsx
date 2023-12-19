@@ -3,7 +3,7 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import TeamsDropDown from './TeamsDropDown';
 import ProductService from '../../services/ProductService';
-import '../../styles/Teams/TeamModal.css';
+import '../../styles/AddModal.css';
 import TextField from '@mui/material/TextField';
 
 export interface Product {

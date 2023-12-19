@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ProductService from '../../services/ProductService';
-import '../../styles/Teams/TimeTable.css';
+import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
 import ProductModal from './ProductModal'; // Importe o componente ProductModal
 

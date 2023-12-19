@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import AddIcon from '@mui/icons-material/Add';
-import '../../styles/Teams/AddTeamButton.css';
+import '../../styles/AddButton.css';
 import FeatureModal from './FeatureModal';
 
 interface AddFeatureButtonProps {

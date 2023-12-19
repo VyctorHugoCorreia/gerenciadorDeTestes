@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TeamService from '../../services/TimeService';
-import '../../styles/Teams/TimeTable.css'
+import '../../styles/Table.css'
 import ErrorPopup from '../ErrorPopup';
 import TeamModal from './TeamModal'; // Importe o componente TeamModal
 

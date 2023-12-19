@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TeamService from '../../services/TimeService';
-import '../../styles/Teams/TeamModal.css';
+import '../../styles/AddModal.css';
 
 interface Team {
   idTime: number;

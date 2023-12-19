@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import '../../styles/Teams/TeamModal.css';
+import '../../styles/AddModal.css';
 
 import TeamService from '../../services/TimeService'; // Importe o serviço
 

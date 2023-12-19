@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import FeatureService from '../../services/FeatureService';
-import '../../styles/Teams/TimeTable.css';
+import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
 import FeatureModal from './FeatureModal'; // Importe o componente FeatureModal
 

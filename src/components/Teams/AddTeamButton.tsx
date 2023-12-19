@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import AddIcon from '@mui/icons-material/Add';
 import TeamModal from './TeamModal';
-import '../../styles/Teams/AddTeamButton.css'
+import '../../styles/AddButton.css'
 
 interface AddTeamButtonProps {
   fetchTimes: () => void;
