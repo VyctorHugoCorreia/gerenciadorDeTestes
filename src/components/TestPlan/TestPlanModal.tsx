@@ -36,6 +36,7 @@ export interface TestPlanModalProps {
     name: string;
     idTime: { idTime: number; nomeTime: string };
     idTproduto: { idTproduto: number; descProduto: string }
+    quantidadeSuites: number;
   } | null;
 }
 

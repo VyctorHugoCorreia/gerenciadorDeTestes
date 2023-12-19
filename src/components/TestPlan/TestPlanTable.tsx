@@ -19,6 +19,7 @@ export interface testPlan {
       nomeTime: string;
     };
   };
+  quantidadeSuites: number;
 }
 
 interface TestPlanTableProps {
@@ -41,6 +42,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
       idTproduto: number;
       descProduto: string;
     }
+    quantidadeSuites: number;
   } | null>(null);
 
   const handleDeleteTestPlan = async (testPlanId: number) => {
@@ -59,7 +61,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
   };
 
   const handleEditTestPlan = (testPlan: testPlan) => {
-    const { idPlano, descPlano, idTime, idTproduto } = testPlan;
+    const { idPlano, descPlano, idTime, idTproduto,quantidadeSuites } = testPlan;
 
     const formattedTestPlan = {
       id: idPlano,
@@ -73,6 +75,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
         descProduto: idTproduto.descProduto,
 
       },
+      quantidadeSuites:  quantidadeSuites
     };
 
     setSelectedTestPlan(formattedTestPlan);
@@ -101,7 +104,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
               <td>{testPlan.idTime.nomeTime}</td>
               <td>{testPlan.idTproduto.descProduto}</td>
               <td>{testPlan.descPlano}</td>
-              <td>0</td>
+              <td>{testPlan.quantidadeSuites}</td>
               <td className="action-buttons">
                 <button onClick={() => handleEditTestPlan(testPlan)}>Editar</button>
                 <button onClick={() => handleDeleteTestPlan(testPlan.idPlano)}>Excluir</button>
