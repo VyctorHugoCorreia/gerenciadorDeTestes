@@ -165,6 +165,7 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
           }}
           selectedTeamId={selectedTeamId}
           disabled={isEditing}
+          isEditing={isEditing}
         />
 
         <TextField

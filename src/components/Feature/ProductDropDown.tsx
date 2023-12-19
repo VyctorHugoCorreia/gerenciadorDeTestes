@@ -15,12 +15,14 @@ interface ProductDropDownProps {
   onSelectProduct: (productId: number | null) => void;
   selectedTeamId?: number | null;
   disabled?: boolean;
+  isEditing: boolean;
 }
 
 const ProductDropDown: React.FC<ProductDropDownProps> = ({
   onSelectProduct,
   selectedTeamId,
   disabled = false,
+  isEditing,
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedValue, setSelectedValue] = useState<string | number | null>(null); // Alteração do tipo para string | number | null
@@ -65,7 +67,7 @@ const ProductDropDown: React.FC<ProductDropDownProps> = ({
       className="select-dropdown"
       disabled={disabled}
     >
-      <option value="">Selecione o produto</option>
+    {!isEditing &&  <option value="">Selecione o produto</option>}
       {products.map((product) => (
         <option key={product.idTproduto} value={product.idTproduto}>
           {product.descProduto}
