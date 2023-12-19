@@ -95,6 +95,20 @@ class TestPlanService {
     }
   }
 
+  static async getTestPlansByProduct(searchValue?: string): Promise<any> {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/planoDeTeste?idTproduto=${searchValue}`);
+      return response.data;
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        throw axiosError.response?.data ?? axiosError.message;
+      } else {
+        throw error;
+      }
+    }
+  }
+
 }
 
 export default TestPlanService;

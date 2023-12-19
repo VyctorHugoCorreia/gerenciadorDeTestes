@@ -18,7 +18,7 @@ class TestSuiteService {
       }
     }
   }
-  static async addTestPlan(idTime: number, idTproduto: number, idPlano: number, descSuite: string): Promise<any> {
+  static async addTestSuite(idTime: number, idTproduto: number, idPlano: number, descSuite: string): Promise<any> {
     const data = {
       idTime,
       idTproduto,
@@ -27,7 +27,7 @@ class TestSuiteService {
     };
 
     try {
-      const response = await axios.post(`${BASE_URL}/api/planoDeTeste`, data, {
+      const response = await axios.post(`${BASE_URL}/api/suiteDeTeste`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -44,7 +44,7 @@ class TestSuiteService {
     }
   }
   
-  static async editTestPlan(idSuite: number,idTime: number, idTproduto: number, idPlano: number, descSuite: string) {
+  static async editTestSuite(idSuite: number,idTime: number, idTproduto: number, idPlano: number, descSuite: string) {
     const url = `${BASE_URL}/api/suiteDeTeste/${idSuite}`;
   
     try {
@@ -72,7 +72,7 @@ class TestSuiteService {
     }
   }
 
-  static async deleteTestPlan(idSuite: number): Promise<void> {
+  static async deleteTestSuite(idSuite: number): Promise<void> {
     try {
       await axios.delete(`${BASE_URL}/api/suiteDeTeste/${idSuite}`);
     } catch (error: any) {

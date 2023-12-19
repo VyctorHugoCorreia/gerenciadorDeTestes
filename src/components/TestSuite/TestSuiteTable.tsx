@@ -3,6 +3,7 @@ import TestPlanService from '../../services/TestPlanService';
 import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
 import TestSuiteModal from './TestSuiteModal'; 
+import TestSuiteService from '../../services/TestSuiteService';
 
 export interface testSuite {
   idSuite: number;
@@ -50,7 +51,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
 
   const handleDeleteTestSuite = async (testSuiteId: number) => {
     try {
-      await TestPlanService.deleteTestPlan(testSuiteId);
+      await TestSuiteService.deleteTestSuite(testSuiteId);
       fetchTestSuites();
     } catch (err) {
       console.error('Error deleting test suites:', err);
