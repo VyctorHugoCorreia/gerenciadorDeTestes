@@ -6,6 +6,7 @@ import TeamRegisteredTab from './components/Teams/TeamRegisteredTab'; // Importe
 import ProductRegisteredTab from './components/Products/ProductRegisteredTab';
 import FeatureRegisteredTab from './components/Feature/FeatureRegisteredTab';
 import TestPlanRegisteredTab from './components/TestPlan/TestPlanRegisteredTab';
+import TestSuiteRegisteredTab from './components/TestSuite/TestSuiteRegisteredTab';
 
 const App: React.FC = () => {
   const [tabValue, setTabValue] = React.useState(0);
@@ -25,6 +26,7 @@ const App: React.FC = () => {
         <Tab label="Funcionalidades cadastradas" />
       </Tabs>
       {tabValue === 1 && <TestPlanRegisteredTab />}
+      {tabValue === 2 && <TestSuiteRegisteredTab />}
       {tabValue === 3 && <TeamRegisteredTab />}
       {tabValue === 4 && <ProductRegisteredTab />}
       {tabValue === 5 && <FeatureRegisteredTab />}

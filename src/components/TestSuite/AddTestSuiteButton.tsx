@@ -4,13 +4,13 @@ import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import AddIcon from '@mui/icons-material/Add';
 import '../../styles/AddButton.css';
-import FeatureModal from './TestPlanModal';
+import FeatureModal from './TestSuiteModal';
 
-interface AddFeatureButtonProps {
-  fetchTestPlan: () => void;
+interface AddTestSuiteProps {
+  fetchTestSuite: () => void;
 }
 
-const AddTestPlanButton: React.FC<AddFeatureButtonProps> = ({ fetchTestPlan }) => {
+const AddProductButton: React.FC<AddTestSuiteProps> = ({ fetchTestSuite }) => {
   const [openModal, setOpenModal] = useState(false);
 
   const handleModalOpen = () => {
@@ -29,11 +29,11 @@ const AddTestPlanButton: React.FC<AddFeatureButtonProps> = ({ fetchTestPlan }) =
         variant="contained"
         onClick={handleModalOpen}
       >
-        Adicionar um novo plano de teste
+        Adicionar uma nova suite de testes
       </Button>
-      <FeatureModal open={openModal} onClose={handleModalClose} fetchTestPlan={fetchTestPlan} />
+      <FeatureModal open={openModal} onClose={handleModalClose} fetchTestSuite={fetchTestSuite} />
     </div>
   );
 };
 
-export default AddTestPlanButton;
+export default AddProductButton;
