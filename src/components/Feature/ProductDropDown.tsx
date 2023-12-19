@@ -16,6 +16,7 @@ interface ProductDropDownProps {
   selectedTeamId?: number | null;
   disabled?: boolean;
   isEditing: boolean;
+  resetDropdown: boolean;
 }
 
 const ProductDropDown: React.FC<ProductDropDownProps> = ({
@@ -23,6 +24,7 @@ const ProductDropDown: React.FC<ProductDropDownProps> = ({
   selectedTeamId,
   disabled = false,
   isEditing,
+  resetDropdown
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedValue, setSelectedValue] = useState<string | number | null>(null); // Alteração do tipo para string | number | null
@@ -35,6 +37,13 @@ const ProductDropDown: React.FC<ProductDropDownProps> = ({
     setSelectedValue(null); // Alteração para null quando a lista de produtos é atualizada
   }, [products]);
 
+  useEffect(() => {
+    if (resetDropdown) {
+      setSelectedValue('');
+      onSelectProduct(null);
+      setProducts([])
+    }
+  }, [resetDropdown]);
   const fetchProducts = async () => {
     try {
       if (selectedTeamId) {

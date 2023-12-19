@@ -37,6 +37,10 @@ const FeatureTable: React.FC<FeatureTableProps> = ({ features, fetchFeatures }) 
       idTime: number;
       nomeTime: string;
     };
+    idTproduto: {
+      idTproduto: number;
+      descProduto: string;
+    }
   } | null>(null);
 
   const handleDeleteFeature = async (featureId: number) => {
@@ -65,12 +69,9 @@ const FeatureTable: React.FC<FeatureTableProps> = ({ features, fetchFeatures }) 
         nomeTime: idTime.nomeTime,
       },
       idTproduto: {
-        id: idTproduto.idTproduto,
-        name: idTproduto.descProduto,
-        idTime: {
-          idTime: idTproduto.idTime.idTime,
-          nomeTime: idTproduto.idTime.nomeTime,
-        },
+        idTproduto: idTproduto.idTproduto,
+        descProduto: idTproduto.descProduto,
+
       },
     };
 
@@ -78,9 +79,13 @@ const FeatureTable: React.FC<FeatureTableProps> = ({ features, fetchFeatures }) 
     setIsEditModalOpen(true);
   };
 
+
   return (
+
     <div>
-      <table className="table-container">
+      {features.length === 0 ? (
+        <h3 className="no-records-message">Nenhuma funcionalidade foi encontrada</h3>
+      ) : (<table className="table-container">
         <thead>
           <tr>
             <th>Time</th>
@@ -103,6 +108,7 @@ const FeatureTable: React.FC<FeatureTableProps> = ({ features, fetchFeatures }) 
           ))}
         </tbody>
       </table>
+      )}
       <ErrorPopup
         open={errorPopupOpen}
         onClose={handleCloseErrorPopup}

@@ -68,7 +68,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
     if (!selectedProduct) {
       // Se não houver um selectedProduct (ou seja, estamos adicionando um novo produto)
       if (typeof team === 'string') {
-        setError('Erro ao selecionar o time');
         setIsButtonDisabled(true);
         setSelectedTeam(null);
       } else {

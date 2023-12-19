@@ -48,7 +48,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, fetchProducts }) 
 
   const handleEditProduct = (product: Product) => {
     const { idTproduto, descProduto, idTime } = product;
-  
+
     const formattedProduct = {
       id: idTproduto,
       name: descProduto,
@@ -57,34 +57,40 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, fetchProducts }) 
         nomeTime: idTime.nomeTime
       }
     };
-  
+
     setSelectedProduct(formattedProduct);
     setIsEditModalOpen(true);
   };
 
   return (
+
     <div>
-      <table className="table-container">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>Produto</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product.idTproduto}>
-              <td>{product.idTime.nomeTime}</td>
-              <td>{product.descProduto}</td>
-              <td className="action-buttons">
-                <button onClick={() => handleEditProduct(product)}>Editar</button>
-                <button onClick={() => handleDeleteProduct(product.idTproduto)}>Excluir</button>
-              </td>
+      {products.length === 0 ? (
+        <h3 className="no-records-message">Nenhum produto foi encontrado</h3>
+      ) : (
+        <table className="table-container">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Produto</th>
+              <th>Ações</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {products.map((product) => (
+              <tr key={product.idTproduto}>
+                <td>{product.idTime.nomeTime}</td>
+                <td>{product.descProduto}</td>
+                <td className="action-buttons">
+                  <button onClick={() => handleEditProduct(product)}>Editar</button>
+                  <button onClick={() => handleDeleteProduct(product.idTproduto)}>Excluir</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
       <ErrorPopup
         open={errorPopupOpen}
         onClose={handleCloseErrorPopup}

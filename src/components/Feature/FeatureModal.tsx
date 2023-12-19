@@ -34,6 +34,7 @@ export interface FeatureModalProps {
     id: number;
     name: string;
     idTime: { idTime: number; nomeTime: string };
+    idTproduto: { idTproduto: number; descProduto: string }
   } | null;
 }
 
@@ -53,6 +54,7 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
   const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
+  const [resetProductDropdown, setResetProductDropdown] = useState(false);
 
   useEffect(() => {
     if (open && selectedFeature) {
@@ -81,18 +83,19 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
   const handleSelectTeam = async (team: { idTime: number; nomeTime: string } | string) => {
     if (!selectedFeature) {
       if (typeof team === 'string') {
-        setError('Erro ao selecionar o time');
         setIsButtonDisabled(true);
         setSelectedTeam(null);
         setSelectedTeamId(null);
         setSelectedProductId(null);
         setProducts([]);
+        setResetProductDropdown(true);
       } else {
         setError('');
         setIsButtonDisabled(false);
         setSelectedTeam(team);
         setSelectedTeamId(team.idTime);
         setSelectedProductId(null);
+        setResetProductDropdown(false); 
 
         try {
           const productsData = await ProductService.getProductsByTeam(team.idTime.toString());
@@ -126,7 +129,7 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
   const handleEditFeature = async () => {
     try {
       if (selectedTeam && selectedFeature) {
-        // await FeatureService.editFeature(selectedFeature.id, featureName);
+        await FeatureService.editFeature(selectedFeature.id, selectedFeature.idTime.idTime, selectedFeature.idTproduto.idTproduto, featureName);
         setFeatureName('');
         setSelectedTeam(null);
         setSelectedTeamId(null);
@@ -166,6 +169,7 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
           selectedTeamId={selectedTeamId}
           disabled={isEditing}
           isEditing={isEditing}
+          resetDropdown={resetProductDropdown} // Passa o estado como prop para o ProductDropDown
         />
 
         <TextField
