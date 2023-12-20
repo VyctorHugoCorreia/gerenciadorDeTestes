@@ -17,6 +17,7 @@ interface ProductDropDownProps {
   disabled?: boolean;
   isEditing: boolean;
   resetDropdown: boolean;
+  selectedProductId: number | null; // Adicionando propriedade para o produto selecionado durante a edição
 }
 
 const ProductDropDown: React.FC<ProductDropDownProps> = ({
@@ -24,26 +25,28 @@ const ProductDropDown: React.FC<ProductDropDownProps> = ({
   selectedTeamId,
   disabled = false,
   isEditing,
-  resetDropdown
+  resetDropdown,
+  selectedProductId // Recebe o produto selecionado durante a edição
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [selectedValue, setSelectedValue] = useState<string | number | null>(null); // Alteração do tipo para string | number | null
+  const [selectedValue, setSelectedValue] = useState<string | number | null>(null); 
 
   useEffect(() => {
     fetchProducts();
   }, [selectedTeamId]);
 
   useEffect(() => {
-    setSelectedValue(null); // Alteração para null quando a lista de produtos é atualizada
+    setSelectedValue(null);
   }, [products]);
 
   useEffect(() => {
     if (resetDropdown) {
       setSelectedValue('');
       onSelectProduct(null);
-      setProducts([])
+      setProducts([]);
     }
   }, [resetDropdown]);
+
   const fetchProducts = async () => {
     try {
       if (selectedTeamId) {
@@ -60,30 +63,27 @@ const ProductDropDown: React.FC<ProductDropDownProps> = ({
     const selectedProduct = products.find(product => product.idTproduto === selectedProductId);
     if (selectedProduct) {
       onSelectProduct(selectedProduct.idTproduto);
-      console.log("Product selected:", selectedProduct.idTproduto); // Adicione um log para verificar o ID selecionado
       setSelectedValue(selectedProduct.idTproduto);
     } else {
       onSelectProduct(null);
-      setSelectedValue(""); // Definir a string vazia quando nenhum produto é selecionado
+      setSelectedValue("");
     }
   };
   
-
   return (
     <select
-      value={selectedValue || ''} // Verificação se é null para evitar erros
+      value={selectedValue || (selectedProductId !== null ? selectedProductId : '')}
       onChange={handleProductChange}
       className="select-dropdown"
       disabled={disabled}
     >
-    {!isEditing &&  <option value="">Selecione o produto</option>}
+      {!isEditing && <option value="">Selecione o produto</option>}
       {products.map((product) => (
         <option key={product.idTproduto} value={product.idTproduto}>
           {product.descProduto}
         </option>
       ))}
     </select>
-    
   );
 };
 

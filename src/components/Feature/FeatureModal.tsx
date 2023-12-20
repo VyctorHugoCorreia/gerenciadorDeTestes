@@ -169,7 +169,8 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
           selectedTeamId={selectedTeamId}
           disabled={isEditing}
           isEditing={isEditing}
-          resetDropdown={resetProductDropdown} // Passa o estado como prop para o ProductDropDown
+          resetDropdown={resetProductDropdown}
+          selectedProductId={selectedFeature?.idTproduto.idTproduto || null} // Envia o produto selecionado para edição
         />
 
         <TextField

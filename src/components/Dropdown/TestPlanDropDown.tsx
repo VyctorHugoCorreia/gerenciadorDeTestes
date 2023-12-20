@@ -12,13 +12,15 @@ interface TestPlanDropDownProps {
   onSelectTestPlan: (testPlanId: number | null) => void;
   disabled?: boolean;
   isEditing: boolean;
+  selectedTestPlanId: number | null;
 }
 
 const TestPlanDropDown: React.FC<TestPlanDropDownProps> = ({
   selectedProductId,
   onSelectTestPlan,
   disabled = false,
-  isEditing
+  isEditing,
+  selectedTestPlanId // Recebe o plano de teste selecionado durante a edição
 }) => {
   const [testPlans, setTestPlans] = useState<TestPlan[]>([]);
   const [selectedValue, setSelectedValue] = useState<number | null>(null);
@@ -44,12 +46,17 @@ const TestPlanDropDown: React.FC<TestPlanDropDownProps> = ({
     fetchTestPlans(); // Re-fetch dos planos de teste ao trocar o produto selecionado
   }, [selectedProductId, fetchTestPlans]);
 
+  useEffect(() => {
+    if (isEditing && selectedTestPlanId !== null) {
+      setSelectedValue(selectedTestPlanId); // Atualiza o valor selecionado durante a edição
+    }
+  }, [isEditing, selectedTestPlanId]);
+
   const handleTestPlanChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedTestPlanId = parseInt(event.target.value, 10);
     const selectedTestPlan = testPlans.find(plan => plan.idPlano === selectedTestPlanId);
     if (selectedTestPlan) {
       onSelectTestPlan(selectedTestPlan.idPlano);
-      console.log("Test plan selected:", selectedTestPlan.idPlano);
       setSelectedValue(selectedTestPlan.idPlano);
     } else {
       onSelectTestPlan(null);
@@ -59,10 +66,10 @@ const TestPlanDropDown: React.FC<TestPlanDropDownProps> = ({
 
   return (
     <select
-      value={selectedValue || ''} 
+      value={selectedValue !== null ? selectedValue : ''}
       onChange={handleTestPlanChange}
       className="select-dropdown"
-      disabled={disabled} 
+      disabled={disabled}
     >
       {!isEditing && <option value="">Selecione o plano de testes</option>}
       {testPlans.map((plan) => (

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TestPlanService from '../../services/TestPlanService';
 import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
-import TestSuiteModal from './TestSuiteModal'; 
+import TestSuiteModal from '../TestSuite/TestSuiteModal'; 
 import TestSuiteService from '../../services/TestSuiteService';
 
 export interface testSuite {

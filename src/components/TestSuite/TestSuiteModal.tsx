@@ -7,7 +7,6 @@ import ProductDropDown from '../Dropdown/ProductDropDown';
 import TestPlanDropDown from '../Dropdown/TestPlanDropDown';
 import TextField from '@mui/material/TextField';
 import ProductService from '../../services/ProductService';
-import TestPlanService from '../../services/TestPlanService';
 import TestSuiteService from '../../services/TestSuiteService';
 
 export interface Product {
@@ -148,7 +147,7 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
   const handleEditTestSuite = async () => {
     try {
       if (selectedTeam && selectedTestSuite) {
-        await TestSuiteService.editTestSuite(selectedTestSuite.id, selectedTestSuite.idTime.idTime, selectedTestSuite.idTproduto.idTproduto,selectedTestSuite.idPlano.idPlano, TestSuiteName);
+        await TestSuiteService.editTestSuite(selectedTestSuite.id, selectedTestSuite.idTime.idTime, selectedTestSuite.idTproduto.idTproduto, selectedTestSuite.idPlano.idPlano, TestSuiteName);
         setTestSuiteName('');
         setSelectedTeam(null);
         setSelectedTeamId(null);
@@ -189,6 +188,7 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
           disabled={isEditing}
           isEditing={isEditing}
           resetDropdown={resetProductDropdown} // Passa o estado como prop para o ProductDropDown
+          selectedProductId={selectedTestSuite?.idTproduto.idTproduto || null} // Envia o produto selecionado para edição
         />
 
         <TestPlanDropDown
@@ -197,6 +197,7 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
             setSelectedTestPlanId(selectedTestPlanId);
           }}
           isEditing={isEditing}
+          selectedTestPlanId={selectedTestSuite?.idPlano.idPlano || null} // Envia o plano selecionado para edição
         />
 
         <TextField
@@ -221,4 +222,4 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
   );
 };
 
-export default TestSuiteModal;
+export default TestSuiteModal

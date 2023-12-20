@@ -172,6 +172,7 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
           disabled={isEditing}
           isEditing={isEditing}
           resetDropdown={resetProductDropdown} // Passa o estado como prop para o ProductDropDown
+          selectedProductId={selectedTestPlan?.idTproduto.idTproduto || null} // Envia o produto selecionado para edição
         />
 
         <TextField
