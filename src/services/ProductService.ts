@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-const BASE_URL = 'http://localhost:8080'; // Substitua pela sua URL base
+const BASE_URL = 'http://localhost:8080';
 
 class ProductService {
   static async addProduct(idTime: number, descProduto: string): Promise<any> {

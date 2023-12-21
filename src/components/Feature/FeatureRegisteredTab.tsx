@@ -1,6 +1,5 @@
-// FeatureRegisteredTab.tsx
 import React, { useEffect, useState } from 'react';
-import AddFeatureButton from './AddFeatureButton'; // Importe a interface AddFeatureButtonProps, se existir
+import AddFeatureButton from './AddFeatureButton'; 
 import SearchBar from '../SearchBar';
 import FeatureTable, { Feature } from './FeatureTable';
 import FeatureService from '../../services/FeatureService';
@@ -14,7 +13,7 @@ const FeatureRegisteredTab: React.FC = () => {
       setFeatures(featuresData);
     } catch (error) {
       console.error(error);
-      // Lide com o erro de acordo com a necessidade da sua aplicação
+      
     }
   };
 
@@ -28,7 +27,6 @@ const FeatureRegisteredTab: React.FC = () => {
       setFeatures(filteredFeatures);
     } catch (error) {
       console.error(error);
-      // Lide com o erro de acordo com a necessidade da sua aplicação
     }
   };
 

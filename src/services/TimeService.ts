@@ -1,7 +1,6 @@
-// TeamService.ts
 import axios, { AxiosError } from 'axios';
 
-const BASE_URL = 'http://localhost:8080'; // Altere para a porta correta do seu backend
+const BASE_URL = 'http://localhost:8080'; 
 class TeamService {
   static async addTeam(teamName: string): Promise<any> {
     const data = {

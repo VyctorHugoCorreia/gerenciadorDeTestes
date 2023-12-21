@@ -25,7 +25,7 @@ export interface ProductModalProps {
     id: number;
     name: string;
     idTime: { idTime: number; nomeTime: string };
-  } | null; // Adicione a possibilidade de null também
+  } | null;
 }
 
 const ProductModal: React.FC<ProductModalProps> = ({
@@ -41,7 +41,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
     idTime: number;
     nomeTime: string;
   } | null>(null);
-  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+  const [showToast, setShowToast] = useState(false);
 
 
   useEffect(() => {
@@ -49,7 +49,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
       setError('');
       setIsButtonDisabled(!selectedProduct.name);
       setProductName(selectedProduct.name || '');
-      // Atualizando o selectedTeam com os valores de selectedProduct.idTime, se existirem
       setSelectedTeam(selectedProduct.idTime ? {
         idTime: selectedProduct.idTime.idTime,
         nomeTime: selectedProduct.idTime.nomeTime,
@@ -70,7 +69,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
   const handleSelectTeam = (team: { idTime: number; nomeTime: string } | string) => {
     if (!selectedProduct) {
-      // Se não houver um selectedProduct (ou seja, estamos adicionando um novo produto)
       if (typeof team === 'string') {
         setIsButtonDisabled(true);
         setSelectedTeam(null);
@@ -133,7 +131,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
         <TeamsDropDown
           onSelectTeam={handleSelectTeam}
           selectedTeam={selectedTeam?.idTime || null}
-          disabled={isEditing} // Desabilita o campo durante a edição
+          disabled={isEditing}
         />
 
         <TextField

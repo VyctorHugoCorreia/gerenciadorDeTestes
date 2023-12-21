@@ -1,6 +1,5 @@
-// FeatureRegisteredTab.tsx
 import React, { useEffect, useState } from 'react';
-import AddTestPlanButton from './AddTestPlanButton'; // Importe a interface AddFeatureButtonProps, se existir
+import AddTestPlanButton from './AddTestPlanButton';
 import SearchBar from '../SearchBar';
 import TestPlanTable, { testPlan } from './TestPlanTable';
 import TestPlanService from '../../services/TestPlanService';
@@ -14,7 +13,6 @@ const TestPlanRegisteredTab: React.FC = () => {
       setTestPlans(testPlansData);
     } catch (error) {
       console.error(error);
-      // Lide com o erro de acordo com a necessidade da sua aplicação
     }
   };
 

@@ -1,4 +1,3 @@
-// FeatureModal.tsx
 import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
@@ -56,7 +55,7 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [resetProductDropdown, setResetProductDropdown] = useState(false);
-  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+  const [showToast, setShowToast] = useState(false); 
 
   useEffect(() => {
     if (open && selectedFeature) {
@@ -175,7 +174,7 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
             disabled={isEditing}
             isEditing={isEditing}
             resetDropdown={resetProductDropdown}
-            selectedProductId={selectedFeature?.idTproduto.idTproduto || null} // Envia o produto selecionado para edição
+            selectedProductId={selectedFeature?.idTproduto.idTproduto || null} 
           />
 
           <TextField

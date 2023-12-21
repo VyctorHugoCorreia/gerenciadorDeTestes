@@ -16,7 +16,7 @@ const Toast: React.FC<ToastProps> = ({ message, showToast, setShowToast }) => {
       setTimeout(() => {
         setShow(false);
         setShowToast(false);
-      }, 3000); // Tempo em milissegundos para o toast desaparecer (3 segundos neste exemplo)
+      }, 3000); 
     }
   }, [showToast]);
 

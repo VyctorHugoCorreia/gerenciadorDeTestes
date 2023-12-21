@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ProductService from '../../services/ProductService';
 import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
-import ProductModal from './ProductModal'; // Importe o componente ProductModal
+import ProductModal from './ProductModal';
 import Toast from '../Toast';
 
 export interface Product {
@@ -31,7 +31,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, fetchProducts }) 
       nomeTime: string;
     };
   } | null>(null);
-  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+  const [showToast, setShowToast] = useState(false);
 
 
   const handleDeleteProduct = async (productId: number) => {
@@ -115,7 +115,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, fetchProducts }) 
       <Toast
         message="Operação realizada com sucesso!"
         showToast={showToast}
-        setShowToast={setShowToast} // Passando a função set para setShowToast
+        setShowToast={setShowToast}
       />
     </div>
   );

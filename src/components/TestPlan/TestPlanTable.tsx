@@ -45,7 +45,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
     }
     quantidadeSuites: number;
   } | null>(null);
-  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+  const [showToast, setShowToast] = useState(false);
 
 
   const handleDeleteTestPlan = async (testPlanId: number) => {
@@ -137,7 +137,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
         <Toast
         message="Operação realizada com sucesso!"
         showToast={showToast}
-        setShowToast={setShowToast} // Passando a função set para setShowToast
+        setShowToast={setShowToast} 
       />
     </div>
   );

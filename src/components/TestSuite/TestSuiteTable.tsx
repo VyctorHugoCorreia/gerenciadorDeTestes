@@ -49,7 +49,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
     }
    
   } | null>(null);
-  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+  const [showToast, setShowToast] = useState(false);
 
 
   const handleDeleteTestSuite = async (testSuiteId: number) => {
@@ -146,7 +146,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
        <Toast
         message="Operação realizada com sucesso!"
         showToast={showToast}
-        setShowToast={setShowToast} // Passando a função set para setShowToast
+        setShowToast={setShowToast}
       />
     </div>
   );

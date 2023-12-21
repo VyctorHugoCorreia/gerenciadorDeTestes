@@ -1,8 +1,7 @@
-// App.tsx
 import React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import TeamRegisteredTab from './components/Teams/TeamRegisteredTab'; // Importe o componente TimesCadastradosTab
+import TeamRegisteredTab from './components/Teams/TeamRegisteredTab';
 import ProductRegisteredTab from './components/Products/ProductRegisteredTab';
 import FeatureRegisteredTab from './components/Feature/FeatureRegisteredTab';
 import TestPlanRegisteredTab from './components/TestPlan/TestPlanRegisteredTab';
@@ -30,7 +29,6 @@ const App: React.FC = () => {
       {tabValue === 3 && <TeamRegisteredTab />}
       {tabValue === 4 && <ProductRegisteredTab />}
       {tabValue === 5 && <FeatureRegisteredTab />}
-      {/* Adicione outras verificações para renderizar outras abas */}
     </div>
   );
 };

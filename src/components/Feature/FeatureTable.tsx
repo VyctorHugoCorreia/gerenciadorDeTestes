@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FeatureService from '../../services/FeatureService';
 import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
-import FeatureModal from './FeatureModal'; // Importe o componente FeatureModal
+import FeatureModal from './FeatureModal';
 import Toast from '../Toast';
 
 export interface Feature {
@@ -43,7 +43,7 @@ const FeatureTable: React.FC<FeatureTableProps> = ({ features, fetchFeatures }) 
       descProduto: string;
     }
   } | null>(null);
-  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+  const [showToast, setShowToast] = useState(false); 
 
 
   const handleDeleteFeature = async (featureId: number) => {
@@ -132,7 +132,7 @@ const FeatureTable: React.FC<FeatureTableProps> = ({ features, fetchFeatures }) 
       <Toast
         message="Operação realizada com sucesso!"
         showToast={showToast}
-        setShowToast={setShowToast} // Passando a função set para setShowToast
+        setShowToast={setShowToast} 
       />
     </div>
   );

@@ -1,9 +1,7 @@
-// FeatureModal.tsx
 import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import TeamsDropDown from '../Dropdown/TeamsDropDown';
-import FeatureService from '../../services/FeatureService';
 import ProductDropDown from '../Dropdown/ProductDropDown';
 import TextField from '@mui/material/TextField';
 import ProductService from '../../services/ProductService';
@@ -58,7 +56,7 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [resetProductDropdown, setResetProductDropdown] = useState(false);
-  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     if (open && selectedTestPlan) {
@@ -177,8 +175,8 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
             selectedTeamId={selectedTeamId}
             disabled={isEditing}
             isEditing={isEditing}
-            resetDropdown={resetProductDropdown} // Passa o estado como prop para o ProductDropDown
-            selectedProductId={selectedTestPlan?.idTproduto.idTproduto || null} // Envia o produto selecionado para edição
+            resetDropdown={resetProductDropdown} 
+            selectedProductId={selectedTestPlan?.idTproduto.idTproduto || null} 
           />
 
           <TextField

@@ -1,4 +1,3 @@
-// TeamRegisteredTab.tsx
 import React, { useEffect, useState } from 'react';
 import AddTeamButton from './AddTeamButton';
 import SearchBar from '../SearchBar';
@@ -14,7 +13,6 @@ const TeamRegisteredTab: React.FC = () => {
       setTimes(timesData);
     } catch (error) {
       console.error(error);
-      // Trate o erro de acordo com o que for melhor para sua aplicação
     }
   };
 
@@ -28,7 +26,6 @@ const TeamRegisteredTab: React.FC = () => {
       setTimes(filteredTimes);
     } catch (error) {
       console.error(error);
-      // Trate o erro de acordo com o que for melhor para sua aplicação
     }
   };
 

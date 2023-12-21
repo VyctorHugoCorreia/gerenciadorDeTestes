@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TeamService from '../../services/TimeService';
 import '../../styles/Table.css'
 import ErrorPopup from '../ErrorPopup';
-import TeamModal from './TeamModal'; // Importe o componente TeamModal
+import TeamModal from './TeamModal'; 
 import Toast from '../Toast';
 
 interface Time {
@@ -39,8 +39,8 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
   };
 
   const handleEdit = (id: number, nomeTime: string) => {
-    setSelectedTeam({ id, name: nomeTime }); // Define o time selecionado
-    setIsEditModalOpen(true); // Abre o modal de edição
+    setSelectedTeam({ id, name: nomeTime });
+    setIsEditModalOpen(true); 
   };
 
   return (
@@ -75,18 +75,18 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
       <Toast
         message="Operação realizada com sucesso!"
         showToast={showToast}
-        setShowToast={setShowToast} // Passando a função set para setShowToast
+        setShowToast={setShowToast} 
       />
 
-      {/* Modal de edição */}
+
       <TeamModal
         open={isEditModalOpen}
         onClose={() => {
           setIsEditModalOpen(false);
-          setSelectedTeam(null); // Limpa o time selecionado ao fechar o modal
+          setSelectedTeam(null);
         }}
         fetchTimes={fetchTimes}
-        selectedTeam={selectedTeam ?? { id: 0, name: '' }} // Adicionando o operador ?? para fornecer um objeto vazio se selectedTeam for null
+        selectedTeam={selectedTeam ?? { id: 0, name: '' }} 
       />
 
     </div>

@@ -1,6 +1,5 @@
-// FeatureRegisteredTab.tsx
 import React, { useEffect, useState } from 'react';
-import AddTestSuiteButton from './AddTestSuiteButton'; // Importe a interface AddFeatureButtonProps, se existir
+import AddTestSuiteButton from './AddTestSuiteButton';
 import SearchBar from '../SearchBar';
 import TestSuiteTable, { testSuite } from './TestSuiteTable';
 import TestSuiteService from '../../services/TestSuiteService';
@@ -14,7 +13,6 @@ const TestSuiteRegisteredTab: React.FC = () => {
       setTestSuites(testSuitesData);
     } catch (error) {
       console.error(error);
-      // Lide com o erro de acordo com a necessidade da sua aplicação
     }
   };
 

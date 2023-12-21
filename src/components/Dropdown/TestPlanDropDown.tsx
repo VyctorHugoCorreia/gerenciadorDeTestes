@@ -20,7 +20,7 @@ const TestPlanDropDown: React.FC<TestPlanDropDownProps> = ({
   onSelectTestPlan,
   disabled = false,
   isEditing,
-  selectedTestPlanId // Recebe o plano de teste selecionado durante a edição
+  selectedTestPlanId 
 }) => {
   const [testPlans, setTestPlans] = useState<TestPlan[]>([]);
   const [selectedValue, setSelectedValue] = useState<number | null>(null);
@@ -41,14 +41,14 @@ const TestPlanDropDown: React.FC<TestPlanDropDownProps> = ({
   }, [fetchTestPlans]);
 
   useEffect(() => {
-    setSelectedValue(null); // Reset quando o produto selecionado muda
+    setSelectedValue(null); 
     setTestPlans([]);
-    fetchTestPlans(); // Re-fetch dos planos de teste ao trocar o produto selecionado
+    fetchTestPlans();
   }, [selectedProductId, fetchTestPlans]);
 
   useEffect(() => {
     if (isEditing && selectedTestPlanId !== null) {
-      setSelectedValue(selectedTestPlanId); // Atualiza o valor selecionado durante a edição
+      setSelectedValue(selectedTestPlanId);
     }
   }, [isEditing, selectedTestPlanId]);
 
@@ -60,7 +60,7 @@ const TestPlanDropDown: React.FC<TestPlanDropDownProps> = ({
       setSelectedValue(selectedTestPlan.idPlano);
     } else {
       onSelectTestPlan(null);
-      setSelectedValue(null); // Reset do valor selecionado se nenhum plano for selecionado
+      setSelectedValue(null); 
     }
   };
 

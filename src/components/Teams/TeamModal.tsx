@@ -6,49 +6,47 @@ import '../../styles/AddModal.css';
 import Toast from '../Toast';
 
 
-import TeamService from '../../services/TimeService'; // Importe o serviço
+import TeamService from '../../services/TimeService'; 
 
 interface TeamModalProps {
   open: boolean;
   onClose: () => void;
-  fetchTimes: () => void; // Adicione a propriedade fetchTimes
-  selectedTeam?: { id: number; name: string }; // Recebe o time selecionado para edição, se houver
+  fetchTimes: () => void; 
+  selectedTeam?: { id: number; name: string }; 
 }
 
 const TeamModal: React.FC<TeamModalProps> = ({ open, onClose, fetchTimes, selectedTeam }) => {
   const [teamName, setTeamName] = useState(selectedTeam?.name || '');
   const [error, setError] = useState<string>('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+  const [showToast, setShowToast] = useState(false); 
 
   useEffect(() => {
-    // Reseta o estado quando o modal é aberto
+ 
     if (open) {
       setTeamName(selectedTeam?.name || '');
       setError('');
-      setIsButtonDisabled(selectedTeam?.name === ''); // Habilita ou desabilita o botão de acordo com a presença do nome
+      setIsButtonDisabled(selectedTeam?.name === '');
     }
   }, [open, selectedTeam]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTeamName(event.target.value);
-    setError(''); // Limpa o erro ao digitar
-    setIsButtonDisabled(event.target.value === ''); // Desabilita o botão se o campo estiver vazio
+    setError(''); 
+    setIsButtonDisabled(event.target.value === '');
   };
 
   const handleTeamAction = async () => {
     try {
       if (selectedTeam) {
-        // Se houver um time selecionado, trata-se de uma edição
         await TeamService.editTeam(selectedTeam.id, teamName);
         setShowToast(true)
       } else {
-        // Caso contrário, é uma adição
         await TeamService.addTeam(teamName);
         setShowToast(true)
       }
-      onClose(); // Feche o modal após a operação
-      fetchTimes(); // Atualize os times após a adição ou edição
+      onClose(); 
+      fetchTimes();
     } catch (err) {
       setError(`${err}`);
     }
@@ -85,7 +83,6 @@ const TeamModal: React.FC<TeamModalProps> = ({ open, onClose, fetchTimes, select
         </div>
       </Modal>
   
-      {/* Renderiza o Toast fora do Modal */}
       {showToast && (
         <div>
           <Toast

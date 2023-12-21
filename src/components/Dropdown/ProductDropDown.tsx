@@ -1,4 +1,3 @@
-// ProductDropDown.tsx
 import React, { useEffect, useState } from 'react';
 import ProductService from '../../services/ProductService';
 
@@ -17,7 +16,7 @@ interface ProductDropDownProps {
   disabled?: boolean;
   isEditing: boolean;
   resetDropdown: boolean;
-  selectedProductId: number | null; // Adicionando propriedade para o produto selecionado durante a edição
+  selectedProductId: number | null; 
 }
 
 const ProductDropDown: React.FC<ProductDropDownProps> = ({
@@ -26,7 +25,7 @@ const ProductDropDown: React.FC<ProductDropDownProps> = ({
   disabled = false,
   isEditing,
   resetDropdown,
-  selectedProductId // Recebe o produto selecionado durante a edição
+  selectedProductId 
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedValue, setSelectedValue] = useState<string | number | null>(null); 

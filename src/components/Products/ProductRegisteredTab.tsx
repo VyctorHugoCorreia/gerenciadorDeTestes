@@ -13,7 +13,6 @@ const ProductRegisteredTab: React.FC = () => {
       setProducts(productsData);
     } catch (error) {
       console.error(error);
-      // Handle error according to your application's needs
     }
   };
 
@@ -27,7 +26,6 @@ const ProductRegisteredTab: React.FC = () => {
       setProducts(allProducts);
     } catch (error) {
       console.error(error);
-      // Handle error according to your application's needs
     }
   };
 
@@ -37,7 +35,6 @@ const ProductRegisteredTab: React.FC = () => {
       setProducts(filteredProducts);
     } catch (error) {
       console.error(error);
-      // Handle error according to your application's needs
     }
   };
 

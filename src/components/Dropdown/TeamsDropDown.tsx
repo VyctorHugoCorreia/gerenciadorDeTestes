@@ -10,13 +10,13 @@ interface Team {
 interface TeamsDropDownProps {
   onSelectTeam: (team: { idTime: number; nomeTime: string } | string) => void;
   selectedTeam?: number | null;
-  disabled?: boolean; // Adicionando a propriedade disabled
+  disabled?: boolean; 
 }
 
 const TeamsDropDown: React.FC<TeamsDropDownProps> = ({
   onSelectTeam,
   selectedTeam,
-  disabled = false, // Atribuindo um valor padrão para disabled
+  disabled = false, 
 }) => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [selectedValue, setSelectedValue] = useState<number | ''>('');
@@ -54,7 +54,6 @@ const TeamsDropDown: React.FC<TeamsDropDownProps> = ({
     const selectedTeamId = parseInt(event.target.value, 10);
     setSelectedValue(selectedTeamId);
     onSelectTeamSelected(selectedTeamId);
-    console.log("Team selected:", selectedTeamId); // Adicione um log para verificar o time selecionado
   };
 
   return (
@@ -62,7 +61,7 @@ const TeamsDropDown: React.FC<TeamsDropDownProps> = ({
       value={selectedValue}
       onChange={handleTeamChange}
       className="select-dropdown"
-      disabled={disabled} // Aplicando a propriedade disabled no select
+      disabled={disabled}
     >
       <option value="">Selecione o time</option>
       {teams.map((team) => (
