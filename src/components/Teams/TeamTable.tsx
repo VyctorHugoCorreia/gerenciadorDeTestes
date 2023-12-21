@@ -3,6 +3,7 @@ import TeamService from '../../services/TimeService';
 import '../../styles/Table.css'
 import ErrorPopup from '../ErrorPopup';
 import TeamModal from './TeamModal'; // Importe o componente TeamModal
+import Toast from '../Toast';
 
 interface Time {
   idTime: number;
@@ -19,11 +20,13 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState<{ id: number; name: string } | null>(null); // Estado para o time selecionado
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Estado para controlar a abertura do modal de edição
+  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
 
   const handleDelete = async (id: number) => {
     try {
       await TeamService.deleteTeam(id);
       fetchTimes();
+      setShowToast(true); 
     } catch (error) {
       console.error(error);
       setError(`${error}`);
@@ -46,10 +49,10 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
         <h3 className="no-records-message">Nenhum time foi encontrado</h3>
       ) : (
         <table className="table-container">
-        <thead>
-          <th>Nome do time</th>
-          <th>Ações</th>
-        </thead>
+          <thead>
+            <th>Nome do time</th>
+            <th>Ações</th>
+          </thead>
           <tbody>
             {times.map((time) => (
               <tr key={time.idTime}>
@@ -69,17 +72,23 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
         errorMessage={error}
       />
 
+      <Toast
+        message="Operação realizada com sucesso!"
+        showToast={showToast}
+        setShowToast={setShowToast} // Passando a função set para setShowToast
+      />
+
       {/* Modal de edição */}
       <TeamModal
-     open={isEditModalOpen}
-     onClose={() => {
-       setIsEditModalOpen(false);
-       setSelectedTeam(null); // Limpa o time selecionado ao fechar o modal
-     }}
-     fetchTimes={fetchTimes}
-     selectedTeam={selectedTeam ?? { id: 0, name: '' }} // Adicionando o operador ?? para fornecer um objeto vazio se selectedTeam for null
-   />
-   
+        open={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setSelectedTeam(null); // Limpa o time selecionado ao fechar o modal
+        }}
+        fetchTimes={fetchTimes}
+        selectedTeam={selectedTeam ?? { id: 0, name: '' }} // Adicionando o operador ?? para fornecer um objeto vazio se selectedTeam for null
+      />
+
     </div>
   );
 };
