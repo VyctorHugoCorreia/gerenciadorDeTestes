@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, ChangeEvent } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, Outlet } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import TeamRegisteredTab from './components/Teams/TeamRegisteredTab';
@@ -8,28 +9,35 @@ import TestPlanRegisteredTab from './components/TestPlan/TestPlanRegisteredTab';
 import TestSuiteRegisteredTab from './components/TestSuite/TestSuiteRegisteredTab';
 
 const App: React.FC = () => {
-  const [tabValue, setTabValue] = React.useState(0);
+  const [tabValue, setTabValue] = useState(0);
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue);
   };
 
   return (
-    <div>
-      <Tabs value={tabValue} onChange={handleTabChange}>
-        <Tab label="Cenários de teste" />
-        <Tab label="Plano de teste" />
-        <Tab label="Suíte de teste" />
-        <Tab label="Times cadastrados" />
-        <Tab label="Produtos cadastrados" />
-        <Tab label="Funcionalidades cadastradas" />
-      </Tabs>
-      {tabValue === 1 && <TestPlanRegisteredTab />}
-      {tabValue === 2 && <TestSuiteRegisteredTab />}
-      {tabValue === 3 && <TeamRegisteredTab />}
-      {tabValue === 4 && <ProductRegisteredTab />}
-      {tabValue === 5 && <FeatureRegisteredTab />}
-    </div>
+    <Router>
+      <div>
+        <Tabs value={tabValue} onChange={handleTabChange}>
+          <Tab label="Cenários de teste" component={Link} to="/cenarios-de-teste" />
+          <Tab label="Plano de teste" component={Link} to="/plano-de-teste" />
+          <Tab label="Suíte de teste" component={Link} to="/suite-de-teste" />
+          <Tab label="Times cadastrados" component={Link} to="/times-cadastrados" />
+          <Tab label="Produtos cadastrados" component={Link} to="/produtos-cadastrados" />
+          <Tab label="Funcionalidades cadastradas" component={Link} to="/funcionalidades-cadastradas" />
+        </Tabs>
+
+        <Outlet />
+
+        <Routes>
+          <Route path="/plano-de-teste" element={<TestPlanRegisteredTab />} />
+          <Route path="/suite-de-teste" element={<TestSuiteRegisteredTab />} />
+          <Route path="/times-cadastrados" element={<TeamRegisteredTab />} />
+          <Route path="/produtos-cadastrados" element={<ProductRegisteredTab />} />
+          <Route path="/funcionalidades-cadastradas" element={<FeatureRegisteredTab />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 
