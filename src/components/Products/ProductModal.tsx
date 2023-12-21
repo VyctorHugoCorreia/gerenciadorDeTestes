@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import TeamsDropDown from './TeamsDropDown';
+import TeamsDropDown from '../Dropdown/TeamsDropDown';
 import ProductService from '../../services/ProductService';
 import '../../styles/AddModal.css';
 import TextField from '@mui/material/TextField';
+import Toast from '../Toast';
+
 
 export interface Product {
   id: number;
@@ -39,6 +41,8 @@ const ProductModal: React.FC<ProductModalProps> = ({
     idTime: number;
     nomeTime: string;
   } | null>(null);
+  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+
 
   useEffect(() => {
     if (open && selectedProduct) {
@@ -86,6 +90,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
         setSelectedTeam(null);
         onClose();
         fetchProducts();
+        setShowToast(true)
       } else {
         setError('Selecione um time');
       }
@@ -102,6 +107,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
         setSelectedTeam(null);
         onClose();
         fetchProducts();
+        setShowToast(true)
       } else {
         setError('Selecione um time');
       }
@@ -113,6 +119,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
   const isEditing = !!selectedProduct;
 
   return (
+    <>
     <Modal
       open={open}
       onClose={onClose}
@@ -148,6 +155,17 @@ const ProductModal: React.FC<ProductModalProps> = ({
         </Button>
       </div>
     </Modal>
+
+    {showToast && (
+        <div>
+          <Toast
+            message="Operação realizada com sucesso!"
+            showToast={showToast}
+            setShowToast={setShowToast}
+          />
+        </div>
+          )}
+    </>
   );
 };
 

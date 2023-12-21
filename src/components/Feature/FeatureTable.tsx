@@ -3,6 +3,7 @@ import FeatureService from '../../services/FeatureService';
 import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
 import FeatureModal from './FeatureModal'; // Importe o componente FeatureModal
+import Toast from '../Toast';
 
 export interface Feature {
   idFuncionalidade: number;
@@ -42,11 +43,14 @@ const FeatureTable: React.FC<FeatureTableProps> = ({ features, fetchFeatures }) 
       descProduto: string;
     }
   } | null>(null);
+  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+
 
   const handleDeleteFeature = async (featureId: number) => {
     try {
       await FeatureService.deleteFeature(featureId);
       fetchFeatures();
+      setShowToast(true)
     } catch (err) {
       console.error('Error deleting feature:', err);
       setError(`${err}`);
@@ -123,6 +127,12 @@ const FeatureTable: React.FC<FeatureTableProps> = ({ features, fetchFeatures }) 
         }}
         fetchFeatures={fetchFeatures}
         selectedFeature={selectedFeature}
+      />
+
+      <Toast
+        message="Operação realizada com sucesso!"
+        showToast={showToast}
+        setShowToast={setShowToast} // Passando a função set para setShowToast
       />
     </div>
   );

@@ -3,6 +3,7 @@ import ProductService from '../../services/ProductService';
 import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
 import ProductModal from './ProductModal'; // Importe o componente ProductModal
+import Toast from '../Toast';
 
 export interface Product {
   idTproduto: number;
@@ -30,11 +31,14 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, fetchProducts }) 
       nomeTime: string;
     };
   } | null>(null);
+  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+
 
   const handleDeleteProduct = async (productId: number) => {
     try {
       await ProductService.deleteProduct(productId);
       fetchProducts();
+      setShowToast(true);
     } catch (err) {
       console.error('Error deleting product:', err);
       setError(`${err}`);
@@ -105,6 +109,13 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, fetchProducts }) 
         }}
         fetchProducts={fetchProducts}
         selectedProduct={selectedProduct}
+      />
+
+
+      <Toast
+        message="Operação realizada com sucesso!"
+        showToast={showToast}
+        setShowToast={setShowToast} // Passando a função set para setShowToast
       />
     </div>
   );

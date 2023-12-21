@@ -8,6 +8,7 @@ import ProductDropDown from '../Dropdown/ProductDropDown';
 import TextField from '@mui/material/TextField';
 import ProductService from '../../services/ProductService';
 import TestPlanService from '../../services/TestPlanService';
+import Toast from '../Toast';
 
 export interface Product {
   idTproduto: number;
@@ -57,12 +58,13 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [resetProductDropdown, setResetProductDropdown] = useState(false);
+  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
 
   useEffect(() => {
     if (open && selectedTestPlan) {
       setError('');
       setIsButtonDisabled(!selectedTestPlan.name);
-      setTestPlanName(selectedTestPlan.name || '' )
+      setTestPlanName(selectedTestPlan.name || '')
       setSelectedTeam(selectedTestPlan.idTime || null);
       setSelectedTeamId(selectedTestPlan.idTime?.idTime || null);
       setSelectedProductId(null);
@@ -97,7 +99,7 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
         setSelectedTeam(team);
         setSelectedTeamId(team.idTime);
         setSelectedProductId(null);
-        setResetProductDropdown(false); 
+        setResetProductDropdown(false);
 
         try {
           const productsData = await ProductService.getProductsByTeam(team.idTime.toString());
@@ -120,6 +122,7 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
         setSelectedProductId(null);
         onClose();
         fetchTestPlan();
+        setShowToast(true)
       } else {
         setError('Selecione um time e um produto');
       }
@@ -137,6 +140,7 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
         setSelectedTeamId(null);
         onClose();
         fetchTestPlan();
+        setShowToast(true)
       } else {
         setError('Selecione um time');
       }
@@ -148,52 +152,65 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
   const isEditing = !!selectedTestPlan;
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      aria-labelledby="team-modal-title"
-      aria-describedby="team-modal-description"
-    >
-      <div className="team-modal">
-        <h2 id="team-modal-title">
-          {selectedTestPlan ? 'Editar plano de testes' : 'Adicionar novo plano de teste'}
-        </h2>
-        <TeamsDropDown
-          onSelectTeam={handleSelectTeam}
-          selectedTeam={selectedTeam?.idTime || null}
-          disabled={isEditing}
-        />
+    <>
 
-        <ProductDropDown
-          onSelectProduct={(selectedProductId) => {
-            setSelectedProductId(selectedProductId);
-          }}
-          selectedTeamId={selectedTeamId}
-          disabled={isEditing}
-          isEditing={isEditing}
-          resetDropdown={resetProductDropdown} // Passa o estado como prop para o ProductDropDown
-          selectedProductId={selectedTestPlan?.idTproduto.idTproduto || null} // Envia o produto selecionado para edição
-        />
+      <Modal
+        open={open}
+        onClose={onClose}
+        aria-labelledby="team-modal-title"
+        aria-describedby="team-modal-description"
+      >
+        <div className="team-modal">
+          <h2 id="team-modal-title">
+            {selectedTestPlan ? 'Editar plano de testes' : 'Adicionar novo plano de teste'}
+          </h2>
+          <TeamsDropDown
+            onSelectTeam={handleSelectTeam}
+            selectedTeam={selectedTeam?.idTime || null}
+            disabled={isEditing}
+          />
 
-        <TextField
-          className="team-modal-input"
-          id="test-plan-name"
-          placeholder="Preencha o nome do plano de testes"
-          value={TestPlanName}
-          onChange={handleInputChange}
-        />
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <Button
-          className="team-modal-button"
-          variant="contained"
-          color="primary"
-          onClick={selectedTestPlan ? handleEditTestPlan : handleAddTestPlan}
-          disabled={isButtonDisabled}
-        >
-          {selectedTestPlan ? 'Editar' : 'Cadastrar'}
-        </Button>
-      </div>
-    </Modal>
+          <ProductDropDown
+            onSelectProduct={(selectedProductId) => {
+              setSelectedProductId(selectedProductId);
+            }}
+            selectedTeamId={selectedTeamId}
+            disabled={isEditing}
+            isEditing={isEditing}
+            resetDropdown={resetProductDropdown} // Passa o estado como prop para o ProductDropDown
+            selectedProductId={selectedTestPlan?.idTproduto.idTproduto || null} // Envia o produto selecionado para edição
+          />
+
+          <TextField
+            className="team-modal-input"
+            id="test-plan-name"
+            placeholder="Preencha o nome do plano de testes"
+            value={TestPlanName}
+            onChange={handleInputChange}
+          />
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <Button
+            className="team-modal-button"
+            variant="contained"
+            color="primary"
+            onClick={selectedTestPlan ? handleEditTestPlan : handleAddTestPlan}
+            disabled={isButtonDisabled}
+          >
+            {selectedTestPlan ? 'Editar' : 'Cadastrar'}
+          </Button>
+        </div>
+      </Modal>
+
+      {showToast && (
+        <div>
+          <Toast
+            message="Operação realizada com sucesso!"
+            showToast={showToast}
+            setShowToast={setShowToast}
+          />
+        </div>
+      )}
+    </>
   );
 };
 

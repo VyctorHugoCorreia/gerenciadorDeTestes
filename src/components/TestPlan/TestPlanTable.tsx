@@ -3,6 +3,7 @@ import TestPlanService from '../../services/TestPlanService';
 import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
 import TestPlanModal from './TestPlanModal'; 
+import Toast from '../Toast';
 
 export interface testPlan {
   idPlano: number;
@@ -44,11 +45,14 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
     }
     quantidadeSuites: number;
   } | null>(null);
+  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+
 
   const handleDeleteTestPlan = async (testPlanId: number) => {
     try {
       await TestPlanService.deleteTestPlan(testPlanId);
       fetchTestPlans();
+      setShowToast(true)
     } catch (err) {
       console.error('Error deleting test plan:', err);
       setError(`${err}`);
@@ -128,6 +132,12 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
         }}
         fetchTestPlan={fetchTestPlans}
         selectedTestPlan={selectedTestPlan}
+      />
+
+        <Toast
+        message="Operação realizada com sucesso!"
+        showToast={showToast}
+        setShowToast={setShowToast} // Passando a função set para setShowToast
       />
     </div>
   );

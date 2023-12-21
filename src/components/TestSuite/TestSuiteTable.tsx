@@ -4,6 +4,7 @@ import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
 import TestSuiteModal from '../TestSuite/TestSuiteModal'; 
 import TestSuiteService from '../../services/TestSuiteService';
+import Toast from '../Toast';
 
 export interface testSuite {
   idSuite: number;
@@ -48,11 +49,14 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
     }
    
   } | null>(null);
+  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+
 
   const handleDeleteTestSuite = async (testSuiteId: number) => {
     try {
       await TestSuiteService.deleteTestSuite(testSuiteId);
       fetchTestSuites();
+      setShowToast(true)
     } catch (err) {
       console.error('Error deleting test suites:', err);
       setError(`${err}`);
@@ -138,6 +142,11 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
         }}
         fetchTestSuite={fetchTestSuites}
         selectedTestSuite={selectedTestSuite}
+      />
+       <Toast
+        message="Operação realizada com sucesso!"
+        showToast={showToast}
+        setShowToast={setShowToast} // Passando a função set para setShowToast
       />
     </div>
   );

@@ -8,6 +8,8 @@ import TestPlanDropDown from '../Dropdown/TestPlanDropDown';
 import TextField from '@mui/material/TextField';
 import ProductService from '../../services/ProductService';
 import TestSuiteService from '../../services/TestSuiteService';
+import Toast from '../Toast';
+
 
 export interface Product {
   idTproduto: number;
@@ -68,6 +70,8 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
   const handleSelectTestPlan = (selectedPlanId: number | null) => {
     setSelectedTestPlanId(selectedPlanId);
   };
+  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+
   useEffect(() => {
     if (open && selectedTestSuite) {
       setError('');
@@ -132,8 +136,7 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
         setSelectedProductId(null);
         onClose();
         fetchTestSuite();
-        console.log(selectedProductId);
-        console.log(selectedTestPlanId);
+        setShowToast(true)
       } else {
         console.log(selectedProductId);
         console.log(selectedTestPlanId);
@@ -153,6 +156,7 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
         setSelectedTeamId(null);
         onClose();
         fetchTestSuite();
+        setShowToast(true)
       } else {
         setError('Selecione um time');
       }
@@ -164,61 +168,69 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
   const isEditing = !!selectedTestSuite;
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      aria-labelledby="team-modal-title"
-      aria-describedby="team-modal-description"
-    >
-      <div className="team-modal">
-        <h2 id="team-modal-title">
-          {selectedTestSuite ? 'Editar suite de testes' : 'Adicionar nova suíte de testes'}
-        </h2>
-        <TeamsDropDown
-          onSelectTeam={handleSelectTeam}
-          selectedTeam={selectedTeam?.idTime || null}
-          disabled={isEditing}
-        />
+    <>
 
-        <ProductDropDown
-          onSelectProduct={(selectedProductId) => {
-            setSelectedProductId(selectedProductId);
-          }}
-          selectedTeamId={selectedTeamId}
-          disabled={isEditing}
-          isEditing={isEditing}
-          resetDropdown={resetProductDropdown} // Passa o estado como prop para o ProductDropDown
-          selectedProductId={selectedTestSuite?.idTproduto.idTproduto || null} // Envia o produto selecionado para edição
-        />
+      <Modal
+        open={open}
+        onClose={onClose}
+        aria-labelledby="team-modal-title"
+        aria-describedby="team-modal-description"
+      >
+        <div className="team-modal">
+          <h2 id="team-modal-title">
+            {selectedTestSuite ? 'Editar suite de testes' : 'Adicionar nova suíte de testes'}
+          </h2>
+          <TeamsDropDown
+            onSelectTeam={handleSelectTeam}
+            selectedTeam={selectedTeam?.idTime || null}
+            disabled={isEditing}
+          />
 
-        <TestPlanDropDown
-          selectedProductId={selectedProductId}
-          onSelectTestPlan={(selectedTestPlanId) => {
-            setSelectedTestPlanId(selectedTestPlanId);
-          }}
-          isEditing={isEditing}
-          selectedTestPlanId={selectedTestSuite?.idPlano.idPlano || null} // Envia o plano selecionado para edição
-        />
+          <ProductDropDown
+            onSelectProduct={(selectedProductId) => {
+              setSelectedProductId(selectedProductId);
+            }}
+            selectedTeamId={selectedTeamId}
+            disabled={isEditing}
+            isEditing={isEditing}
+            resetDropdown={resetProductDropdown} // Passa o estado como prop para o ProductDropDown
+            selectedProductId={selectedTestSuite?.idTproduto.idTproduto || null} // Envia o produto selecionado para edição
+          />
 
-        <TextField
-          className="team-modal-input"
-          id="test-plan-name"
-          placeholder="Preencha o nome da suíte de testes"
-          value={TestSuiteName}
-          onChange={handleInputChange}
-        />
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <Button
-          className="team-modal-button"
-          variant="contained"
-          color="primary"
-          onClick={selectedTestSuite ? handleEditTestSuite : handleAddTestSuite}
-          disabled={isButtonDisabled}
-        >
-          {selectedTestSuite ? 'Editar' : 'Cadastrar'}
-        </Button>
-      </div>
-    </Modal>
+          <TestPlanDropDown
+            selectedProductId={selectedProductId}
+            onSelectTestPlan={(selectedTestPlanId) => {
+              setSelectedTestPlanId(selectedTestPlanId);
+            }}
+            isEditing={isEditing}
+            selectedTestPlanId={selectedTestSuite?.idPlano.idPlano || null} // Envia o plano selecionado para edição
+          />
+
+          <TextField
+            className="team-modal-input"
+            id="test-plan-name"
+            placeholder="Preencha o nome da suíte de testes"
+            value={TestSuiteName}
+            onChange={handleInputChange}
+          />
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <Button
+            className="team-modal-button"
+            variant="contained"
+            color="primary"
+            onClick={selectedTestSuite ? handleEditTestSuite : handleAddTestSuite}
+            disabled={isButtonDisabled}
+          >
+            {selectedTestSuite ? 'Editar' : 'Cadastrar'}
+          </Button>
+        </div>
+      </Modal>
+      <Toast
+        message="Operação realizada com sucesso!"
+        showToast={showToast}
+        setShowToast={setShowToast} // Passando a função set para setShowToast
+      />
+    </>
   );
 };
 

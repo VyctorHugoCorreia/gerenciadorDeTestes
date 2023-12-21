@@ -7,6 +7,7 @@ import FeatureService from '../../services/FeatureService';
 import ProductDropDown from '../Dropdown/ProductDropDown';
 import TextField from '@mui/material/TextField';
 import ProductService from '../../services/ProductService';
+import Toast from '../Toast';
 
 export interface Product {
   idTproduto: number;
@@ -55,6 +56,7 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [resetProductDropdown, setResetProductDropdown] = useState(false);
+  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
 
   useEffect(() => {
     if (open && selectedFeature) {
@@ -95,7 +97,7 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
         setSelectedTeam(team);
         setSelectedTeamId(team.idTime);
         setSelectedProductId(null);
-        setResetProductDropdown(false); 
+        setResetProductDropdown(false);
 
         try {
           const productsData = await ProductService.getProductsByTeam(team.idTime.toString());
@@ -118,6 +120,7 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
         setSelectedProductId(null);
         onClose();
         fetchFeatures();
+        setShowToast(true);
       } else {
         setError('Selecione um time e um produto');
       }
@@ -135,6 +138,7 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
         setSelectedTeamId(null);
         onClose();
         fetchFeatures();
+        setShowToast(true);
       } else {
         setError('Selecione um time');
       }
@@ -146,53 +150,66 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
   const isEditing = !!selectedFeature;
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      aria-labelledby="team-modal-title"
-      aria-describedby="team-modal-description"
-    >
-      <div className="team-modal">
-        <h2 id="team-modal-title">
-          {selectedFeature ? 'Editar funcionalidade' : 'Adicionar nova funcionalidade'}
-        </h2>
-        <TeamsDropDown
-          onSelectTeam={handleSelectTeam}
-          selectedTeam={selectedTeam?.idTime || null}
-          disabled={isEditing}
-        />
+    <>
+      <Modal
+        open={open}
+        onClose={onClose}
+        aria-labelledby="team-modal-title"
+        aria-describedby="team-modal-description"
+      >
+        <div className="team-modal">
+          <h2 id="team-modal-title">
+            {selectedFeature ? 'Editar funcionalidade' : 'Adicionar nova funcionalidade'}
+          </h2>
+          <TeamsDropDown
+            onSelectTeam={handleSelectTeam}
+            selectedTeam={selectedTeam?.idTime || null}
+            disabled={isEditing}
+          />
 
-        <ProductDropDown
-          onSelectProduct={(selectedProductId) => {
-            setSelectedProductId(selectedProductId);
-          }}
-          selectedTeamId={selectedTeamId}
-          disabled={isEditing}
-          isEditing={isEditing}
-          resetDropdown={resetProductDropdown}
-          selectedProductId={selectedFeature?.idTproduto.idTproduto || null} // Envia o produto selecionado para edição
-        />
+          <ProductDropDown
+            onSelectProduct={(selectedProductId) => {
+              setSelectedProductId(selectedProductId);
+            }}
+            selectedTeamId={selectedTeamId}
+            disabled={isEditing}
+            isEditing={isEditing}
+            resetDropdown={resetProductDropdown}
+            selectedProductId={selectedFeature?.idTproduto.idTproduto || null} // Envia o produto selecionado para edição
+          />
 
-        <TextField
-          className="team-modal-input"
-          id="feature-name"
-          placeholder="Preencha o nome da funcionalidade"
-          value={featureName}
-          onChange={handleInputChange}
-        />
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <Button
-          className="team-modal-button"
-          variant="contained"
-          color="primary"
-          onClick={selectedFeature ? handleEditFeature : handleAddFeature}
-          disabled={isButtonDisabled}
-        >
-          {selectedFeature ? 'Editar' : 'Cadastrar'}
-        </Button>
-      </div>
-    </Modal>
+          <TextField
+            className="team-modal-input"
+            id="feature-name"
+            placeholder="Preencha o nome da funcionalidade"
+            value={featureName}
+            onChange={handleInputChange}
+          />
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <Button
+            className="team-modal-button"
+            variant="contained"
+            color="primary"
+            onClick={selectedFeature ? handleEditFeature : handleAddFeature}
+            disabled={isButtonDisabled}
+          >
+            {selectedFeature ? 'Editar' : 'Cadastrar'}
+          </Button>
+        </div>
+      </Modal>
+
+      {showToast && (
+        <div>
+          <Toast
+            message="Operação realizada com sucesso!"
+            showToast={showToast}
+            setShowToast={setShowToast}
+          />
+        </div>
+      )}
+    </>
   );
+
 };
 
 export default FeatureModal;
