@@ -7,6 +7,7 @@ import ProductRegisteredTab from './components/Products/ProductRegisteredTab';
 import FeatureRegisteredTab from './components/Feature/FeatureRegisteredTab';
 import TestPlanRegisteredTab from './components/TestPlan/TestPlanRegisteredTab';
 import TestSuiteRegisteredTab from './components/TestSuite/TestSuiteRegisteredTab';
+import TestCaseRegisteredTab from './components/TestCase/TestCaseRegisteredTab';
 
 const App: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -30,6 +31,7 @@ const App: React.FC = () => {
         <Outlet />
 
         <Routes>
+        <Route path="/cenarios-de-teste" element={<TestCaseRegisteredTab />} />
           <Route path="/plano-de-teste" element={<TestPlanRegisteredTab />} />
           <Route path="/suite-de-teste" element={<TestSuiteRegisteredTab />} />
           <Route path="/times-cadastrados" element={<TeamRegisteredTab />} />
