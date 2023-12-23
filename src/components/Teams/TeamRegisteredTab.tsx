@@ -37,7 +37,6 @@ const TeamRegisteredTab: React.FC = () => {
       onSearch={handleSearch}
        />
       <TeamTable times={times} fetchTimes={fetchTimes} />
-      <Steps/>
     </div>
   );
 };
