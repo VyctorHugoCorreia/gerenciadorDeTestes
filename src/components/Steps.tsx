@@ -12,6 +12,7 @@ const GherkinScenario = () => {
 
     const removeStep = (indexToRemove: number) => {
         const updatedSteps = steps.filter((_, index) => index !== indexToRemove);
+        printUpdatedList(updatedSteps);
         setSteps(updatedSteps);
     };
 
@@ -23,6 +24,7 @@ const GherkinScenario = () => {
 
     const printUpdatedList = (updatedSteps: string[]) => {
         const passos = updatedSteps.map((desc_steps, index) => ({
+            
             desc_steps,
             ordem: index + 1,
         }));
@@ -33,6 +35,7 @@ const GherkinScenario = () => {
     return (
         <div className='cardboard-container'>
             <div className='cardboard'>
+                <h3>Passo a passo:</h3>
                 {steps.map((step, index) => (
                     <div className="text-container" key={index}>
                         <input
