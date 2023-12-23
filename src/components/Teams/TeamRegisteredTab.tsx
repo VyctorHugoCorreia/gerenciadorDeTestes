@@ -3,7 +3,7 @@ import AddTeamButton from './AddTeamButton';
 import SearchBar from '../SearchBar';
 import TeamTable from './TeamTable';
 import TeamService from '../../services/TimeService';
-
+import Steps from '../Steps';
 const TeamRegisteredTab: React.FC = () => {
   const [times, setTimes] = useState<any[]>([]);
 
@@ -37,6 +37,7 @@ const TeamRegisteredTab: React.FC = () => {
       onSearch={handleSearch}
        />
       <TeamTable times={times} fetchTimes={fetchTimes} />
+      <Steps/>
     </div>
   );
 };
