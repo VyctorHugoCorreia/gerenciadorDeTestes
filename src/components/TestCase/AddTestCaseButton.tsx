@@ -1,22 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import AddIcon from '@mui/icons-material/Add';
-import '../../styles/AddButton.css'
+import '../../styles/AddButton.css';
+import { useNavigate } from 'react-router-dom'; // Importe useNavigate
 
-interface AddTestCaseButtonProps {
-  fetchTestCase: () => void;
-}
+const AddTestCaseButton: React.FC = () => {
+  const navigate = useNavigate(); // Obtenha a função de navegação
 
-const AddTestCaseButton: React.FC<AddTestCaseButtonProps> = ({ fetchTestCase }) => {
-  const [openModal, setOpenModal] = useState(false);
-
-  const handleModalOpen = () => {
-    setOpenModal(true);
-  };
-
-  const handleModalClose = () => {
-    setOpenModal(false);
+  const handleClick = () => {
+    navigate('/criar-caso-de-teste'); // Navegue para a rota de criação de casos de teste
   };
 
   return (
@@ -25,7 +18,7 @@ const AddTestCaseButton: React.FC<AddTestCaseButtonProps> = ({ fetchTestCase }) 
         className="add-team-button"
         startIcon={<Avatar sx={{ bgcolor: '#1082BE' }}><AddIcon sx={{ color: '#fff' }} /></Avatar>}
         variant="contained"
-        onClick={handleModalOpen}
+        onClick={handleClick} // Chame handleClick no clique do botão
       >
         Adicionar um novo cenário de teste
       </Button>

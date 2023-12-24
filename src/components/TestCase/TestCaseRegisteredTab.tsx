@@ -3,8 +3,9 @@ import AddTestCaseButton from './AddTestCaseButton';
 import SearchBar from '../SearchBar';
 import TestCaseTable from './TestCaseTable';
 import TestCaseService from '../../services/TestCaseService';
-import Steps from '../Steps';
-const TeamRegisteredTab: React.FC = () => {
+
+
+const TestCaseRegisteredTab: React.FC = () => {
   const [testCases, setTestCases] = useState<any[]>([]);
 
   const fetchTestCase = async () => {
@@ -31,7 +32,7 @@ const TeamRegisteredTab: React.FC = () => {
 
   return (
     <div>
-      <AddTestCaseButton fetchTestCase={fetchTestCase} />
+      <AddTestCaseButton />
       <SearchBar 
       placeholder="Buscar cenário de teste" 
       onSearch={handleSearch}
@@ -41,4 +42,4 @@ const TeamRegisteredTab: React.FC = () => {
   );
 };
 
-export default TeamRegisteredTab;
+export default TestCaseRegisteredTab;

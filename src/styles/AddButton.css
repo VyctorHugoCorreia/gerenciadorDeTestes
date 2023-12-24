@@ -13,3 +13,10 @@
     color: rgb(255, 255, 255); 
   }
   
+  .add-team-button-link {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    text-decoration: none; /* Remove o sublinhado padrão do link */
+  }
