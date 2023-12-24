@@ -9,6 +9,8 @@ import ScenarioTypeDropDown from '../Dropdown/ScenarioTypeDropDown';
 import PlataformTypeDropDown from '../Dropdown/PlataformTypeDropDown';
 import StatusAutomationTypeDropDown from '../Dropdown/StatusAutomationDropDown';
 import ScenarioStatusDropDown from '../Dropdown/ScenarioStatusDropDown';
+import Steps from '../Steps';
+
 import TextField from '@mui/material/TextField';
 
 interface SelectedTeam {
@@ -31,6 +33,7 @@ const CreateTestCase: React.FC = () => {
   const [scenarioTitle, setScenarioTitle] = useState<string>(''); // Estado para o título do cenário
   const [scenarioDescription, setscenarioDescription] = useState<string>(''); // Estado para o título do cenário
   const [scenarioLink, setscenarioLink] = useState<string>(''); // Estado para o título do cenário
+  const [steps, setSteps] = useState<string[]>(['']);
 
 
 
@@ -93,7 +96,11 @@ const CreateTestCase: React.FC = () => {
       idAutomatizado: selectedStatusAutomationType || 0,
       scenarioTitle: scenarioTitle,
       scenarioDescription: scenarioDescription,
-      scenarioLink: scenarioLink
+      scenarioLink: scenarioLink,
+      steps: steps.map((descricao, index) => ({
+        passo: index + 1,
+        descricao: descricao,
+      })),
     };
 
     // Atualizando o estado para exibir o JSON resultante
@@ -156,7 +163,7 @@ const CreateTestCase: React.FC = () => {
             selectedTestSuiteId={selectedTestSuite}
           />
         </div>
-        
+
         <div className="input-container">
           <span className='span-label'>Status da execução:</span>
           <ScenarioStatusDropDown
@@ -173,7 +180,7 @@ const CreateTestCase: React.FC = () => {
         <div className="text-field-container ">
           <span className='span-label'>Titulo do cenário:</span>
           <TextField
-           className='text-field'
+            className='text-field'
             value={scenarioTitle}
             onChange={(e) => setScenarioTitle(e.target.value)}
             placeholder="Digite o título do cenário"
@@ -183,7 +190,7 @@ const CreateTestCase: React.FC = () => {
         <div className="text-field-container ">
           <span className='span-label'>Descrição do cenário: (Opcional) </span>
           <TextField
-          className='text-field'
+            className='text-field'
             value={scenarioDescription}
             onChange={(e) => setscenarioDescription(e.target.value)}
             placeholder="Digite a descrição do cenário"
@@ -193,7 +200,7 @@ const CreateTestCase: React.FC = () => {
         <div className="text-field-container ">
           <span className='span-label'>Link do card a ser validado (opcional): </span>
           <TextField
-          className='text-field'
+            className='text-field'
             value={scenarioLink}
             onChange={(e) => setscenarioLink(e.target.value)}
             placeholder="Digite o link do card a ser validado"
@@ -204,41 +211,50 @@ const CreateTestCase: React.FC = () => {
       </div>
 
       <div className='cardboard-style container'>
-
-        <div className="input-container">
-          <span className='span-label'>Selecione o tipo de cenário:</span>
-          <ScenarioTypeDropDown
-            onSelectScenarioType={handleSelectScenarioType}
-            disabled={false}
-            isEditing={false}
-            selectedScenarioTypeId={selectedScenarioType}
-          />
+      <div className="text-field-container ">
+          <span className='span-label'>Passo a passo:</span>
+          <Steps steps={steps} setSteps={setSteps} />
         </div>
-
-        <div className="input-container">
-          <span className='span-label'>Selecione a plataforma a ser validada:</span>
-          <PlataformTypeDropDown
-            onSelectPlataformType={handleSelectPlataformType}
-            disabled={false}
-            isEditing={false}
-            selectedPlataformTypeId={selectedPlataformType}
-          />
-        </div>
-
-        <div className="input-container">
-          <span className='span-label'>Cenário automatizado?</span>
-          <StatusAutomationTypeDropDown
-            onSelectStatusAutomationType={handleSelectStatusAutomationType}
-            disabled={false}
-            isEditing={false}
-            selectedStatusAutomationTypeId={selectedStatusAutomationType}
-          />
-        </div>
-
-
       </div>
-    </div>
-  );
+
+      
+
+        <div className='cardboard-style container'>
+
+          <div className="input-container">
+            <span className='span-label'>Selecione o tipo de cenário:</span>
+            <ScenarioTypeDropDown
+              onSelectScenarioType={handleSelectScenarioType}
+              disabled={false}
+              isEditing={false}
+              selectedScenarioTypeId={selectedScenarioType}
+            />
+          </div>
+
+          <div className="input-container">
+            <span className='span-label'>Selecione a plataforma a ser validada:</span>
+            <PlataformTypeDropDown
+              onSelectPlataformType={handleSelectPlataformType}
+              disabled={false}
+              isEditing={false}
+              selectedPlataformTypeId={selectedPlataformType}
+            />
+          </div>
+
+          <div className="input-container">
+            <span className='span-label'>Cenário automatizado?</span>
+            <StatusAutomationTypeDropDown
+              onSelectStatusAutomationType={handleSelectStatusAutomationType}
+              disabled={false}
+              isEditing={false}
+              selectedStatusAutomationTypeId={selectedStatusAutomationType}
+            />
+          </div>
+
+
+        </div>
+      </div>
+      );
 };
 
-export default CreateTestCase;
+      export default CreateTestCase;
