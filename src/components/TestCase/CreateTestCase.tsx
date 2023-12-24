@@ -3,7 +3,8 @@ import '../../styles/TestCase.css';
 import TeamsDropDown from '../Dropdown/TeamsDropDown';
 import ProductDropDown from '../Dropdown/ProductDropDown';
 import FeatureDropDown from '../Dropdown/FeatureDropDown';
-import TestPlanDropDown from '../Dropdown/TestPlanDropDown'; // Importe o componente TestPlanDropDown
+import TestPlanDropDown from '../Dropdown/TestPlanDropDown';
+import TestSuiteDropDown from '../Dropdown/TestSuiteDropDown';
 
 interface SelectedTeam {
   idTime: number;
@@ -15,7 +16,8 @@ const CreateTestCase: React.FC = () => {
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
   const [resetProductDropdown, setResetProductDropdown] = useState(false);
-  const [selectedTestPlan, setSelectedTestPlan] = useState<number | null>(null); // Estado para o ID do plano selecionado
+  const [selectedTestPlan, setSelectedTestPlan] = useState<number | null>(null);
+  const [selectedTestSuite, setSelectedTestSuite] = useState<number | null>(null);
 
   const handleSelectTeam = (team: number | SelectedTeam | null | string) => {
     if (typeof team === 'string' || team === null) {
@@ -40,11 +42,13 @@ const CreateTestCase: React.FC = () => {
     setSelectedTestPlan(testPlanId);
   };
 
+  const handleSelectTestSuite = (testSuiteId: number | null) => {
+    setSelectedTestSuite(testSuiteId);
+  };
 
   return (
     <div>
       <div className='cardboard-style container'>
-        {/* Teams Dropdown */}
         <div className="input-container">
           <span className='span-label'>Selecione o time:</span>
           <TeamsDropDown
@@ -54,7 +58,6 @@ const CreateTestCase: React.FC = () => {
           />
         </div>
 
-        {/* Product Dropdown */}
         <div className="input-container">
           <span className='span-label'>Selecione o produto:</span>
           <ProductDropDown
@@ -67,7 +70,6 @@ const CreateTestCase: React.FC = () => {
           />
         </div>
 
-        {/* Feature Dropdown */}
         <div className="input-container">
           <span className='span-label'>Selecione a funcionalidade:</span>
           <FeatureDropDown
@@ -80,11 +82,9 @@ const CreateTestCase: React.FC = () => {
         </div>
       </div>
 
-
       <div className='cardboard-style container'>
-        {/* Teams Dropdown */}
         <div className="input-container">
-          <span className='span-label'>Selecione o plano de teste: </span>
+          <span className='span-label'>Selecione o plano de teste:</span>
           <TestPlanDropDown
             selectedProductId={selectedProductId}
             onSelectTestPlan={handleSelectTestPlan}
@@ -94,17 +94,19 @@ const CreateTestCase: React.FC = () => {
           />
         </div>
 
-        
-
-
+        <div className="input-container">
+          <span className='span-label'>Selecione a suíte de testes:</span>
+          <TestSuiteDropDown
+            selectedTestPlanId={selectedTestPlan}
+            onSelectTestSuite={handleSelectTestSuite}
+            disabled={!selectedTestPlan}
+            isEditing={false}
+            selectedTestSuiteId={selectedTestSuite}
+          />
+        </div>
       </div>
-
-
     </div>
-
-
   );
-
 };
 
 export default CreateTestCase;
