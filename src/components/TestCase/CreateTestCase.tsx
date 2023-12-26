@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import '../../styles/TestCase.css';
 import TeamsDropDown from '../Dropdown/TeamsDropDown';
 import ProductDropDown from '../Dropdown/ProductDropDown';
@@ -9,7 +11,7 @@ import ScenarioTypeDropDown from '../Dropdown/ScenarioTypeDropDown';
 import PlataformTypeDropDown from '../Dropdown/PlataformTypeDropDown';
 import StatusAutomationTypeDropDown from '../Dropdown/StatusAutomationDropDown';
 import ScenarioStatusDropDown from '../Dropdown/ScenarioStatusDropDown';
-import Steps from '../Steps';
+import DynamicList from '../DynamicList';
 
 import TextField from '@mui/material/TextField';
 
@@ -19,6 +21,7 @@ interface SelectedTeam {
 }
 
 const CreateTestCase: React.FC = () => {
+  const [buttonCreatedDisabled, setButtonCreatedDisabled] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState<number | null>(null);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
@@ -34,7 +37,8 @@ const CreateTestCase: React.FC = () => {
   const [scenarioDescription, setscenarioDescription] = useState<string>(''); // Estado para o título do cenário
   const [scenarioLink, setscenarioLink] = useState<string>(''); // Estado para o título do cenário
   const [steps, setSteps] = useState<string[]>(['']);
-
+  const [tags, setTags] = useState<string[]>(['']);
+  const navigate = useNavigate();
 
 
   const handleSelectTeam = (team: number | SelectedTeam | null | string) => {
@@ -83,6 +87,10 @@ const CreateTestCase: React.FC = () => {
 
 
   const handleCadastro = () => {
+
+    const filteredSteps = steps.filter((step) => step.trim() !== ''); // Remove passos vazios
+    const filteredTags = tags.filter((tag) => tag.trim() !== ''); // Remove passos vazios
+
     // Construindo o objeto com os estados atuais dos componentes
     const data = {
       idTime: selectedTeam || 0,
@@ -97,15 +105,75 @@ const CreateTestCase: React.FC = () => {
       scenarioTitle: scenarioTitle,
       scenarioDescription: scenarioDescription,
       scenarioLink: scenarioLink,
-      steps: steps.map((descricao, index) => ({
+      steps: filteredSteps.map((descricao, index) => ({
         passo: index + 1,
         descricao: descricao,
       })),
+      tags: filteredTags
     };
 
     // Atualizando o estado para exibir o JSON resultante
     setJsonResult(JSON.stringify(data, null, 2));
+    console.log(jsonResult)
   };
+
+
+  const handleVoltar = () => {
+    const confirmation = window.confirm('Tem certeza que deseja sair? As alterações não salvas serão perdidas.');
+
+    if (confirmation) {
+      navigate('/cenarios-de-teste');
+    }
+  };
+
+  useEffect(() => {
+    const confirmExit = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = ''; 
+
+      return 'Tem certeza que deseja sair? As alterações não salvas serão perdidas.';
+    };
+
+    window.addEventListener('beforeunload', confirmExit);
+
+    return () => {
+      window.removeEventListener('beforeunload', confirmExit);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Função para verificar se algum campo está vazio
+    const isAnyFieldEmpty = () => {
+      // Verifica se algum campo obrigatório está vazio
+      if (
+        !selectedTeam ||
+        !selectedProductId ||
+        !selectedTestPlan ||
+        !selectedTestSuite ||
+        !selectedScenarioType ||
+        !selectedPlataformType ||
+        !selectedStatusAutomationType ||
+        !selectedScenarioStatusType ||
+        !scenarioTitle.trim()
+      ) {
+        return true;
+      }
+      return false;
+    };
+
+    // Atualiza o estado do botão com base no preenchimento dos campos
+    setButtonCreatedDisabled(isAnyFieldEmpty());
+  }, [
+    selectedTeam,
+    selectedProductId,
+    selectedTestPlan,
+    selectedTestSuite,
+    selectedScenarioType,
+    selectedPlataformType,
+    selectedStatusAutomationType,
+    selectedScenarioStatusType,
+    scenarioTitle,
+  ]);
 
   return (
     <div>
@@ -180,7 +248,6 @@ const CreateTestCase: React.FC = () => {
         <div className="text-field-container ">
           <span className='span-label'>Titulo do cenário:</span>
           <TextField
-            className='text-field'
             value={scenarioTitle}
             onChange={(e) => setScenarioTitle(e.target.value)}
             placeholder="Digite o título do cenário"
@@ -190,7 +257,6 @@ const CreateTestCase: React.FC = () => {
         <div className="text-field-container ">
           <span className='span-label'>Descrição do cenário: (Opcional) </span>
           <TextField
-            className='text-field'
             value={scenarioDescription}
             onChange={(e) => setscenarioDescription(e.target.value)}
             placeholder="Digite a descrição do cenário"
@@ -200,61 +266,80 @@ const CreateTestCase: React.FC = () => {
         <div className="text-field-container ">
           <span className='span-label'>Link do card a ser validado (opcional): </span>
           <TextField
-            className='text-field'
             value={scenarioLink}
             onChange={(e) => setscenarioLink(e.target.value)}
             placeholder="Digite o link do card a ser validado"
           />
         </div>
 
+        <div className="input-container">
+          <span className='span-label'>Tags:</span>
+          <DynamicList items={tags} setItems={setTags} />
+        </div>
+
 
       </div>
 
       <div className='cardboard-style container'>
-      <div className="text-field-container ">
+        <div className="text-field-container ">
           <span className='span-label'>Passo a passo:</span>
-          <Steps steps={steps} setSteps={setSteps} />
+          <DynamicList items={steps} setItems={setSteps} />
         </div>
+
+
       </div>
 
-      
+      <div className='cardboard-style container'>
 
-        <div className='cardboard-style container'>
-
-          <div className="input-container">
-            <span className='span-label'>Selecione o tipo de cenário:</span>
-            <ScenarioTypeDropDown
-              onSelectScenarioType={handleSelectScenarioType}
-              disabled={false}
-              isEditing={false}
-              selectedScenarioTypeId={selectedScenarioType}
-            />
-          </div>
-
-          <div className="input-container">
-            <span className='span-label'>Selecione a plataforma a ser validada:</span>
-            <PlataformTypeDropDown
-              onSelectPlataformType={handleSelectPlataformType}
-              disabled={false}
-              isEditing={false}
-              selectedPlataformTypeId={selectedPlataformType}
-            />
-          </div>
-
-          <div className="input-container">
-            <span className='span-label'>Cenário automatizado?</span>
-            <StatusAutomationTypeDropDown
-              onSelectStatusAutomationType={handleSelectStatusAutomationType}
-              disabled={false}
-              isEditing={false}
-              selectedStatusAutomationTypeId={selectedStatusAutomationType}
-            />
-          </div>
-
-
+        <div className="input-container">
+          <span className='span-label'>Selecione o tipo de cenário:</span>
+          <ScenarioTypeDropDown
+            onSelectScenarioType={handleSelectScenarioType}
+            disabled={false}
+            isEditing={false}
+            selectedScenarioTypeId={selectedScenarioType}
+          />
         </div>
+
+        <div className="input-container">
+          <span className='span-label'>Selecione a plataforma a ser validada:</span>
+          <PlataformTypeDropDown
+            onSelectPlataformType={handleSelectPlataformType}
+            disabled={false}
+            isEditing={false}
+            selectedPlataformTypeId={selectedPlataformType}
+          />
+        </div>
+
+        <div className="input-container">
+          <span className='span-label'>Cenário automatizado?</span>
+          <StatusAutomationTypeDropDown
+            onSelectStatusAutomationType={handleSelectStatusAutomationType}
+            disabled={false}
+            isEditing={false}
+            selectedStatusAutomationTypeId={selectedStatusAutomationType}
+          />
+        </div>
+
+
       </div>
-      );
+
+      <div className="button-container">
+        <button className="voltar-button" onClick={handleVoltar}>Voltar</button>
+        <button className="cadastrar-button" onClick={handleCadastro} disabled={buttonCreatedDisabled} >
+          Cadastrar
+        </button>
+      </div>
+
+
+
+
+      <div>
+        <button onClick={handleCadastro}>Cadastrar</button>
+
+      </div>
+    </div>
+  );
 };
 
-      export default CreateTestCase;
+export default CreateTestCase;
