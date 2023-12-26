@@ -1,7 +1,28 @@
 import axios, { AxiosError } from 'axios';
 
 const BASE_URL = 'http://localhost:8080'; 
-class TeamService {
+class TestCaseService {
+
+  static async addTestCase(data: any): Promise<any> {
+   
+  
+    try {
+      const response = await axios.post(`${BASE_URL}/api/cenarioDeTeste`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      return response.data;
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        throw axiosError.response?.data ?? axiosError.message;
+      } else {
+        throw error;
+      }
+    }
+  }
   
   static async getAllTestCase(): Promise<any> {
     try {
@@ -48,4 +69,4 @@ class TeamService {
   
 }
 
-export default TeamService;
+export default TestCaseService;

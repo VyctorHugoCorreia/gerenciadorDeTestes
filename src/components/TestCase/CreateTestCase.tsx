@@ -12,8 +12,10 @@ import PlataformTypeDropDown from '../Dropdown/PlataformTypeDropDown';
 import StatusAutomationTypeDropDown from '../Dropdown/StatusAutomationDropDown';
 import ScenarioStatusDropDown from '../Dropdown/ScenarioStatusDropDown';
 import DynamicList from '../DynamicList';
+import Toast from '../Toast';
 
 import TextField from '@mui/material/TextField';
+import TestCaseService from '../../services/TestCaseService';
 
 interface SelectedTeam {
   idTime: number;
@@ -39,6 +41,8 @@ const CreateTestCase: React.FC = () => {
   const [steps, setSteps] = useState<string[]>(['']);
   const [tags, setTags] = useState<string[]>(['']);
   const navigate = useNavigate();
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
 
   const handleSelectTeam = (team: number | SelectedTeam | null | string) => {
@@ -86,36 +90,49 @@ const CreateTestCase: React.FC = () => {
   };
 
 
-  const handleCadastro = () => {
+  const handleCadastro = async () => {
+    try {
+      const filteredSteps = steps.filter((step) => step.trim() !== ''); // Remove passos vazios
+      const filteredTags = tags.filter((tag) => tag.trim() !== ''); // Remove passos vazios
 
-    const filteredSteps = steps.filter((step) => step.trim() !== ''); // Remove passos vazios
-    const filteredTags = tags.filter((tag) => tag.trim() !== ''); // Remove passos vazios
+      // Construindo o objeto com os estados atuais dos componentes
+      const data = {
+        idTime: selectedTeam || 0,
+        idPlano: selectedTestPlan || 0,
+        idSuite: selectedTestSuite || 0,
+        idTproduto: selectedProductId || 0,
+        idFuncionalidade: selectedFeature || 0,
+        idTpcenario: selectedScenarioType || 0,
+        idPlataforma: selectedPlataformType || 0,
+        idStatus: selectedScenarioStatusType || 0,
+        idAutomatizado: selectedStatusAutomationType || 0,
+        tituloCenario: scenarioTitle,
+        descCenario: scenarioDescription,
+        linkCenario: scenarioLink,
+        steps: filteredSteps.map((descricao, index) => ({
+          passo: index + 1,
+          descricao: descricao,
+        })),
+        tags: filteredTags
+      };
 
-    // Construindo o objeto com os estados atuais dos componentes
-    const data = {
-      idTime: selectedTeam || 0,
-      idPlano: selectedTestPlan || 0,
-      idSuite: selectedTestSuite || 0,
-      idTproduto: selectedProductId || 0,
-      idFuncionalidade: selectedFeature || 0,
-      idTpcenario: selectedScenarioType || 0,
-      idPlataforma: selectedPlataformType || 0,
-      idStatus: selectedScenarioStatusType || 0,
-      idAutomatizado: selectedStatusAutomationType || 0,
-      scenarioTitle: scenarioTitle,
-      scenarioDescription: scenarioDescription,
-      scenarioLink: scenarioLink,
-      steps: filteredSteps.map((descricao, index) => ({
-        passo: index + 1,
-        descricao: descricao,
-      })),
-      tags: filteredTags
-    };
+      setJsonResult(JSON.stringify(data, null, 2));
 
-    // Atualizando o estado para exibir o JSON resultante
-    setJsonResult(JSON.stringify(data, null, 2));
-    console.log(jsonResult)
+      const response = await TestCaseService.addTestCase(data);
+      console.log(response);
+
+      setToastMessage('Caso de teste cadastrado com sucesso!');
+      setShowToast(true);
+      clearFields();
+    } catch (error) {
+      console.error(error); // Registre ou manipule o erro conforme necessário
+
+      // Defina a mensagem de erro no toast
+      setToastMessage('Erro ao cadastrar caso de teste. Tente novamente mais tarde.');
+      setShowToast(true);
+    }
   };
+
 
 
   const handleVoltar = () => {
@@ -129,7 +146,7 @@ const CreateTestCase: React.FC = () => {
   useEffect(() => {
     const confirmExit = (e: BeforeUnloadEvent) => {
       e.preventDefault();
-      e.returnValue = ''; 
+      e.returnValue = '';
 
       return 'Tem certeza que deseja sair? As alterações não salvas serão perdidas.';
     };
@@ -174,6 +191,25 @@ const CreateTestCase: React.FC = () => {
     selectedScenarioStatusType,
     scenarioTitle,
   ]);
+
+  const clearFields = () => {
+  //  setSelectedTeam(null);
+ //   setSelectedProductId(null);
+ //   setSelectedFeature(null);
+ //   setResetProductDropdown(false);
+ //   setSelectedTestPlan(null);
+ //   setSelectedTestSuite(null);
+    setSelectedScenarioType(null);
+    setSelectedPlataformType(null);
+    setSelectedStatusAutomationType(null);
+    setSelectedScenarioStatusType(null);
+    setJsonResult('');
+    setScenarioTitle('');
+    setscenarioDescription('');
+    setscenarioLink('');
+    setSteps(['']);
+    setTags(['']);
+  };
 
   return (
     <div>
@@ -331,13 +367,7 @@ const CreateTestCase: React.FC = () => {
         </button>
       </div>
 
-
-
-
-      <div>
-        <button onClick={handleCadastro}>Cadastrar</button>
-
-      </div>
+      <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
     </div>
   );
 };
