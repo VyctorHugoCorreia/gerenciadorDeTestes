@@ -69,10 +69,10 @@ const TestPlanDropDown: React.FC<TestPlanDropDownProps> = ({
       value={selectedValue !== null ? selectedValue : ''}
       onChange={handleTestPlanChange}
       className="select-dropdown"
-      disabled={disabled || isEditing}
+      disabled={disabled}
       
     >
-      {!isEditing && <option value="">Selecione o plano de testes</option>}
+      {<option value="">Selecione o plano de testes</option>}
       {testPlans.map((plan) => (
         <option key={plan.idPlano} value={plan.idPlano}>
           {plan.descPlano}

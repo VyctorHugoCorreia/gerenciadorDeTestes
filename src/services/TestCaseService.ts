@@ -23,6 +23,27 @@ class TestCaseService {
       }
     }
   }
+
+  static async updateTestCase(idCenario: number, data: any): Promise<any> {
+   
+  
+    try {
+      const response = await axios.put(`${BASE_URL}/api/cenarioDeTeste/${idCenario}`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      return response.data;
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        throw axiosError.response?.data ?? axiosError.message;
+      } else {
+        throw error;
+      }
+    }
+  }
   
   static async getAllTestCase(): Promise<any> {
     try {
@@ -42,6 +63,20 @@ class TestCaseService {
   static async searchTestCase(searchValue?: string): Promise<any> {
     try {
       const response = await axios.get(`${BASE_URL}/api/cenarioDeTeste?tituloCenario=${searchValue}`);
+      return response.data;
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        throw axiosError.response?.data ?? axiosError.message;
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  static async searchTestCaseById(searchValue?: number): Promise<any> {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/cenarioDeTeste?idCenario=${searchValue}`);
       return response.data;
     } catch (error: any) {
       if (axios.isAxiosError(error)) {

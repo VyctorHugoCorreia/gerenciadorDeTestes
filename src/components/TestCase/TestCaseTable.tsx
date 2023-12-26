@@ -3,6 +3,7 @@ import TestService from '../../services/TestCaseService';
 import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
 import Toast from '../Toast';
+import { useNavigate } from 'react-router-dom';
 
 interface TestCase {
   idCenario: number;
@@ -52,6 +53,7 @@ const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases
   const [error, setError] = useState<string>('');
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const navigate = useNavigate();
 
   const handleDelete = async (id: number) => {
     try {
@@ -64,6 +66,12 @@ const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases
       setErrorPopupOpen(true);
     }
   };
+
+  const handleEdit = (id: number) => {
+    // Navegar para a página de edição com o ID do caso de teste selecionado
+    navigate(`/edit-test-case/${id}`);
+  };
+
 
   const handleCloseErrorPopup = () => {
     setErrorPopupOpen(false);
@@ -101,6 +109,7 @@ const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases
                   <td>{testCase.idStatus.descStatus}</td>
                   <td>{testCase.idAutomatizado.descAutomatizado}</td>
                   <td className="action-buttons">
+                  <button onClick={() => handleEdit(testCase.idCenario)}>Editar</button>
                     <button onClick={() => handleDelete(testCase.idCenario)}>Excluir</button>
                   </td>
                 </tr>

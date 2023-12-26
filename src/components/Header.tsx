@@ -17,6 +17,12 @@ const Header: React.FC = () => {
     subtitle = 'Preencha os campos abaixo com as informações do cenário que você quer cadastrar.';
   }
 
+  if (location.pathname.startsWith('/edit-test-case')) {
+    title = 'Editar cenário de teste';
+    subtitle = 'Edite as informações do seu cenário de teste como desejar.';
+  }
+
+
   return (
     <div className='margin'>
       <h1>{title}</h1>

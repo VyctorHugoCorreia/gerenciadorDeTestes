@@ -69,9 +69,9 @@ const TestSuiteDropDown: React.FC<TestSuiteDropDownProps> = ({
       value={selectedValue !== null ? selectedValue : ''}
       onChange={handleTestSuiteChange}
       className="select-dropdown"
-      disabled={disabled || isEditing}
+      disabled={disabled}
     >
-      {!isEditing && <option value="">Selecione a suíte de testes</option>}
+      {<option value="">Selecione a suíte de testes</option>}
       {testSuites.map((suite) => (
         <option key={suite.idSuite} value={suite.idSuite}>
           {suite.descSuite}

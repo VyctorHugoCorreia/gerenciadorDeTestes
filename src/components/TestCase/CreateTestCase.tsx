@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import '../../styles/TestCase.css';
 import TeamsDropDown from '../Dropdown/TeamsDropDown';
 import ProductDropDown from '../Dropdown/ProductDropDown';
@@ -13,9 +12,9 @@ import StatusAutomationTypeDropDown from '../Dropdown/StatusAutomationDropDown';
 import ScenarioStatusDropDown from '../Dropdown/ScenarioStatusDropDown';
 import DynamicList from '../DynamicList';
 import Toast from '../Toast';
-
 import TextField from '@mui/material/TextField';
 import TestCaseService from '../../services/TestCaseService';
+import ScenarioTypeInfo from './ScenarioTypeInfo';
 
 interface SelectedTeam {
   idTime: number;
@@ -30,14 +29,14 @@ const CreateTestCase: React.FC = () => {
   const [resetProductDropdown, setResetProductDropdown] = useState(false);
   const [selectedTestPlan, setSelectedTestPlan] = useState<number | null>(null);
   const [selectedTestSuite, setSelectedTestSuite] = useState<number | null>(null);
-  const [selectedScenarioType, setSelectedScenarioType] = useState<number | null>(null); // Estado para o ID do tipo de cenário selecionado
-  const [selectedPlataformType, setSelectedPlataformType] = useState<number | null>(null); // Estado para o ID do tipo de cenário selecionado
-  const [selectedStatusAutomationType, setSelectedStatusAutomationType] = useState<number | null>(null); // Estado para o ID do tipo de cenário selecionado
-  const [selectedScenarioStatusType, setSelectedScenarioStatusType] = useState<number | null>(null); // Estado para o ID do tipo de cenário selecionado
+  const [selectedScenarioType, setSelectedScenarioType] = useState<number | null>(null); 
+  const [selectedPlataformType, setSelectedPlataformType] = useState<number | null>(null); 
+  const [selectedStatusAutomationType, setSelectedStatusAutomationType] = useState<number | null>(null); 
+  const [selectedScenarioStatusType, setSelectedScenarioStatusType] = useState<number | null>(null);
   const [jsonResult, setJsonResult] = useState<string>('');
-  const [scenarioTitle, setScenarioTitle] = useState<string>(''); // Estado para o título do cenário
-  const [scenarioDescription, setscenarioDescription] = useState<string>(''); // Estado para o título do cenário
-  const [scenarioLink, setscenarioLink] = useState<string>(''); // Estado para o título do cenário
+  const [scenarioTitle, setScenarioTitle] = useState<string>('');
+  const [scenarioDescription, setscenarioDescription] = useState<string>(''); 
+  const [scenarioLink, setscenarioLink] = useState<string>('');
   const [steps, setSteps] = useState<string[]>(['']);
   const [tags, setTags] = useState<string[]>(['']);
   const navigate = useNavigate();
@@ -58,6 +57,8 @@ const CreateTestCase: React.FC = () => {
   const handleSelectProduct = (productId: number | null) => {
     setSelectedProductId(productId);
     setSelectedFeature(null);
+    setSelectedTestSuite(null)
+    setSelectedTestPlan(null)
   };
 
   const handleSelectFeature = (featureId: number | null) => {
@@ -92,10 +93,9 @@ const CreateTestCase: React.FC = () => {
 
   const handleCadastro = async () => {
     try {
-      const filteredSteps = steps.filter((step) => step.trim() !== ''); // Remove passos vazios
-      const filteredTags = tags.filter((tag) => tag.trim() !== ''); // Remove passos vazios
+      const filteredSteps = steps.filter((step) => step.trim() !== ''); 
+      const filteredTags = tags.filter((tag) => tag.trim() !== ''); 
 
-      // Construindo o objeto com os estados atuais dos componentes
       const data = {
         idTime: selectedTeam || 0,
         idPlano: selectedTestPlan || 0,
@@ -159,9 +159,7 @@ const CreateTestCase: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Função para verificar se algum campo está vazio
     const isAnyFieldEmpty = () => {
-      // Verifica se algum campo obrigatório está vazio
       if (
         !selectedTeam ||
         !selectedProductId ||
@@ -177,8 +175,6 @@ const CreateTestCase: React.FC = () => {
       }
       return false;
     };
-
-    // Atualiza o estado do botão com base no preenchimento dos campos
     setButtonCreatedDisabled(isAnyFieldEmpty());
   }, [
     selectedTeam,
@@ -335,6 +331,7 @@ const CreateTestCase: React.FC = () => {
             isEditing={false}
             selectedScenarioTypeId={selectedScenarioType}
           />
+          <ScenarioTypeInfo/>
         </div>
 
         <div className="input-container">
