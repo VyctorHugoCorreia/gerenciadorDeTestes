@@ -10,11 +10,12 @@ import TestCaseService from '../../services/TestCaseService';
 interface ExecuteTestCaseModalProps {
   open: boolean;
   onClose: () => void;
+  fetchTestCases: () => void;
   selectedScenario?: { id: number; name: string };
   idCenario: number;
 }
 
-const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClose, selectedScenario, idCenario }) => {
+const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClose, selectedScenario, idCenario,fetchTestCases }) => {
   const [error, setError] = useState<string>('');
   const [selectedScenarioStatusId, setSelectedScenarioStatusId] = useState<number | null>(null);
   const [testCase, setTestCase] = useState<any>(null);
@@ -87,7 +88,8 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
         await TestCaseService.updateTestCase(idCenario, data);
         setToastMessage('Caso de teste editado com sucesso!');
         setShowToast(true);
-
+        onClose();
+        fetchTestCases();
       }
 
     } catch (error) {

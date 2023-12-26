@@ -84,6 +84,7 @@ const OpcoesMenu: React.FC<OpcoesMenuProps> = ({ idCenario, fetchTestCases }) =>
         open={showExecuteModal}
         onClose={handleCloseModal}
         idCenario ={Number(idCenario)}
+        fetchTestCases={fetchTestCases}
       />
     </div>
   );

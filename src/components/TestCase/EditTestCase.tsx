@@ -287,7 +287,7 @@ const EditTestCase: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
                     <span className='span-label'>Status da execução:</span>
                     <ScenarioStatusDropDown
                         onSelectScenarioStatus={handleSelectScenarioStatusType}
-                        disabled={false}
+                        disabled={true}
                         isEditing={true}
                         selectedScenarioStatusId={selectedScenarioStatusType}
                     />
