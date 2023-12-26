@@ -125,9 +125,7 @@ const CreateTestCase: React.FC = () => {
       setShowToast(true);
       clearFields();
     } catch (error) {
-      console.error(error); // Registre ou manipule o erro conforme necessário
-
-      // Defina a mensagem de erro no toast
+      console.error(error); 
       setToastMessage('Erro ao cadastrar caso de teste. Tente novamente mais tarde.');
       setShowToast(true);
     }

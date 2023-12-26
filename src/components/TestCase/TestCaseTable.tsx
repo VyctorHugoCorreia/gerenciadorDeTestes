@@ -68,7 +68,6 @@ const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases
   };
 
   const handleEdit = (id: number) => {
-    // Navegar para a página de edição com o ID do caso de teste selecionado
     navigate(`/edit-test-case/${id}`);
   };
 

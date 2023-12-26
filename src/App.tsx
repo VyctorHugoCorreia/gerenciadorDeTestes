@@ -1,5 +1,3 @@
-// App.tsx
-
 import React from 'react';
 import { Routes, Route, Link, Outlet, useLocation } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
@@ -11,7 +9,6 @@ import TestPlanRegisteredTab from './components/TestPlan/TestPlanRegisteredTab';
 import TestSuiteRegisteredTab from './components/TestSuite/TestSuiteRegisteredTab';
 import TestCaseRegisteredTab from './components/TestCase/TestCaseRegisteredTab';
 import CreateTestCase from './components/TestCase/CreateTestCase';
-import Header from './components/Header';
 import './styles/GlobalStyles.css';
 import EditTestCase from './components/TestCase/EditTestCase';
 

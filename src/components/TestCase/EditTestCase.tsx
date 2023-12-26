@@ -22,7 +22,7 @@ interface SelectedTeam {
 }
 
 interface EditTestCaseProps {
-    testCaseId?: string; // Altere para string
+    testCaseId?: string;
 }
 
 
@@ -156,7 +156,6 @@ const EditTestCase: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
 
             setJsonResult(JSON.stringify(data, null, 2));
 
-            // Chame o serviço para atualizar o caso de teste com 'testCaseId' usando os dados 'data'
             if (id != null) {
                 await TestCaseService.updateTestCase(id, data);
                 setToastMessage('Caso de teste editado com sucesso!');
@@ -166,7 +165,6 @@ const EditTestCase: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
 
         } catch (error) {
             console.error(error);
-            // Manipulação de erros, definição de mensagens de erro, etc.
             setToastMessage('Erro ao editar o caso de teste. Tente novamente mais tarde.');
             setShowToast(true);
         }
@@ -227,25 +225,6 @@ const EditTestCase: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
         selectedScenarioStatusType,
         scenarioTitle,
     ]);
-
-    const clearFields = () => {
-        //  setSelectedTeam(null);
-        //   setSelectedProductId(null);
-        //   setSelectedFeature(null);
-        //   setResetProductDropdown(false);
-        //   setSelectedTestPlan(null);
-        //   setSelectedTestSuite(null);
-        setSelectedScenarioType(null);
-        setSelectedPlataformType(null);
-        setSelectedStatusAutomationType(null);
-        setSelectedScenarioStatusType(null);
-        setJsonResult('');
-        setScenarioTitle('');
-        setscenarioDescription('');
-        setscenarioLink('');
-        setSteps(['']);
-        setTags(['']);
-    };
 
     return (
         <div>

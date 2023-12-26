@@ -1,9 +1,7 @@
-
-
 import React, { useState } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
-import '../../styles/tooltip.css'; // Substitua pelo caminho do seu arquivo CSS
+import '../../styles/tooltip.css'; 
 
 const ScenarioTypeInfo = () => {
     const [showInfo, setShowInfo] = useState(false);
@@ -34,8 +32,7 @@ const ScenarioTypeInfo = () => {
             disableFocusListener
             disableTouchListener
             PopperProps={{
-                style: {},
-                placement: 'bottom-start', // Ajuste para o lado direito ou esquerdo
+                placement: 'bottom-start'
             }}
         >
             <span style={{ cursor: 'pointer' }}>
