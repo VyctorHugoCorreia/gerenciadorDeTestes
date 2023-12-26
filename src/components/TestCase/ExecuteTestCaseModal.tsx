@@ -3,17 +3,18 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import ScenarioStatusDropDown from '../Dropdown/ScenarioStatusDropDown';
 import '../../styles/AddModal.css';
+import '../../styles/Table.css';
 import Toast from '../Toast';
 import TestCaseService from '../../services/TestCaseService';
 
-interface ScenarioModalProps {
+interface ExecuteTestCaseModalProps {
   open: boolean;
   onClose: () => void;
   selectedScenario?: { id: number; name: string };
   idCenario: number;
 }
 
-const ScenarioModal: React.FC<ScenarioModalProps> = ({ open, onClose, selectedScenario, idCenario }) => {
+const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClose, selectedScenario, idCenario }) => {
   const [error, setError] = useState<string>('');
   const [selectedScenarioStatusId, setSelectedScenarioStatusId] = useState<number | null>(null);
   const [testCase, setTestCase] = useState<any>(null);
@@ -114,39 +115,37 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({ open, onClose, selectedSc
           />
           {error && <p style={{ color: 'red' }}>{error}</p>}
 
-          <h3>Passos a passo</h3>
-          <div className="table-responsive">
-            <table className="table-container">
-              <thead>
-                <tr>
-                  <th>Nº</th>
-                  <th>Passo</th>
-                  <th>Checklist</th>
-                </tr>
-              </thead>
-              <tbody>
-                {steps && steps.length > 0 ? (
-                  steps.map((step: any, index: number) => (
-                    <tr key={index}>
-                      <td>{step.passo}</td>
-                      <td>{step.descricao}</td>
-                      <td>
-                        <input
-                          type="checkbox"
-                          checked={step.status === 'A'}
-                          onChange={(e) => handleChecklistChange(index, e.target.checked)}
-                        />
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={3}>Carregando...</td>
+          <table className="table-container">
+            <thead>
+              <tr>
+                <th>Nº</th>
+                <th>Passo</th>
+                <th>Checklist</th>
+              </tr>
+            </thead>
+            <tbody>
+              {steps && steps.length > 0 ? (
+                steps.map((step: any, index: number) => (
+                  <tr key={index}>
+                    <td>{step.passo}</td>
+                    <td>{step.descricao}</td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={step.status === 'A'}
+                        onChange={(e) => handleChecklistChange(index, e.target.checked)}
+                      />
+                    </td>
                   </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={3}>Carregando...</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+
           <Button
             className="team-modal-button"
             variant="contained"
@@ -172,4 +171,4 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({ open, onClose, selectedSc
   );
 };
 
-export default ScenarioModal;
+export default ExecuteTestCaseModal;
