@@ -20,6 +20,11 @@ const Header: React.FC = () => {
     subtitle = 'Edite as informações do seu cenário de teste como desejar.';
   }
 
+  if (location.pathname.startsWith('/details-test-case')) {
+    title = 'Detalhes cenário de teste';
+    subtitle = 'Visualize todas as informações referente ao seu cenário de teste.';
+  }
+
 
   return (
     <div className='margin'>

@@ -85,3 +85,7 @@
     pointer-events: none;
   }
   
+
+  .text-style h2 {
+    margin-left: 10px !important;
+  }

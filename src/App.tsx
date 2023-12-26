@@ -11,6 +11,7 @@ import TestCaseRegisteredTab from './components/TestCase/TestCaseRegisteredTab';
 import CreateTestCase from './components/TestCase/CreateTestCase';
 import './styles/GlobalStyles.css';
 import EditTestCase from './components/TestCase/EditTestCase';
+import DetailsTestCase from './components/TestCase/DetailsTestCase';
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -22,6 +23,11 @@ const App: React.FC = () => {
   if (location.pathname.startsWith('/edit-test-case')) {
     const id = location.pathname.split('/').pop();
     return <EditTestCase testCaseId={id} />;
+  }
+
+  if (location.pathname.startsWith('/details-test-case')) {
+    const id = location.pathname.split('/').pop();
+    return <DetailsTestCase testCaseId={id} />;
   }
   
   
@@ -50,7 +56,8 @@ const RouterContent: React.FC = () => {
       <Route path="/produtos-cadastrados" element={<ProductRegisteredTab />} />
       <Route path="/funcionalidades-cadastradas" element={<FeatureRegisteredTab />} />
       <Route path="/criar-caso-de-teste" element={<CreateTestCase />} />
-      <Route path="/edit-test-case/:id" element={<EditTestCase />} /> {/* Adicione a rota de edição aqui */}
+      <Route path="/edit-test-case/:id" element={<EditTestCase />} /> 
+      <Route path="/details-test-case/:id" element={<DetailsTestCase />} /> 
     </Routes>
   );
 };

@@ -8,7 +8,7 @@ import Navbar from './components/Navbar';
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: '#F2F2F2' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#F2F2F2' }}>
         <Navbar />
         <Header />
         <App />

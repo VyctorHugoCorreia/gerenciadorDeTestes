@@ -4,6 +4,7 @@ import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
 import Toast from '../Toast';
 import { useNavigate } from 'react-router-dom';
+import OpcoesMenu from './OpcoesMenu';
 
 interface TestCase {
   idCenario: number;
@@ -67,11 +68,6 @@ const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases
     }
   };
 
-  const handleEdit = (id: number) => {
-    navigate(`/edit-test-case/${id}`);
-  };
-
-
   const handleCloseErrorPopup = () => {
     setErrorPopupOpen(false);
   };
@@ -108,8 +104,7 @@ const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases
                   <td>{testCase.idStatus.descStatus}</td>
                   <td>{testCase.idAutomatizado.descAutomatizado}</td>
                   <td className="action-buttons">
-                  <button onClick={() => handleEdit(testCase.idCenario)}>Editar</button>
-                    <button onClick={() => handleDelete(testCase.idCenario)}>Excluir</button>
+                  <OpcoesMenu idCenario={testCase.idCenario.toString()} fetchTestCases={fetchTestCases} />
                   </td>
                 </tr>
               ))}
