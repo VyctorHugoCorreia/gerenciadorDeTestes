@@ -29,8 +29,8 @@ const App: React.FC = () => {
     const id = location.pathname.split('/').pop();
     return <DetailsTestCase testCaseId={id} />;
   }
-  
-  
+
+
   return (
     <>
       <Tabs value={location.pathname}>

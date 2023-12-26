@@ -51,9 +51,6 @@ const ScenarioStatusDropDown: React.FC<ScenarioStatusDropDownProps> = ({
   }, [selectedScenarioStatusId]);
 
   const handleScenarioStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    if (isEditing) {
-      return;
-    }
     const selectedScenarioStatusId = parseInt(event.target.value, 10);
     onSelectScenarioStatus(selectedScenarioStatusId);
     setSelectedValue(selectedScenarioStatusId);
@@ -64,9 +61,8 @@ const ScenarioStatusDropDown: React.FC<ScenarioStatusDropDownProps> = ({
       value={selectedValue !== null ? selectedValue : ''}
       onChange={handleScenarioStatusChange}
       className="select-dropdown scenario-status-dropdown"
-      disabled={disabled || isEditing}
+      disabled={disabled}
     >
-      {!isEditing && <option value="">Selecione o status da execução</option>}
       {scenarioStatus.map((scenarioStatus) => (
         <option key={scenarioStatus.idStatus} value={scenarioStatus.idStatus}>
           {scenarioStatus.descStatus}

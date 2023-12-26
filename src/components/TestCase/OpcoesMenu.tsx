@@ -29,6 +29,8 @@ const OpcoesMenu: React.FC<OpcoesMenuProps> = ({ idCenario, fetchTestCases }) =>
     handleClose();
   };
 
+
+
   const handleDelete = async (id: number) => {
     try {
       await TestService.deleteTestCase(id);
