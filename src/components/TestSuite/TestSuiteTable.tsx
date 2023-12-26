@@ -20,7 +20,8 @@ export interface testSuite {
   idPlano: {
     idPlano: number;
     descPlano: string;
-  }
+  };
+  quantidadeCenarios: number;
 }
 
 interface TestSuiteTableProps {
@@ -46,7 +47,8 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
     idPlano:{
       idPlano: number;
       descPlano: string;
-    }
+    };
+    quantidadeCenarios: number;
    
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
@@ -69,7 +71,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
   };
 
   const handleEditTestSuite = (testSuite: testSuite) => {
-    const { idSuite, descSuite, idTime, idTproduto, idPlano} = testSuite;
+    const { idSuite, descSuite, idTime, idTproduto, idPlano, quantidadeCenarios} = testSuite;
 
     const formattedTestSuite = {
       id: idSuite,
@@ -86,8 +88,8 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
       idPlano: {
         idPlano: idPlano.idPlano,
         descPlano: idPlano.descPlano,
-
-      }
+      },
+      quantidadeCenarios: quantidadeCenarios
     };
 
     setSelectedTestSuite(formattedTestSuite);
@@ -118,7 +120,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
               <td>{testSuites.idTproduto.descProduto}</td>
               <td>{testSuites.idPlano.descPlano}</td>
               <td>{testSuites.descSuite}</td>
-              <td>0</td>
+              <td>{testSuites.quantidadeCenarios}</td>
               <td className="action-buttons">
                 <button onClick={() => handleEditTestSuite(testSuites)}>Editar</button>
                 <button onClick={() => handleDeleteTestSuite(testSuites.idSuite)}>Excluir</button>
