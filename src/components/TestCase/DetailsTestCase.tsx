@@ -85,14 +85,19 @@ const DetailsTestCase: React.FC<DetailsTestCaseProps> = ({ testCaseId }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* Verifica se testCase existe e tem steps, e depois mapeia os passos */}
                             {testCase && testCase.steps ? (
-                                testCase.steps.map((step: { passo: number; descricao: string }, index: number) => (
+                                testCase.steps.map((step: { passo: number; descricao: string; status: string; }, index: number) => (
                                     <tr key={index}>
-                                        <td>{step.passo}</td>
-                                        <td>{step.descricao}</td>
-                                        <td>Checklist</td>
-                                    </tr>
+                                    <td>{step.passo}</td>
+                                    <td>{step.descricao}</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        checked={step.status === 'A'}
+                                        disabled={true}
+                                      />
+                                    </td>
+                                  </tr>
                                 ))
                             ) : (
                                 <tr>

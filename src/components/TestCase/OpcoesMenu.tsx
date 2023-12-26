@@ -3,7 +3,7 @@ import { IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
 import TestService from '../../services/TestCaseService';
-
+import ExecuteTestCaseModal from './ExecuteTestCaseModal'
 interface OpcoesMenuProps {
   idCenario: string;
   fetchTestCases: () => void;
@@ -15,6 +15,15 @@ const OpcoesMenu: React.FC<OpcoesMenuProps> = ({ idCenario, fetchTestCases }) =>
   const [error, setError] = useState<string>('');
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [showExecuteModal, setShowExecuteModal] = useState(false);
+
+  const handleExecute = () => {
+    setShowExecuteModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowExecuteModal(false);
+  };
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -65,10 +74,17 @@ const OpcoesMenu: React.FC<OpcoesMenuProps> = ({ idCenario, fetchTestCases }) =>
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+           <MenuItem onClick={handleExecute}>Executar</MenuItem>
         <MenuItem onClick={() => handleDetails(Number(idCenario))}>Detalhes</MenuItem>
         <MenuItem onClick={() => handleEdit(Number(idCenario))}>Editar</MenuItem>
         <MenuItem onClick={() => handleDelete(Number(idCenario))}>Excluir</MenuItem>
       </Menu>
+
+      <ExecuteTestCaseModal
+        open={showExecuteModal}
+        onClose={handleCloseModal}
+        idCenario ={Number(idCenario)}
+      />
     </div>
   );
 };
