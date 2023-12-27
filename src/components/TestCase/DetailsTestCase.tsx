@@ -46,17 +46,20 @@ const DetailsTestCase: React.FC<DetailsTestCaseProps> = ({ testCaseId }) => {
 
     return (
         <div className='text-style'>
-         <h2>Status</h2>
+            <h2>Status</h2>
             <div className='cardboard-style container'>
                 <div>
                     <span className='span-label'>Status da execução:</span>
                     <h4>{testCase ? testCase.idStatus.descStatus : 'Loading...'}</h4>
                 </div>
 
-                <div>
-                    <span className='span-label'>Link do card a ser validado:</span>
-                    <h4>{testCase ? testCase.linkCenario : 'Loading...'}</h4>
-                </div>
+                {testCase && testCase.linkCenario !== '' && (
+                    <div>
+                        <span className='span-label'>Link do card a ser validado:</span>
+                        <h4>{testCase.linkCenario}</h4>
+                    </div>
+                )}
+
             </div>
 
             <div className='cardboard-style'>
@@ -65,52 +68,55 @@ const DetailsTestCase: React.FC<DetailsTestCaseProps> = ({ testCaseId }) => {
                     <h4>{testCase ? testCase.tituloCenario : 'Loading...'}</h4>
                 </div>
 
-                <div>
-                    <span className='span-label'>Descrição de cenário:</span>
-                    <h4>{testCase ? testCase.descCenario : 'Loading...'}</h4>
-                </div>
+                {testCase && testCase.descCenario !== '' && (
+                    <div>
+                        <span className='span-label'>Descrição de cenário:</span>
+                        <h4>{testCase.descCenario}</h4>
+                    </div>
+                )}
 
 
             </div>
+            {testCase && testCase.steps && testCase.steps.length > 0 && (
+                <div className='cardboard-style'>
 
-            <div className='cardboard-style'>
-                <h3>Passos a passo</h3>
-                <div className="table-responsive">
-                    <table className="table-container">
-                        <thead>
-                            <tr>
-                                <th>Nº</th>
-                                <th>Passo</th>
-                                <th>Checklist</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {testCase && testCase.steps ? (
-                                testCase.steps.map((step: { passo: number; descricao: string; status: string; }, index: number) => (
-                                    <tr key={index}>
-                                    <td>{step.passo}</td>
-                                    <td>{step.descricao}</td>
-                                    <td>
-                                      <input
-                                        type="checkbox"
-                                        checked={step.status === 'A'}
-                                        disabled={true}
-                                      />
-                                    </td>
-                                  </tr>
-                                ))
-                            ) : (
+
+                    <div className="table-responsive">
+                        <h3>Passos a passo</h3>
+                        <table className="table-container">
+                            <thead>
                                 <tr>
-                                    <td colSpan={3}>Carregando...</td>
+                                    <th>Nº</th>
+                                    <th>Passo</th>
+                                    <th>Checklist</th>
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {testCase && testCase.steps ? (
+                                    testCase.steps.map((step: { passo: number; descricao: string; status: string; }, index: number) => (
+                                        <tr key={index}>
+                                            <td>{step.passo}</td>
+                                            <td>{step.descricao}</td>
+                                            <td>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={step.status === 'A'}
+                                                    disabled={true}
+                                                />
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={3}>Carregando...</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
-            </div>
-
-           
-
+            )}
             <h2>Informações adicionais</h2>
             <div className='cardboard-style container'>
                 <div>

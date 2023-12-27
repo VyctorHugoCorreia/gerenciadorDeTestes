@@ -97,3 +97,24 @@
   .column-selection button{
     background-color: #1082BE;
   }
+
+  .cardboard-style {
+    display: flex !important;
+    flex-wrap: wrap !important;
+  }
+  
+  .cardboard-style > div {
+    flex: 1 1 300px !important; 
+    margin: 10px !important;
+  }
+  
+  .span-label {
+    font-weight: bold !important;
+  }
+
+  h4 {
+    color: #222222; 
+    text-shadow: 1px 1px 1px rgba(150, 150, 150, 1); 
+    font-weight: normal; 
+  }
+  
