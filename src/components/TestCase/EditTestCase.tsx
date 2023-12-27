@@ -294,7 +294,7 @@ const EditTestCase: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
                 </div>
             </div>
 
-            <div className='cardboard-style container'>
+            <div className='cardboard-style cardboard-style-title-scenario container'>
 
                 <div className="text-field-container ">
                     <span className='span-label'>Titulo do cenário:</span>
@@ -325,7 +325,7 @@ const EditTestCase: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
 
                 </div>
 
-                <div className="text-field-container">
+                <div className="text-field-container ">
                     <span className='span-label'>Tags:</span>
                     <DynamicList items={tags} setItems={setTags} />
                 </div>

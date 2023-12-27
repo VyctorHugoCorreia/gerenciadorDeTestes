@@ -273,7 +273,7 @@ const CreateTestCase: React.FC = () => {
         </div>
       </div>
 
-      <div className='cardboard-style container'>
+      <div className='cardboard-style cardboard-style-title-scenario container'>
 
         <div className="text-field-container ">
           <span className='span-label'>Titulo do cenário:</span>

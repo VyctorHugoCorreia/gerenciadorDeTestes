@@ -107,6 +107,11 @@
     flex: 1 1 400px !important; 
     margin: 10px !important;
   }
+
+  .cardboard-style-title-scenario > div {
+    flex: 1 1 700px !important; 
+    margin: 10px !important;
+  }
   
   .span-label {
     font-weight: bold !important;
