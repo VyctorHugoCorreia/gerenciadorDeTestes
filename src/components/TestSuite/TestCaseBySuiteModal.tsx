@@ -12,11 +12,12 @@ interface TestCaseModalProps {
     open: boolean;
     onClose?: () => void;
     testSuiteId: number;
+    fetchTestSuites: () => void;
 }
 
 
 
-const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteId }) => {
+const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteId,fetchTestSuites }) => {
     const [testCases, setTestCases] = useState<any[]>([]);
     const [anchorElMap, setAnchorElMap] = useState<{ [key: number]: HTMLElement | null }>({});
     const [showToast, setShowToast] = useState(false);
@@ -74,6 +75,7 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteI
             await TestCaseService.deleteTestCase(id);
             fetchTestCase();
             setShowToast(true);
+            fetchTestSuites();
         } catch (error) {
             console.error(error);
         }

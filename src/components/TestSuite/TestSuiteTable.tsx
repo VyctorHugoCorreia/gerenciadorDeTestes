@@ -233,6 +233,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
             open={true}
             testSuiteId={selectedTestSuiteId}
             onClose={handleCloseModal}
+            fetchTestSuites={fetchTestSuites}
           />
         )
       }
