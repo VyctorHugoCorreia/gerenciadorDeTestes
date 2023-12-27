@@ -96,7 +96,7 @@ class FeatureService {
 
   static async getFeatureByProduct(searchValue?: string): Promise<any> {
     try {
-      const response = await axios.get(`${BASE_URL}/api/funcionalidade?idTproduto=${searchValue}`);
+      const response = await axios.get(`${BASE_URL}/api/funcionalidade?idProduto=${searchValue}`);
       return response.data;
     } catch (error: any) {
       if (axios.isAxiosError(error)) {

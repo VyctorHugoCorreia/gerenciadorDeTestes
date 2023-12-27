@@ -2,10 +2,11 @@ import React, { useState, useEffect, MouseEvent } from 'react';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import '../../styles/Table.css'
+import { useNavigate } from 'react-router-dom';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import TestCaseService from '../../services/TestCaseService'; // Certifique-se de importar o seu TestCaseService correto
-
+import Toast from '../Toast';
 
 interface TestCaseModalProps {
     open: boolean;
@@ -13,9 +14,22 @@ interface TestCaseModalProps {
     testSuiteId: number;
 }
 
+
+
 const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteId }) => {
     const [testCases, setTestCases] = useState<any[]>([]);
     const [anchorElMap, setAnchorElMap] = useState<{ [key: number]: HTMLElement | null }>({});
+    const [showToast, setShowToast] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const handleEditTestCase = (id: number) => {
+        window.open(`/edit-test-case/${id}`, '_blank');
+    };
+
+    const handleDetailsTestCase = (id: number) => {
+        window.open(`/details-test-case/${id}`, '_blank');
+    };
+
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>, testSuiteId: number) => {
         setAnchorElMap({
@@ -30,6 +44,14 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteI
             [testSuiteId]: null,
         });
     };
+    const fetchTestCase = async () => {
+        try {
+            const testCaseData = await TestCaseService.searchTestCaseByIdSuite(testSuiteId);
+            setTestCases(testCaseData);
+        } catch (error) {
+            console.error('Erro ao buscar casos de teste:', error);
+        }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,11 +62,27 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteI
                 console.error('Erro ao buscar casos de teste:', error);
             }
         };
-
         if (open) {
             fetchData();
         }
+
     }, [open]);
+
+    const handleDeleteTestCase = async (id: number) => {
+        setLoading(true);
+        try {
+            await TestCaseService.deleteTestCase(id);
+            fetchTestCase();
+            setShowToast(true);
+        } catch (error) {
+            console.error(error);
+        }
+        finally {
+            setLoading(false);
+        }
+
+    };
+
 
     return (
         <Modal
@@ -87,9 +125,9 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteI
                                             onClose={() => handleClose(testCase.idCenario)}
                                         >
 
-                                            <MenuItem onClick={() => console.log('Editar')}>Editar</MenuItem>
-                                            <MenuItem onClick={() => console.log('Excluir')}>Excluir</MenuItem>
-                                            <MenuItem onClick={() => console.log('Detalhes')}>Detalhes</MenuItem>
+                                            <MenuItem onClick={() => handleEditTestCase(testCase.idCenario)}>Editar</MenuItem>
+                                            <MenuItem disabled={loading} onClick={() => handleDeleteTestCase(testCase.idCenario)}>{loading ? 'Excluindo...' : 'Excluir'}</MenuItem>
+                                            <MenuItem onClick={() => handleDetailsTestCase(testCase.idCenario)}>Detalhes</MenuItem>
                                         </Menu>
                                     </div>
                                 </td>
@@ -100,8 +138,17 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteI
                 <Button variant="contained" color="primary" onClick={onClose}>
                     Fechar
                 </Button>
+
+                <Toast
+                    message="Operação realizada com sucesso!"
+                    showToast={showToast}
+                    setShowToast={setShowToast}
+                />
             </div>
+
         </Modal>
+
+
     );
 };
 
