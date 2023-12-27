@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import TestPlanService from '../../services/TestPlanService';
 import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
-import TestSuiteModal from '../TestSuite/TestSuiteModal'; 
+import TestSuiteModal from '../TestSuite/TestSuiteModal';
 import TestSuiteService from '../../services/TestSuiteService';
 import Toast from '../Toast';
+import TablePagination from '@mui/material/TablePagination';
 
 export interface testSuite {
   idSuite: number;
@@ -44,12 +44,12 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
       idTproduto: number;
       descProduto: string;
     }
-    idPlano:{
+    idPlano: {
       idPlano: number;
       descPlano: string;
     };
     quantidadeCenarios: number;
-   
+
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
 
@@ -71,7 +71,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
   };
 
   const handleEditTestSuite = (testSuite: testSuite) => {
-    const { idSuite, descSuite, idTime, idTproduto, idPlano, quantidadeCenarios} = testSuite;
+    const { idSuite, descSuite, idTime, idTproduto, idPlano, quantidadeCenarios } = testSuite;
 
     const formattedTestSuite = {
       id: idSuite,
@@ -95,8 +95,16 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
     setSelectedTestSuite(formattedTestSuite);
     setIsEditModalOpen(true);
   };
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
 
-
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0); // Resetar para a primeira página ao alterar a quantidade de itens por página
+  };
   return (
 
     <div>
@@ -114,29 +122,41 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
           </tr>
         </thead>
         <tbody>
-          {testSuites.map((testSuites) => (
-            <tr key={testSuites.idSuite}>
-              <td>{testSuites.idTime.nomeTime}</td>
-              <td>{testSuites.idTproduto.descProduto}</td>
-              <td>{testSuites.idPlano.descPlano}</td>
-              <td>{testSuites.descSuite}</td>
-              <td>{testSuites.quantidadeCenarios}</td>
+
+          {testSuites.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((testSuite) => (
+            <tr key={testSuite.idSuite}>
+              <td>{testSuite.idTime.nomeTime}</td>
+              <td>{testSuite.idTproduto.descProduto}</td>
+              <td>{testSuite.idPlano.descPlano}</td>
+              <td>{testSuite.descSuite}</td>
+              <td>{testSuite.quantidadeCenarios}</td>
               <td className="action-buttons">
-                <button onClick={() => handleEditTestSuite(testSuites)}>Editar</button>
-                <button onClick={() => handleDeleteTestSuite(testSuites.idSuite)}>Excluir</button>
+                <button onClick={() => handleEditTestSuite(testSuite)}>Editar</button>
+                <button onClick={() => handleDeleteTestSuite(testSuite.idSuite)}>Excluir</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       )}
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={testSuites.length} // Total de itens para a paginação
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage="Itens por página"
+        labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
+      />
       <ErrorPopup
         open={errorPopupOpen}
         onClose={handleCloseErrorPopup}
         errorMessage={error}
       />
 
-      <TestSuiteModal 
+      <TestSuiteModal
         open={isEditModalOpen}
         onClose={() => {
           setIsEditModalOpen(false);
@@ -145,7 +165,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
         fetchTestSuite={fetchTestSuites}
         selectedTestSuite={selectedTestSuite}
       />
-       <Toast
+      <Toast
         message="Operação realizada com sucesso!"
         showToast={showToast}
         setShowToast={setShowToast}

@@ -4,6 +4,7 @@ import '../../styles/Table.css'
 import ErrorPopup from '../ErrorPopup';
 import TeamModal from './TeamModal'; 
 import Toast from '../Toast';
+import TablePagination from '@mui/material/TablePagination';
 
 interface Time {
   idTime: number;
@@ -21,6 +22,8 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
   const [selectedTeam, setSelectedTeam] = useState<{ id: number; name: string } | null>(null); // Estado para o time selecionado
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Estado para controlar a abertura do modal de edição
   const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleDelete = async (id: number) => {
     try {
@@ -43,42 +46,61 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
     setIsEditModalOpen(true); 
   };
 
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
   return (
     <div>
       {times.length === 0 ? (
         <h3 className="no-records-message">Nenhum time foi encontrado</h3>
       ) : (
-        <table className="table-container">
-          <thead>
-            <th>Nome do time</th>
-            <th>Ações</th>
-          </thead>
-          <tbody>
-            {times.map((time) => (
-              <tr key={time.idTime}>
-                <td>{time.nomeTime}</td>
-                <td className="action-buttons">
-                  <button onClick={() => handleEdit(time.idTime, time.nomeTime)}>Editar</button>
-                  <button onClick={() => handleDelete(time.idTime)}>Excluir</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <>
+          <table className="table-container">
+            <thead>
+              <th>Nome do time</th>
+              <th>Ações</th>
+            </thead>
+            <tbody>
+              {times.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((time) => (
+                <tr key={time.idTime}>
+                  <td>{time.nomeTime}</td>
+                  <td className="action-buttons">
+                    <button onClick={() => handleEdit(time.idTime, time.nomeTime)}>Editar</button>
+                    <button onClick={() => handleDelete(time.idTime)}>Excluir</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={times.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            labelRowsPerPage="Itens por página"
+            labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
+          />
+        </>
       )}
       <ErrorPopup
         open={errorPopupOpen}
         onClose={handleCloseErrorPopup}
         errorMessage={error}
       />
-
       <Toast
         message="Operação realizada com sucesso!"
         showToast={showToast}
         setShowToast={setShowToast} 
       />
-
-
       <TeamModal
         open={isEditModalOpen}
         onClose={() => {
@@ -88,7 +110,6 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
         fetchTimes={fetchTimes}
         selectedTeam={selectedTeam ?? { id: 0, name: '' }} 
       />
-
     </div>
   );
 };

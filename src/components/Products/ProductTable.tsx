@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ProductService from '../../services/ProductService';
 import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
 import ProductModal from './ProductModal';
 import Toast from '../Toast';
+import TablePagination from '@mui/material/TablePagination';
 
 export interface Product {
   idTproduto: number;
@@ -32,7 +33,8 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, fetchProducts }) 
     };
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
-
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleDeleteProduct = async (productId: number) => {
     try {
@@ -58,41 +60,62 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, fetchProducts }) 
       name: descProduto,
       idTime: {
         idTime: idTime.idTime,
-        nomeTime: idTime.nomeTime
-      }
+        nomeTime: idTime.nomeTime,
+      },
     };
 
     setSelectedProduct(formattedProduct);
     setIsEditModalOpen(true);
   };
 
-  return (
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
 
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  return (
     <div>
       {products.length === 0 ? (
         <h3 className="no-records-message">Nenhum produto foi encontrado</h3>
       ) : (
-        <table className="table-container">
-          <thead>
-            <tr>
-              <th>Time</th>
-              <th>Produto</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product.idTproduto}>
-                <td>{product.idTime.nomeTime}</td>
-                <td>{product.descProduto}</td>
-                <td className="action-buttons">
-                  <button onClick={() => handleEditProduct(product)}>Editar</button>
-                  <button onClick={() => handleDeleteProduct(product.idTproduto)}>Excluir</button>
-                </td>
+        <>
+          <table className="table-container">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Produto</th>
+                <th>Ações</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product) => (
+                <tr key={product.idTproduto}>
+                  <td>{product.idTime.nomeTime}</td>
+                  <td>{product.descProduto}</td>
+                  <td className="action-buttons">
+                    <button onClick={() => handleEditProduct(product)}>Editar</button>
+                    <button onClick={() => handleDeleteProduct(product.idTproduto)}>Excluir</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={products.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            labelRowsPerPage="Itens por página"
+            labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
+          />
+        </>
       )}
 
       <ErrorPopup
@@ -110,7 +133,6 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, fetchProducts }) 
         fetchProducts={fetchProducts}
         selectedProduct={selectedProduct}
       />
-
 
       <Toast
         message="Operação realizada com sucesso!"

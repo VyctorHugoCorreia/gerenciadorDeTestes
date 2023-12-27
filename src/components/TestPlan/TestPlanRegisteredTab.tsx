@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import AddTestPlanButton from './AddTestPlanButton';
 import SearchBar from '../SearchBar';
-import TestPlanTable, { testPlan } from './TestPlanTable';
+import TestPlanTable, { TestPlan } from './TestPlanTable';
 import TestPlanService from '../../services/TestPlanService';
 
 const TestPlanRegisteredTab: React.FC = () => {
-  const [testPlans, setTestPlans] = useState<testPlan[]>([]);
+  const [testPlans, setTestPlans] = useState<TestPlan[]>([]);
 
   const fetchTestPlan = async () => {
     try {
@@ -32,7 +32,7 @@ const TestPlanRegisteredTab: React.FC = () => {
   const defaultTestPlansTableProps = {
     open: false,
     onClose: () => {},
-    onEdit: (testPlan: testPlan) => {},
+    onEdit: (testPlan: TestPlan) => {},
   };
 
 

@@ -116,18 +116,19 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
             selectedScenarioStatusId={selectedScenarioStatusId}
           />
           {error && <p style={{ color: 'red' }}>{error}</p>}
-
-          <table className="table-container">
-            <thead>
-              <tr>
-                <th>Nº</th>
-                <th>Passo</th>
-                <th>Checklist</th>
-              </tr>
-            </thead>
-            <tbody>
-              {steps && steps.length > 0 ? (
-                steps.map((step: any, index: number) => (
+  
+          {/* Renderização condicional da tabela */}
+          {steps && steps.length > 0 ? (
+            <table className="table-container">
+              <thead>
+                <tr>
+                  <th>Nº</th>
+                  <th>Passo</th>
+                  <th>Checklist</th>
+                </tr>
+              </thead>
+              <tbody>
+                {steps.map((step: any, index: number) => (
                   <tr key={index}>
                     <td>{step.passo}</td>
                     <td>{step.descricao}</td>
@@ -139,15 +140,13 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
                       />
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={3}>Carregando...</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>Não há steps disponíveis para exibição.</p>
+          )}
+  
           <Button
             className="team-modal-button"
             variant="contained"

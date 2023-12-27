@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
 import TestService from '../../services/TestCaseService';
-import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
 import Toast from '../Toast';
 import { useNavigate } from 'react-router-dom';
-import OpcoesMenu from './OpcoesMenu';
+import OptionMenuTestCaseTable from './OptionMenuTestCaseTable';
+import TablePagination from '@mui/material/TablePagination';
+import TableContainer from '@mui/material/TableContainer';
+import Paper from '@mui/material/Paper';
+import { FormGroup, FormControlLabel, Checkbox, styled, Menu, MenuItem, Button } from '@mui/material';
+
+const TransparentTableContainer = styled(TableContainer)({
+  background: 'transparent',
+  boxShadow: 'none',
+});
 
 interface TestCase {
   idCenario: number;
@@ -31,10 +39,6 @@ interface TestCase {
     idFuncionalidade: number;
     descFuncionalidade: string;
   };
-  idTpcenario: {
-    idTpcenario: number;
-    descTpcenario: string;
-  };
   idStatus: {
     idStatus: number;
     descStatus: string;
@@ -50,15 +54,50 @@ interface TestCaseTableProps {
   fetchTestCases: () => void;
 }
 
+type ColumnNames =
+  | 'Nome do time'
+  | 'Produto'
+  | 'Funcionalidade'
+  | 'Plano de teste'
+  | 'Suite de teste'
+  | 'Cenário'
+  | 'Status do cenário'
+  | 'Automatizado?'
+  | 'Ações';
+
 const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases }) => {
   const [error, setError] = useState<string>('');
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const navigate = useNavigate();
 
+  const initialColumnsState: Record<ColumnNames, boolean> = {
+    'Nome do time': true,
+    'Produto': true,
+    'Funcionalidade': true,
+    'Plano de teste': true,
+    'Suite de teste': true,
+    'Cenário': true,
+    'Status do cenário': true,
+    'Automatizado?': true,
+    'Ações': true,
+  };
+
+  const [selectedColumns, setSelectedColumns] = useState(initialColumnsState);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleColumnToggle = (columnName: ColumnNames) => {
+    setSelectedColumns({
+      ...selectedColumns,
+      [columnName]: !selectedColumns[columnName],
+    });
+  };
+
   const handleDelete = async (id: number) => {
     try {
-     await TestService.deleteTestCase(id);
+      await TestService.deleteTestCase(id);
       fetchTestCases();
       setShowToast(true);
     } catch (error) {
@@ -72,44 +111,109 @@ const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases
     setErrorPopupOpen(false);
   };
 
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  const handleColumnMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleColumnMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <div className="table-responsive">
+    <div>
       {testCases.length === 0 ? (
         <h3 className="no-records-message">Nenhum caso de teste encontrado</h3>
       ) : (
-        <div className="scrollable-table">
-          <table className="table-container">
-            <thead>
-              <tr>
-                <th>Nome do time</th>
-                <th>Produto</th>
-                <th>Funcionalidade</th>
-                <th>Cenário</th>
-                <th>Plano de teste</th>
-                <th>Suite de teste</th>
-                <th>Status do cenário</th>
-                <th>Automatizado?</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {testCases.map((testCase) => (
-                <tr key={testCase.idCenario}>
-                  <td>{testCase.idTime.nomeTime}</td>
-                  <td>{testCase.idTproduto.descProduto}</td>
-                  <td>{testCase.idFuncionalidade.descFuncionalidade}</td>
-                  <td className="scrollable-cell">{testCase.tituloCenario}</td>
-                  <td>{testCase.idPlano.descPlano}</td>
-                  <td>{testCase.idSuite.descSuite}</td>
-                  <td>{testCase.idStatus.descStatus}</td>
-                  <td>{testCase.idAutomatizado.descAutomatizado}</td>
-                  <td className="action-buttons">
-                  <OpcoesMenu idCenario={testCase.idCenario.toString()} fetchTestCases={fetchTestCases} />
-                  </td>
+        <div>
+          <div className='column-selection'>
+            <Button
+              variant="contained"
+              onClick={handleColumnMenuClick}
+              sx={{ marginBottom: '10px' }}
+            >
+              Exibir colunas
+            </Button>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleColumnMenuClose}
+            >
+              <FormGroup>
+                {Object.keys(selectedColumns).map((columnName) => (
+                  <MenuItem key={columnName}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={selectedColumns[columnName as ColumnNames]}
+                          onChange={() => handleColumnToggle(columnName as ColumnNames)}
+                        />
+                      }
+                      label={columnName}
+                    />
+                  </MenuItem>
+                ))}
+              </FormGroup>
+            </Menu>
+          </div>
+          <TransparentTableContainer>
+            <table className="table-container">
+              <thead >
+                <tr>
+                  {Object.keys(selectedColumns).map((columnName) => (
+                    selectedColumns[columnName as ColumnNames] && (
+                      <th key={columnName}>{columnName}</th>
+                    )
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody >
+                {testCases.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((testCase) => (
+                  <tr key={testCase.idCenario}>
+                    {Object.keys(selectedColumns).map((columnName) => (
+                      selectedColumns[columnName as ColumnNames] && (
+                        <td key={columnName} className="action-buttons">
+                          {columnName === 'Nome do time' && testCase.idTime.nomeTime}
+                          {columnName === 'Produto' && testCase.idTproduto.descProduto}
+                          {columnName === 'Funcionalidade' && testCase.idFuncionalidade.descFuncionalidade}
+                          {columnName === 'Plano de teste' && testCase.idPlano.descPlano}
+                          {columnName === 'Suite de teste' && testCase.idSuite.descSuite}
+                          {columnName === 'Cenário' && testCase.tituloCenario}
+                          {columnName === 'Status do cenário' && testCase.idStatus.descStatus}
+                          {columnName === 'Automatizado?' && testCase.idAutomatizado.descAutomatizado}
+                          {columnName === 'Ações' && (
+                            <OptionMenuTestCaseTable
+                              idCenario={testCase.idCenario.toString()}
+                              fetchTestCases={fetchTestCases}
+                            />
+                          )}
+                        </td>
+                      )
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </TransparentTableContainer>
+          <TablePagination
+            labelRowsPerPage="Itens por página"
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={testCases.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
+          />
         </div>
       )}
       <ErrorPopup
