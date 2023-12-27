@@ -98,7 +98,6 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteI
 
     };
 
-
     return (
         <Modal
             open={open}
@@ -152,10 +151,8 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteI
                                     </div>
                                 </td>
                             </tr>
-
                         ))}
                     </tbody>
-
                 </table>
                 <div className="button-container">
                     <Button variant="contained" onClick={onClose} className="team-modal-button">
@@ -165,20 +162,13 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteI
                         <WhiteRefreshIcon />
                     </IconButton>
                 </div>
-
-
                 <Toast
                     message="Operação realizada com sucesso!"
                     showToast={showToast}
                     setShowToast={setShowToast}
                 />
-
-
             </div>
-
         </Modal>
-
-
     );
 };
 
