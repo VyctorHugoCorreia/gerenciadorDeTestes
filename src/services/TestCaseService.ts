@@ -88,6 +88,19 @@ class TestCaseService {
     }
   }
 
+  static async searchTestCaseByIdSuite(searchValue?: number): Promise<any> {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/cenarioDeTeste?idSuite=${searchValue}`);
+      return response.data;
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        throw axiosError.response?.data ?? axiosError.message;
+      } else {
+        throw error;
+      }
+    }
+  }
 
   static async deleteTestCase(tesCaseId: number): Promise<void> {
     try {

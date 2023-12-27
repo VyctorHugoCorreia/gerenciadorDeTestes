@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, MouseEvent } from 'react';
 import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
 import TestSuiteModal from '../TestSuite/TestSuiteModal';
 import TestSuiteService from '../../services/TestSuiteService';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { IconButton, Menu, MenuItem } from '@mui/material';
+
 import Toast from '../Toast';
 import TablePagination from '@mui/material/TablePagination';
+import TestCaseBySuiteModal from './TestCaseBySuiteModal';
 
 export interface testSuite {
   idSuite: number;
@@ -30,9 +34,12 @@ interface TestSuiteTableProps {
 }
 
 const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSuites }) => {
+  const [anchorElMap, setAnchorElMap] = useState<{ [key: number]: HTMLElement | null }>({});
   const [error, setError] = useState<string>('');
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedTestSuiteId, setSelectedTestSuiteId] = useState<number | null>(null);
+
   const [selectedTestSuite, setSelectedTestSuite] = useState<{
     id: number;
     name: string;
@@ -53,6 +60,19 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
 
+  const handleClick = (event: MouseEvent<HTMLButtonElement>, testSuiteId: number) => {
+    setAnchorElMap({
+      ...anchorElMap,
+      [testSuiteId]: event.currentTarget,
+    });
+  };
+
+  const handleClose = (testSuiteId: number) => {
+    setAnchorElMap({
+      ...anchorElMap,
+      [testSuiteId]: null,
+    });
+  };
 
   const handleDeleteTestSuite = async (testSuiteId: number) => {
     try {
@@ -64,6 +84,15 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
       setError(`${err}`);
       setErrorPopupOpen(true);
     }
+  };
+
+  const handleViewTestCase = async (testSuiteId: number) => {
+    setSelectedTestSuiteId(testSuiteId);
+
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTestSuiteId(null);
   };
 
   const handleCloseErrorPopup = () => {
@@ -131,18 +160,45 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
               <td>{testSuite.descSuite}</td>
               <td>{testSuite.quantidadeCenarios}</td>
               <td className="action-buttons">
-                <button onClick={() => handleEditTestSuite(testSuite)}>Editar</button>
-                <button onClick={() => handleDeleteTestSuite(testSuite.idSuite)}>Excluir</button>
+                <div>
+                  <IconButton
+                    aria-label="Opções"
+                    aria-controls={`menu-options-${testSuite.idSuite}`}
+                    aria-haspopup="true"
+                    onClick={(event) => handleClick(event, testSuite.idSuite)}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    id={`menu-options-${testSuite.idSuite}`}
+                    anchorEl={anchorElMap[testSuite.idSuite]}
+                    open={Boolean(anchorElMap[testSuite.idSuite])}
+                    onClose={() => handleClose(testSuite.idSuite)}
+                  >
+
+                    <MenuItem onClick={() => handleEditTestSuite(testSuite)}>Editar</MenuItem>
+                    <MenuItem onClick={() => handleDeleteTestSuite(testSuite.idSuite)}>Excluir</MenuItem>
+                    <MenuItem onClick={() => console.log("cadastrar")}>Cadastrar cenário</MenuItem>
+                    <MenuItem
+                      disabled={testSuite.quantidadeCenarios === 0}
+                      onClick={() => handleViewTestCase(testSuite.idSuite)}
+                    >
+                      Visualizar cenários
+                    </MenuItem>
+                  </Menu>
+                </div>
               </td>
+
             </tr>
           ))}
         </tbody>
       </table>
-      )}
+      )
+      }
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={testSuites.length} // Total de itens para a paginação
+        count={testSuites.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -170,7 +226,17 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
         showToast={showToast}
         setShowToast={setShowToast}
       />
-    </div>
+
+      {
+        selectedTestSuiteId !== null && (
+          <TestCaseBySuiteModal
+            open={true}
+            testSuiteId={selectedTestSuiteId}
+            onClose={handleCloseModal}
+          />
+        )
+      }
+    </div >
   );
 };
 
