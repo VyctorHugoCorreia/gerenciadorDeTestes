@@ -8,10 +8,10 @@ import FeatureRegisteredTab from './components/Feature/FeatureRegisteredTab';
 import TestPlanRegisteredTab from './components/TestPlan/TestPlanRegisteredTab';
 import TestSuiteRegisteredTab from './components/TestSuite/TestSuiteRegisteredTab';
 import TestCaseRegisteredTab from './components/TestCase/TestCaseRegisteredTab';
-import CreateTestCase from './components/TestCase/CreateTestCase';
+import CreateTestCase from './screens/CreateTestCaseScreen';
 import './styles/GlobalStyles.css';
-import EditTestCase from './components/TestCase/EditTestCase';
-import DetailsTestCase from './components/TestCase/DetailsTestCase';
+import EditTestCase from './screens/EditTestCaseScreen';
+import DetailsTestCase from './screens/DetailsTestCaseScreen';
 
 const App: React.FC = () => {
   const location = useLocation();

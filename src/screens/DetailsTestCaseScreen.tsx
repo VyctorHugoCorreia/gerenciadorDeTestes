@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/TestCase.css';
-import '../../styles/Table.css';
-import TestCaseService from '../../services/TestCaseService';
+import '../styles/TestCase.css';
+import '../styles/Table.css';
+import TestCaseService from '../services/TestCaseService';
 
 
 interface SelectedTeam {
@@ -15,7 +15,7 @@ interface DetailsTestCaseProps {
 }
 
 
-const DetailsTestCase: React.FC<DetailsTestCaseProps> = ({ testCaseId }) => {
+const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ testCaseId }) => {
     const navigate = useNavigate();
     const id = testCaseId ? parseInt(testCaseId, 10) : undefined;
     const [testCase, setTestCase] = useState<any>(null);
@@ -175,4 +175,4 @@ const DetailsTestCase: React.FC<DetailsTestCaseProps> = ({ testCaseId }) => {
     );
 };
 
-export default DetailsTestCase;
+export default DetailsTestCaseScreen;

@@ -1,27 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/TestCase.css';
-import TeamsDropDown from '../Dropdown/TeamsDropDown';
-import ProductDropDown from '../Dropdown/ProductDropDown';
-import FeatureDropDown from '../Dropdown/FeatureDropDown';
-import TestPlanDropDown from '../Dropdown/TestPlanDropDown';
-import TestSuiteDropDown from '../Dropdown/TestSuiteDropDown';
-import ScenarioTypeDropDown from '../Dropdown/ScenarioTypeDropDown';
-import PlataformTypeDropDown from '../Dropdown/PlataformTypeDropDown';
-import StatusAutomationTypeDropDown from '../Dropdown/StatusAutomationDropDown';
-import ScenarioStatusDropDown from '../Dropdown/ScenarioStatusDropDown';
-import DynamicList from '../DynamicList';
-import Toast from '../Toast';
+import '../styles/TestCase.css';
+import TeamsDropDown from '../components/Dropdown/TeamsDropDown';
+import ProductDropDown from '../components/Dropdown/ProductDropDown';
+import FeatureDropDown from '../components/Dropdown/FeatureDropDown';
+import TestPlanDropDown from '../components/Dropdown/TestPlanDropDown';
+import TestSuiteDropDown from '../components/Dropdown/TestSuiteDropDown';
+import ScenarioTypeDropDown from '../components/Dropdown/ScenarioTypeDropDown';
+import PlataformTypeDropDown from '../components/Dropdown/PlataformTypeDropDown';
+import StatusAutomationTypeDropDown from '../components/Dropdown/StatusAutomationDropDown';
+import ScenarioStatusDropDown from '../components/Dropdown/ScenarioStatusDropDown';
+import DynamicList from '../components/DynamicList';
+import Toast from '../components/Toast';
 import TextField from '@mui/material/TextField';
-import TestCaseService from '../../services/TestCaseService';
-import ScenarioTypeInfo from './ScenarioTypeInfo';
+import TestCaseService from '../services/TestCaseService';
+import ScenarioTypeInfo from '../components/TestCase/ScenarioTypeInfo';
 
 interface SelectedTeam {
   idTime: number;
   nomeTime: string;
 }
 
-const CreateTestCase: React.FC = () => {
+const CreateTestCaseScreen: React.FC = () => {
   const [buttonCreatedDisabled, setButtonCreatedDisabled] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState<number | null>(null);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
@@ -367,4 +367,4 @@ const CreateTestCase: React.FC = () => {
   );
 };
 
-export default CreateTestCase;
+export default CreateTestCaseScreen;
