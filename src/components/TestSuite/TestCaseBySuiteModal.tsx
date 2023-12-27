@@ -110,9 +110,9 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteI
                 <table className="table-container">
                     <thead>
                         <tr>
-                            <th>Título do Cenário</th>
-                            <th>Status do Cenário</th>
-                            <th>Status Automatizado</th>
+                            <th>Título do cenário</th>
+                            <th>Status do cenário</th>
+                            <th>Status da automação</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
