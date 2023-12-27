@@ -2,12 +2,14 @@ import React, { useState, useEffect, MouseEvent } from 'react';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import '../../styles/Table.css'
-import { useNavigate } from 'react-router-dom';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton, Menu, MenuItem } from '@mui/material';
-import TestCaseService from '../../services/TestCaseService'; // Certifique-se de importar o seu TestCaseService correto
+import TestCaseService from '../../services/TestCaseService';
 import Toast from '../Toast';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { styled } from '@mui/system';
 
+import ExecuteTestCaseModal from '../TestCase/ExecuteTestCaseModal';
 interface TestCaseModalProps {
     open: boolean;
     onClose?: () => void;
@@ -15,13 +17,16 @@ interface TestCaseModalProps {
     fetchTestSuites: () => void;
 }
 
-
-
-const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteId,fetchTestSuites }) => {
+const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteId, fetchTestSuites }) => {
     const [testCases, setTestCases] = useState<any[]>([]);
     const [anchorElMap, setAnchorElMap] = useState<{ [key: number]: HTMLElement | null }>({});
     const [showToast, setShowToast] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const [showExecuteModal, setShowExecuteModal] = useState(false);
+
+    const WhiteRefreshIcon = styled(RefreshIcon)({
+        color: 'white',
+    });
 
     const handleEditTestCase = (id: number) => {
         window.open(`/edit-test-case/${id}`, '_blank');
@@ -31,6 +36,14 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteI
         window.open(`/details-test-case/${id}`, '_blank');
     };
 
+    const handleExecuteTestCase = () => {
+        setShowExecuteModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowExecuteModal(false);
+        fetchTestCase();
+    };
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>, testSuiteId: number) => {
         setAnchorElMap({
@@ -126,26 +139,41 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteI
                                             open={Boolean(anchorElMap[testCase.idCenario])}
                                             onClose={() => handleClose(testCase.idCenario)}
                                         >
-
                                             <MenuItem onClick={() => handleEditTestCase(testCase.idCenario)}>Editar</MenuItem>
+                                            <MenuItem onClick={() => handleExecuteTestCase()}>Executar cenário</MenuItem>
                                             <MenuItem disabled={loading} onClick={() => handleDeleteTestCase(testCase.idCenario)}>{loading ? 'Excluindo...' : 'Excluir'}</MenuItem>
                                             <MenuItem onClick={() => handleDetailsTestCase(testCase.idCenario)}>Detalhes</MenuItem>
+                                            <ExecuteTestCaseModal
+                                                open={showExecuteModal}
+                                                onClose={handleCloseModal}
+                                                idCenario={Number(testCase.idCenario)}
+                                            />
                                         </Menu>
                                     </div>
                                 </td>
                             </tr>
+
                         ))}
                     </tbody>
+
                 </table>
-                <Button variant="contained" color="primary" onClick={onClose}>
-                    Fechar
-                </Button>
+                <div className="button-container">
+                    <Button variant="contained" onClick={onClose} className="team-modal-button">
+                        Fechar
+                    </Button>
+                    <IconButton onClick={fetchTestCase} className="team-modal-button">
+                        <WhiteRefreshIcon />
+                    </IconButton>
+                </div>
+
 
                 <Toast
                     message="Operação realizada com sucesso!"
                     showToast={showToast}
                     setShowToast={setShowToast}
                 />
+
+
             </div>
 
         </Modal>

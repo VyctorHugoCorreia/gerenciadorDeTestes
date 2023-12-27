@@ -10,12 +10,12 @@ import TestCaseService from '../../services/TestCaseService';
 interface ExecuteTestCaseModalProps {
   open: boolean;
   onClose: () => void;
-  fetchTestCases: () => void;
+  fetchTestCases?: () => void;
   selectedScenario?: { id: number; name: string };
   idCenario: number;
 }
 
-const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClose, selectedScenario, idCenario,fetchTestCases }) => {
+const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClose, selectedScenario, idCenario, fetchTestCases }) => {
   const [error, setError] = useState<string>('');
   const [selectedScenarioStatusId, setSelectedScenarioStatusId] = useState<number | null>(null);
   const [testCase, setTestCase] = useState<any>(null);
@@ -84,12 +84,12 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
 
 
       if (idCenario != null) {
-        console.log("oi")
         await TestCaseService.updateTestCase(idCenario, data);
         setToastMessage('Caso de teste editado com sucesso!');
         setShowToast(true);
         onClose();
-        fetchTestCases();
+        if (fetchTestCases != null)
+          fetchTestCases();
       }
 
     } catch (error) {
@@ -116,8 +116,8 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
             selectedScenarioStatusId={selectedScenarioStatusId}
           />
           {error && <p style={{ color: 'red' }}>{error}</p>}
-  
-          {/* Renderização condicional da tabela */}
+
+
           {steps && steps.length > 0 ? (
             <table className="table-container">
               <thead>
@@ -146,7 +146,7 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
           ) : (
             <p>Não há steps disponíveis para exibição.</p>
           )}
-  
+
           <Button
             className="team-modal-button"
             variant="contained"

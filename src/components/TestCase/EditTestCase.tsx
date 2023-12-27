@@ -65,7 +65,7 @@ const EditTestCase: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
         setSelectedFeature(null);
         setSelectedTestSuite(null)
         setSelectedTestPlan(null)
-      };
+    };
 
     const handleSelectFeature = (featureId: number | null) => {
         setSelectedFeature(featureId);
@@ -117,7 +117,7 @@ const EditTestCase: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
                     setScenarioTitle(firstTestCase.tituloCenario || '');
                     setscenarioDescription(firstTestCase.descCenario || '');
                     setscenarioLink(firstTestCase.linkCenario || '');
-                    setSteps(firstTestCase.steps && firstTestCase.steps.length > 0 ? firstTestCase.steps.map((step: { descricao: string }) => step.descricao) : ['']); 
+                    setSteps(firstTestCase.steps && firstTestCase.steps.length > 0 ? firstTestCase.steps.map((step: { descricao: string }) => step.descricao) : ['']);
                     setTags(firstTestCase.tags && firstTestCase.tags.length > 0 ? firstTestCase.tags : ['']);
                 }
             } catch (error) {
@@ -305,7 +305,7 @@ const EditTestCase: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
                     />
                 </div>
 
-                <div className="text-field-container ">
+                <div className="text-field-container">
                     <span className='span-label'>Descrição do cenário: (Opcional) </span>
                     <TextField
                         value={scenarioDescription}
@@ -314,6 +314,7 @@ const EditTestCase: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
                     />
                 </div>
 
+
                 <div className="text-field-container ">
                     <span className='span-label'>Link do card a ser validado (opcional): </span>
                     <TextField
@@ -321,12 +322,18 @@ const EditTestCase: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
                         onChange={(e) => setscenarioLink(e.target.value)}
                         placeholder="Digite o link do card a ser validado"
                     />
+
                 </div>
 
-                <div className="input-container">
+                <div className="text-field-container">
                     <span className='span-label'>Tags:</span>
                     <DynamicList items={tags} setItems={setTags} />
                 </div>
+
+
+
+
+
 
 
             </div>
@@ -350,7 +357,7 @@ const EditTestCase: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
                         isEditing={false}
                         selectedScenarioTypeId={selectedScenarioType}
                     />
-                      <ScenarioTypeInfo/>
+                    <ScenarioTypeInfo />
                 </div>
 
                 <div className="input-container">
