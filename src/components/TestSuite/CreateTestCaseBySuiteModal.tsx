@@ -12,17 +12,18 @@ import PlataformTypeDropDown from '../Dropdown/PlataformTypeDropDown';
 import StatusAutomationTypeDropDown from '../Dropdown/StatusAutomationDropDown';
 import DynamicList from '../DynamicList';
 import ScenarioStatusDropDown from '../Dropdown/ScenarioStatusDropDown';
-
+import TestCaseService from '../../services/TestCaseService';
 interface CreateTestCaseBySuiteModalProps {
     open: boolean;
     onClose?: () => void;
     testSuiteId?: number | null;
+    fetchTestSuites: () => void;
 }
 
-const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({ open, onClose, testSuiteId }) => {
+const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({ open, onClose, testSuiteId,fetchTestSuites }) => {
     const [buttonCreatedDisabled, setButtonCreatedDisabled] = useState(true);
     const [showToast, setShowToast] = useState(false);
-    const [testSuite, setTestSuite] = useState<any | null>(null); 
+    const [testSuite, setTestSuite] = useState<any | null>(null);
     const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
     const [scenarioTitle, setScenarioTitle] = useState<string>('');
     const [scenarioDescription, setScenarioDescription] = useState<string>('');
@@ -33,33 +34,34 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
     const [selectedScenarioStatusType, setSelectedScenarioStatusType] = useState<number | null>(null);
     const [tags, setTags] = useState<string[]>(['']);
     const [steps, setSteps] = useState<string[]>(['']);
-
+    const [toastMessage, setToastMessage] = useState('');
 
     useEffect(() => {
         const isAnyFieldEmpty = () => {
-          if (
-            !selectedScenarioType ||
-            !selectedPlataformType ||
-            !selectedStatusAutomationType ||
-            !selectedScenarioStatusType ||
-            !scenarioTitle.trim()
-          ) {
-            return true;
-          }
-          return false;
+            if (
+                !selectedScenarioType ||
+                !selectedPlataformType ||
+                !selectedStatusAutomationType ||
+                !selectedScenarioStatusType ||
+                !scenarioTitle.trim()
+            ) {
+                return true;
+            }
+            return false;
         };
         setButtonCreatedDisabled(isAnyFieldEmpty());
-      }, [
+    }, [
         selectedScenarioType,
         selectedPlataformType,
         selectedStatusAutomationType,
         selectedScenarioStatusType,
         scenarioTitle,
-      ]);
+    ]);
 
     useEffect(() => {
         if (open && testSuiteId) {
-            fetchTestSuite();
+            fetchTestSuiteById();
+            clearFields();
         }
     }, [open, testSuiteId]);
 
@@ -84,7 +86,7 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
         setSelectedScenarioStatusType(ScenarioStatusTypeId);
     };
 
-    const fetchTestSuite = async () => {
+    const fetchTestSuiteById = async () => {
         try {
             const testSuiteData = await TestSuiteService.searchTestSuiteById(testSuiteId?.toString());
             setTestSuite(testSuiteData);
@@ -93,8 +95,20 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
         }
     };
 
+    const clearFields = () => {
+        setSelectedFeature(null);
+        setSelectedScenarioType(null);
+        setSelectedPlataformType(null);
+        setSelectedStatusAutomationType(null);
+        setSelectedScenarioStatusType(null);
+        setScenarioTitle('');
+        setScenarioDescription('');
+        setScenarioLink('');
+        setSteps(['']);
+        setTags(['']);
+    };
 
-    const handleCadastro = () => {
+    const handleCadastro = async () => {
         try {
             const filteredSteps = steps.filter((step) => step.trim() !== '');
             const filteredTags = tags.filter((tag) => tag.trim() !== '');
@@ -120,7 +134,16 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
                     tags: filteredTags
                 };
                 console.log("Dados:", data);
+
+                const response = await TestCaseService.addTestCase(data);
+                console.log(response);
+          
+                setToastMessage('Caso de teste cadastrado com sucesso!');
+                setShowToast(true);
+                clearFields();
+                fetchTestSuites();
             }
+
         } catch (error) {
             console.error(error);
         }
@@ -128,7 +151,7 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
 
     const handleCreateTestCase = async () => {
         try {
-            await fetchTestSuite();
+            await fetchTestSuiteById();
             handleCadastro();
             setShowToast(true);
             // onClose && onClose();

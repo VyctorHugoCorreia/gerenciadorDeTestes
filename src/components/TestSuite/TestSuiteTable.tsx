@@ -249,6 +249,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
           setIsCreateTestCaseModalOpen(false);
         }}
         testSuiteId={selectedCreateTestSuiteId}
+        fetchTestSuites={fetchTestSuites}
       />
     </div >
   );
