@@ -9,6 +9,7 @@ import { IconButton, Menu, MenuItem } from '@mui/material';
 import Toast from '../Toast';
 import TablePagination from '@mui/material/TablePagination';
 import TestCaseBySuiteModal from './TestCaseBySuiteModal';
+import CreateTestCaseBySuiteModal from './CreateTestCaseBySuiteModal';
 
 export interface testSuite {
   idSuite: number;
@@ -39,7 +40,8 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTestSuiteId, setSelectedTestSuiteId] = useState<number | null>(null);
-
+  const [selectedCreateTestSuiteId, setSelectedCreateTestSuiteId] = useState<number | null>(null);
+  const [isCreateTestCaseModalOpen, setIsCreateTestCaseModalOpen] = useState(false);
   const [selectedTestSuite, setSelectedTestSuite] = useState<{
     id: number;
     name: string;
@@ -84,6 +86,11 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
       setError(`${err}`);
       setErrorPopupOpen(true);
     }
+  };
+
+  const handleCreateTestCase = async (testSuiteId: number) => {
+    setIsCreateTestCaseModalOpen(true)
+    setSelectedCreateTestSuiteId(testSuiteId);
   };
 
   const handleViewTestCase = async (testSuiteId: number) => {
@@ -178,7 +185,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
 
                     <MenuItem onClick={() => handleEditTestSuite(testSuite)}>Editar</MenuItem>
                     <MenuItem onClick={() => handleDeleteTestSuite(testSuite.idSuite)}>Excluir</MenuItem>
-                    <MenuItem onClick={() => console.log("cadastrar")}>Cadastrar cenário</MenuItem>
+                    <MenuItem onClick={() => handleCreateTestCase(testSuite.idSuite)}>Cadastrar cenário</MenuItem>
                     <MenuItem
                       disabled={testSuite.quantidadeCenarios === 0}
                       onClick={() => handleViewTestCase(testSuite.idSuite)}
@@ -188,7 +195,6 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
                   </Menu>
                 </div>
               </td>
-
             </tr>
           ))}
         </tbody>
@@ -237,6 +243,13 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
           />
         )
       }
+      <CreateTestCaseBySuiteModal
+        open={isCreateTestCaseModalOpen}
+        onClose={() => {
+          setIsCreateTestCaseModalOpen(false);
+        }}
+        testSuiteId={selectedCreateTestSuiteId}
+      />
     </div >
   );
 };
