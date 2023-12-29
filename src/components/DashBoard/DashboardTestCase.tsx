@@ -21,7 +21,6 @@ const Metric: React.FC<MetricProps> = ({ title, metrics }) => {
     const b = Math.floor(Math.random() * 256);
     return `rgba(${r}, ${g}, ${b}, 0.7)`;
   };
-  
   useEffect(() => {
     const total = Object.values(metrics).reduce((acc, val) => acc + val, 0);
     setTotalCenarios(total);
@@ -87,12 +86,12 @@ const Dashboard: React.FC = () => {
   const [testScenarioMetrics, setTestScenarioMetrics] = useState<TestScenarioMetrics>({});
 
   const fetchTestScenarioMetrics = async () => {
-   
+
     const metricsData: TestScenarioMetrics = {
       'Suite 1': 10,
       'Suite 2': 20,
       'Suite 3': 15,
-      
+
     };
     setTestScenarioMetrics(metricsData);
   };
@@ -104,9 +103,9 @@ const Dashboard: React.FC = () => {
   return (
     <div className="dashboard">
       <div className="left-column">
-      <Metric title="Produtos" metrics={testScenarioMetrics} />
-      <Metric title="funcionalidade" metrics={testScenarioMetrics} />
-      <Metric title="plano de testes" metrics={testScenarioMetrics} />
+        <Metric title="Produtos" metrics={testScenarioMetrics} />
+        <Metric title="funcionalidade" metrics={testScenarioMetrics} />
+        <Metric title="plano de testes" metrics={testScenarioMetrics} />
         <Metric title="Suite de testes" metrics={testScenarioMetrics} />
         <Metric title="Tipo de testes" metrics={testScenarioMetrics} />
         <Metric title="Status de execução" metrics={testScenarioMetrics} />
