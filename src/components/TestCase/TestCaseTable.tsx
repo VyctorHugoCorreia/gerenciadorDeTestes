@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import OptionMenuTestCaseTable from './OptionMenuTestCaseTable';
 import TablePagination from '@mui/material/TablePagination';
 import TableContainer from '@mui/material/TableContainer';
-import Paper from '@mui/material/Paper';
 import { FormGroup, FormControlLabel, Checkbox, styled, Menu, MenuItem, Button } from '@mui/material';
 
 const TransparentTableContainer = styled(TableContainer)({
@@ -93,18 +92,6 @@ const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases
       ...selectedColumns,
       [columnName]: !selectedColumns[columnName],
     });
-  };
-
-  const handleDelete = async (id: number) => {
-    try {
-      await TestService.deleteTestCase(id);
-      fetchTestCases();
-      setShowToast(true);
-    } catch (error) {
-      console.error(error);
-      setError(`${error}`);
-      setErrorPopupOpen(true);
-    }
   };
 
   const handleCloseErrorPopup = () => {
