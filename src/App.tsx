@@ -12,6 +12,7 @@ import CreateTestCase from './screens/CreateTestCaseScreen';
 import './styles/GlobalStyles.css';
 import EditTestCase from './screens/EditTestCaseScreen';
 import DetailsTestCase from './screens/DetailsTestCaseScreen';
+import Dashboard from './components/DashBoard/DashboardTestCase';
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -28,6 +29,10 @@ const App: React.FC = () => {
   if (location.pathname.startsWith('/details-test-case')) {
     const id = location.pathname.split('/').pop();
     return <DetailsTestCase testCaseId={id} />;
+  }
+
+  if (location.pathname.startsWith('/dashboard')) {
+    return <Dashboard />;
   }
 
 

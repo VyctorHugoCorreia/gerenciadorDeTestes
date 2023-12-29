@@ -1,0 +1,36 @@
+.chartCanvas {
+ 
+}
+/* Adicione aqui estilos adicionais conforme necessário */
+
+
+.metric.cardboard-style {
+  padding: 20px;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ margin: 10px auto; 
+  width: calc(100% - 40px);
+  max-width: 100%; 
+
+  /* Alinhamento ao centro */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  /* Adicione outros estilos necessários */
+}
+
+.metric.cardboard-style > div {
+  margin-bottom: 20px; /* Adiciona espaço entre as seções */
+}
+
+/* Estilos para o gráfico */
+.metric-chart.chartCanvas {
+  width: 300px;
+  margin-bottom: 20px; /* Adiciona espaço entre o gráfico e a tabela */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
