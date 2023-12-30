@@ -12,7 +12,7 @@ import CreateTestCase from './screens/CreateTestCaseScreen';
 import './styles/GlobalStyles.css';
 import EditTestCase from './screens/EditTestCaseScreen';
 import DetailsTestCase from './screens/DetailsTestCaseScreen';
-import Dashboard from './components/DashBoard/DashboardTestCase';
+import Dashboard from './components/DashBoard/Dashboard';
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -32,7 +32,7 @@ const App: React.FC = () => {
   }
 
   if (location.pathname.startsWith('/dashboard')) {
-    return <Dashboard />;
+    return <Dashboard idTime="67"/>;
   }
 
 
