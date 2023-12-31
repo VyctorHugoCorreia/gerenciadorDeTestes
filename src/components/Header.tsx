@@ -10,25 +10,29 @@ const Header: React.FC = () => {
   let title = 'Gestão de cenários de testes';
   let subtitle = 'Adicione ou busque por cenários já cadastrados.';
 
-  if (path === '/criar-caso-de-teste') {
-    title = 'Adicionar novo cenário de teste';
-    subtitle = 'Preencha os campos abaixo com as informações do cenário que você quer cadastrar.';
-  }
-
-  if (location.pathname.startsWith('/edit-test-case')) {
-    title = 'Editar cenário de teste';
-    subtitle = 'Edite as informações do seu cenário de teste como desejar.';
-  }
-
-  if (location.pathname.startsWith('/details-test-case')) {
-    title = 'Detalhes cenário de teste';
-    subtitle = 'Visualize todas as informações referente ao seu cenário de teste.';
-  }
-
-
-  if (location.pathname.startsWith('/dashboard')) {
-    title = 'Dashboard cenários de teste';
-    subtitle = 'Visualize detalhes de quantidade de testes';
+  switch (true) {
+    case path === '/criar-caso-de-teste':
+      title = 'Adicionar novo cenário de teste';
+      subtitle = 'Preencha os campos abaixo com as informações do cenário que você quer cadastrar.';
+      break;
+  
+    case location.pathname.startsWith('/edit-test-case'):
+      title = 'Editar cenário de teste';
+      subtitle = 'Edite as informações do seu cenário de teste como desejar.';
+      break;
+  
+    case location.pathname.startsWith('/details-test-case'):
+      title = 'Detalhes cenário de teste';
+      subtitle = 'Visualize todas as informações referentes ao seu cenário de teste.';
+      break;
+  
+    case location.pathname.startsWith('/dashboard'):
+      title = 'Dashboard cenários de teste';
+      subtitle = 'Visualize detalhes de quantidade de testes.';
+      break;
+  
+    default:
+      break;
   }
 
 
