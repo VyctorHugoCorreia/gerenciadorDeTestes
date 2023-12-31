@@ -26,6 +26,12 @@ const Header: React.FC = () => {
   }
 
 
+  if (location.pathname.startsWith('/dashboard')) {
+    title = 'Dashboard cenários de teste';
+    subtitle = 'Visualize detalhes de quantidade de testes';
+  }
+
+
   return (
     <div className='margin'>
       <h1>{title}</h1>

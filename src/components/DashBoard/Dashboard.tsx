@@ -93,8 +93,8 @@ const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
     <div className="dashboard">
       <div>
         <div>
-          <h1>Visão resumida</h1>
-          <h2>Total de cenários de testes: {totalCenarios}</h2>
+          <h2>Visão resumida</h2>
+          <h3>Total de cenários de testes: {totalCenarios}</h3>
         </div>
 
         <div className="summary-table-container cardboard-style">
