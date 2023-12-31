@@ -8,11 +8,14 @@ import TestSuiteService from '../../services/TestSuiteService';
 import ScenarioTypeService from '../../services/ScenarioTypeService';
 import ScenarioStatusService from '../../services/ScenarioStatusService';
 import StatusAutomationService from '../../services/StatusAutomationService';
+
 import '../../styles/Table.css'
 
 interface DashboardProps {
   idTime?: string;
 }
+
+
 
 const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
   const [products, setProducts] = useState<any[]>([]);
@@ -22,7 +25,6 @@ const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
   const [ScenarioType, setScenarioType] = useState<any[]>([]);
   const [ScenarioStatus, setScenarioStatus] = useState<any[]>([]);
   const [ScenarioStatusAutomation, setScenarioStatusAutomation] = useState<any[]>([]);
-
 
   useEffect(() => {
     const fetchData = async () => {
