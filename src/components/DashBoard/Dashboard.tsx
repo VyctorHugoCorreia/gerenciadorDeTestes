@@ -8,6 +8,7 @@ import TestSuiteService from '../../services/TestSuiteService';
 import ScenarioTypeService from '../../services/ScenarioTypeService';
 import ScenarioStatusService from '../../services/ScenarioStatusService';
 import StatusAutomationService from '../../services/StatusAutomationService';
+import '../../styles/Table.css'
 
 interface DashboardProps {
   idTime?: string;
@@ -24,9 +25,9 @@ const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
 
 
   useEffect(() => {
-   const fetchData = async () => {
+    const fetchData = async () => {
       try {
-        const productsData = await ProductService.getProductsByTeam(idTime); 
+        const productsData = await ProductService.getProductsByTeam(idTime);
         setProducts(productsData);
 
         const featureData = await FeatureService.getFeatureByTeam(idTime);
@@ -90,14 +91,67 @@ const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
   }, {});
   return (
     <div className="dashboard">
-      <div className="left-column">
-        <Metric title="Produtos" metrics={metricsDataProducts} />
-        <Metric title="Funcionalidades" metrics={metricsDataFeatures} />
-        <Metric title="Planos de teste" metrics={metricsDataTestPlan} />
-        <Metric title="Suites de teste" metrics={metricsDataTestSuite} />
-        <Metric title="Tipo de testes" metrics={metricsDataScenarioType} />
-        <Metric title="Status de execução" metrics={metricsDataScenarioStatus} />
-        <Metric title="Status automação de teste" metrics={metricsDataScenarioStatusAutomation} />
+      <div>
+        <div>
+          <h1>Visão resumida</h1>
+          <h2>Total de cenários de testes: {totalCenarios}</h2>
+        </div>
+
+        <div className="summary-table-container cardboard-style">
+          <div className="summary-table">
+            <table className="table-container">
+              <thead>
+                <tr>
+                  <th>Status da Execução</th>
+                  <th>Quantidade de Cenários</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ScenarioStatus.map((status, index) => (
+                  <tr key={`status-execution-row-${index}`}>
+                    <td>{status.descStatus}</td>
+                    <td>{status.quantidadeCenarios}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+          </div>
+
+          <div className="summary-table">
+            <table className="table-container ">
+              <thead>
+                <tr>
+                  <th>Status da Automação</th>
+                  <th>Quantidade de Cenários</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ScenarioStatusAutomation.map((automationStatus, index) => (
+                  <tr key={`status-automation-row-${index}`}>
+                    <td>{automationStatus.descAutomatizado}</td>
+                    <td>{automationStatus.quantidadeCenarios}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <h1>Visão geral</h1>
+          <Metric title="Status de execução" metrics={metricsDataScenarioStatus} />
+          <Metric title="Status automação de teste" metrics={metricsDataScenarioStatusAutomation} />
+          <Metric title="Tipo de testes" metrics={metricsDataScenarioType} />
+          <Metric title="Produtos" metrics={metricsDataProducts} />
+          <Metric title="Planos de teste" metrics={metricsDataTestPlan} />
+          <Metric title="Suites de teste" metrics={metricsDataTestSuite} />
+          <Metric title="Funcionalidades" metrics={metricsDataFeatures} />
+
+
+
+        </div>
+
+
       </div>
     </div>
   );

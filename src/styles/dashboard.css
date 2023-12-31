@@ -34,3 +34,27 @@
   justify-content: center;
   align-items: center;
 }
+
+
+.cardboard-style.container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.cardboard-style {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.table-container {
+  width: 100%;
+}
+
+.summary-table-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
