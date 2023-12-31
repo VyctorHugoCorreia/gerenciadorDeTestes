@@ -24,9 +24,9 @@ interface TimeTableProps {
 const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
   const [error, setError] = useState<string>('');
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
-  const [selectedTeam, setSelectedTeam] = useState<{ id: number; name: string } | null>(null); // Estado para o time selecionado
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Estado para controlar a abertura do modal de edição
-  const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
+  const [selectedTeam, setSelectedTeam] = useState<{ id: number; name: string } | null>(null); 
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); 
+  const [showToast, setShowToast] = useState(false); 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [anchorElMap, setAnchorElMap] = useState<{ [key: number]: HTMLElement | null }>({});
