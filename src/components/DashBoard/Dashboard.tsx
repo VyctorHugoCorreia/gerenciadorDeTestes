@@ -138,7 +138,7 @@ const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
           </div>
         </div>
         <div>
-          <h1>Visão geral</h1>
+          <h2>Visão geral</h2>
           <Metric title="Status de execução" metrics={metricsDataScenarioStatus} />
           <Metric title="Status automação de teste" metrics={metricsDataScenarioStatusAutomation} />
           <Metric title="Tipo de testes" metrics={metricsDataScenarioType} />
