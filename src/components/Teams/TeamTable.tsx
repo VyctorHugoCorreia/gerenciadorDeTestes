@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, MouseEvent } from 'react';
 import TeamService from '../../services/TimeService';
 import '../../styles/Table.css'
 import ErrorPopup from '../ErrorPopup';
 import TeamModal from './TeamModal'; 
 import Toast from '../Toast';
 import TablePagination from '@mui/material/TablePagination';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { IconButton, Menu, MenuItem } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
 
 interface Time {
   idTime: number;
@@ -24,7 +28,25 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
   const [showToast, setShowToast] = useState(false); // Estado para exibir o Toast
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [anchorElMap, setAnchorElMap] = useState<{ [key: number]: HTMLElement | null }>({});
+  const navigate = useNavigate();
 
+  const handleClick = (event: MouseEvent<HTMLButtonElement>, testSuiteId: number) => {
+    setAnchorElMap({
+      ...anchorElMap,
+      [testSuiteId]: event.currentTarget,
+    });
+  };
+  const handleDashboard = (TeamId: number) => {
+    navigate(`/dashboard/${TeamId}`);
+};
+
+  const handleClose = (testSuiteId: number) => {
+    setAnchorElMap({
+      ...anchorElMap,
+      [testSuiteId]: null,
+    });
+  };
   const handleDelete = async (id: number) => {
     try {
       await TeamService.deleteTeam(id);
@@ -71,8 +93,27 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
                 <tr key={time.idTime}>
                   <td>{time.nomeTime}</td>
                   <td className="action-buttons">
-                    <button onClick={() => handleEdit(time.idTime, time.nomeTime)}>Editar</button>
-                    <button onClick={() => handleDelete(time.idTime)}>Excluir</button>
+                  <div>
+                  <IconButton
+                    aria-label="Opções"
+                    aria-controls={`menu-options-${time.idTime}`}
+                    aria-haspopup="true"
+                    onClick={(event) => handleClick(event, time.idTime)}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    id={`menu-options-${time.idTime}`}
+                    anchorEl={anchorElMap[time.idTime]}
+                    open={Boolean(anchorElMap[time.idTime])}
+                    onClose={() => handleClose(time.idTime)}
+                  >
+
+                    <MenuItem onClick={() => handleEdit(time.idTime, time.nomeTime)}>Editar</MenuItem>
+                    <MenuItem onClick={() => handleDelete(time.idTime)}>Excluir</MenuItem>
+                    <MenuItem onClick={() => handleDashboard(time.idTime)}>Detalhes dashboard</MenuItem>
+                  </Menu>
+                </div>
                   </td>
                 </tr>
               ))}
