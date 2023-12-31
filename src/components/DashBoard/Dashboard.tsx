@@ -146,12 +146,7 @@ const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
           <Metric title="Planos de teste" metrics={metricsDataTestPlan} />
           <Metric title="Suites de teste" metrics={metricsDataTestSuite} />
           <Metric title="Funcionalidades" metrics={metricsDataFeatures} />
-
-
-
         </div>
-
-
       </div>
     </div>
   );
