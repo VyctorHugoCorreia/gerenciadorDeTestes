@@ -93,8 +93,8 @@ const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
     <div className="dashboard">
       <div>
         <div>
-          <h2>Visão resumida</h2>
-          <h3>Total de cenários de testes: {totalCenarios}</h3>
+          <h2>Visão resumida:</h2>
+          <h3>Total de cenários de testes: <span> {totalCenarios}</span></h3>
         </div>
 
         <div className="summary-table-container cardboard-style">
@@ -138,7 +138,7 @@ const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
           </div>
         </div>
         <div>
-          <h2>Visão geral</h2>
+          <h2>Visão geral:</h2>
           <Metric title="Status de execução" metrics={metricsDataScenarioStatus} />
           <Metric title="Status automação de teste" metrics={metricsDataScenarioStatusAutomation} />
           <Metric title="Tipo de testes" metrics={metricsDataScenarioType} />
