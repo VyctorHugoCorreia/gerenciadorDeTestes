@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 interface Time {
   idTime: number;
   nomeTime: string;
+  quantidadeCenarios: number;
 }
 
 interface TimeTableProps {
@@ -112,7 +113,7 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
 
                     <MenuItem onClick={() => handleEdit(time.idTime, time.nomeTime)}>Editar</MenuItem>
                     <MenuItem onClick={() => handleDelete(time.idTime)}>Excluir</MenuItem>
-                    <MenuItem onClick={() => handleDashboard(time.idTime)}>Detalhes dashboard</MenuItem>
+                    <MenuItem disabled={time.quantidadeCenarios === 0} onClick={() => handleDashboard(time.idTime)}>Detalhes dashboard</MenuItem>
                   </Menu>
                 </div>
                   </td>
