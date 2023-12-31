@@ -32,7 +32,8 @@ const App: React.FC = () => {
   }
 
   if (location.pathname.startsWith('/dashboard')) {
-    return <Dashboard idTime="67"/>;
+    const id = location.pathname.split('/').pop();
+    return <Dashboard idTime={id}/>;
   }
 
 

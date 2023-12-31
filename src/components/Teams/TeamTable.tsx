@@ -37,6 +37,7 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
       [testSuiteId]: event.currentTarget,
     });
   };
+  
   const handleDashboard = (TeamId: number) => {
     navigate(`/dashboard/${TeamId}`);
 };
