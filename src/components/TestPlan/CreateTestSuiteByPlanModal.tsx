@@ -4,7 +4,6 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import '../../styles/AddModal.css';
 import Toast from '../Toast';
-import TestCaseService from '../../services/TestCaseService';
 import TestPlanService from '../../services/TestPlanService';
 import TestSuiteService from '../../services/TestSuiteService';
 interface CreateTestSuiteByPlanModalProps {

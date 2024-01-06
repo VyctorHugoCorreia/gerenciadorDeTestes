@@ -4,12 +4,9 @@ import Button from '@mui/material/Button';
 import '../../styles/Table.css'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton, Menu, MenuItem } from '@mui/material';
-import TestCaseService from '../../services/TestCaseService';
 import Toast from '../Toast';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { styled } from '@mui/system';
-
-import ExecuteTestCaseModal from '../TestCase/ExecuteTestCaseModal';
 import TestSuiteService from '../../services/TestSuiteService';
 import TestCaseBySuiteModal from '../TestSuite/TestCaseBySuiteModal';
 interface TestSuiteModalProps {
@@ -84,7 +81,8 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({ open, onClose, testPlan
             await TestSuiteService.deleteTestSuite(id);
             fetchTestPlans();
             setShowToast(true);
-            fetchTestPlans();
+            fetchTestSuite();
+
         } catch (error) {
             console.error(error);
         }
