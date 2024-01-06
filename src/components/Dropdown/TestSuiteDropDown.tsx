@@ -28,7 +28,7 @@ const TestSuiteDropDown: React.FC<TestSuiteDropDownProps> = ({
   const fetchTestSuites = useCallback(async () => {
     try {
       if (selectedTestPlanId) {
-        const suitesData = await TestSuiteService.getTestSuitesByPlan(selectedTestPlanId.toString());
+        const suitesData = await TestSuiteService.getTestSuitesByPlan(selectedTestPlanId);
         setTestSuites(suitesData);
       }
     } catch (error) {

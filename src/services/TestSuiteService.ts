@@ -107,7 +107,7 @@ class TestSuiteService {
     }
   }
 
-  static async getTestSuitesByPlan(searchValue?: string): Promise<any> {
+  static async getTestSuitesByPlan(searchValue?: number): Promise<any> {
     try {
       const response = await axios.get(`${BASE_URL}/api/suiteDeTeste?idPlano=${searchValue}`);
       return response.data;

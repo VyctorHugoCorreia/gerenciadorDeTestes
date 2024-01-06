@@ -8,6 +8,7 @@ import TablePagination from '@mui/material/TablePagination';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import CreateTestSuiteByPlanModal from './CreateTestSuiteByPlanModal';
+import TestSuiteByPlanModal from './TestSuiteByPlanModal';
 
 export interface TestPlan {
   idPlano: number;
@@ -77,8 +78,8 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
     setSelectedCreateTestPlanId(testPlanId);
   };
 
-  const handleViewTestCase = async (testPlanId: number) => {
-
+  const handleViewTestSuite = async (testPlanId: number) => {
+    setSelectedTestPlanId(testPlanId);
   };
 
   const handleCloseModal = () => {
@@ -178,7 +179,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
                         <MenuItem onClick={() => handleCreateTestSuite(testPlan.idPlano)}>Cadastrar suite de testes</MenuItem>
                         <MenuItem
                           disabled={testPlan.quantidadeSuites === 0}
-                          onClick={() => handleViewTestCase(testPlan.idPlano)}
+                          onClick={() => handleViewTestSuite(testPlan.idPlano)}
                         >
                           Visualizar suites de teste
                         </MenuItem>
@@ -224,8 +225,17 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
         setShowToast={setShowToast}
       />
 
+      {
+        selectedTestPlanId !== null && (
+          <TestSuiteByPlanModal
+            open={true}
+            testPlanId={selectedTestPlanId}
+            onClose={handleCloseModal}
+            fetchTestPlans={fetchTestPlans}
+          />
+        )
+      }
 
-       
       <CreateTestSuiteByPlanModal
         open={isCreateTestPlanModalOpen}
         onClose={() => {
