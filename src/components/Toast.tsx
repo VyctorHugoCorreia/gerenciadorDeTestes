@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import '../styles/Toast.css';
+import React, { useEffect } from 'react';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 interface ToastProps {
   message: string;
@@ -8,22 +9,24 @@ interface ToastProps {
 }
 
 const Toast: React.FC<ToastProps> = ({ message, showToast, setShowToast }) => {
-  const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (showToast) {
-      setShow(true);
       setTimeout(() => {
-        setShow(false);
         setShowToast(false);
-      }, 3000); 
+      }, 3000);
     }
   }, [showToast]);
 
   return (
-    <div className={`toast ${show ? 'show' : ''}`}>
-      <div className="toast-message">{message}</div>
-    </div>
+    <>
+      {showToast && (
+        <Stack sx={{ width: '30%', position: 'fixed', top: 20, right: 20 }} spacing={2}>
+          <Alert severity="success">{message}</Alert>
+        </Stack>
+      )}
+    </>
+
   );
 };
 
