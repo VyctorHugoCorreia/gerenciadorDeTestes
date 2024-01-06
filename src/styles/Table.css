@@ -17,19 +17,20 @@
 
 .table-container tbody td {
   border-bottom: 1px solid #ddd; 
+  padding: 8px;
   text-align: center;
   color: #676767 !important;
 }
 
 .table-container tbody td:first-child {
-  border-left: none; 
+  border-left: none;
 }
 
 .action-buttons button {
   margin-right: 5px;
   padding: 5px 10px;
-  color: #1082BE;
-  background-color: transparent;
+  color: #1082BE; 
+  background-color: transparent; 
   border: transparent; 
   border-radius: 5px;
   cursor: pointer;
@@ -43,7 +44,7 @@
 
 .no-records-message {
   margin-top: 5%;
-  text-align: center;
+  text-align: center; 
   color: #676767
 }
 

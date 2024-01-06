@@ -96,10 +96,10 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
     };
 
     const clearFields = () => {
-        setSelectedFeature(null);
-        setSelectedScenarioType(null);
-        setSelectedPlataformType(null);
-        setSelectedStatusAutomationType(null);
+      //  setSelectedFeature(null);
+      //  setSelectedScenarioType(null);
+      //  setSelectedPlataformType(null);
+      //  setSelectedStatusAutomationType(null);
         setSelectedScenarioStatusType(null);
         setScenarioTitle('');
         setScenarioDescription('');
