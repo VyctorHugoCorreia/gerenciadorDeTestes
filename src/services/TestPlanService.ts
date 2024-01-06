@@ -109,6 +109,20 @@ class TestPlanService {
     }
   }
 
+  static async getTestPlansById(searchValue?: string): Promise<any> {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/planoDeTeste?idPlano=${searchValue}`);
+      return response.data;
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        throw axiosError.response?.data ?? axiosError.message;
+      } else {
+        throw error;
+      }
+    }
+  }
+
   static async getTestPlansByTeam(searchValue?: string): Promise<any> {
     try {
       const response = await axios.get(`${BASE_URL}/api/planoDeTeste?idTime=${searchValue}`);

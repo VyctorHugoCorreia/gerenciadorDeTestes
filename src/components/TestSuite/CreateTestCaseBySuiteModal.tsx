@@ -20,7 +20,7 @@ interface CreateTestCaseBySuiteModalProps {
     fetchTestSuites: () => void;
 }
 
-const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({ open, onClose, testSuiteId,fetchTestSuites }) => {
+const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({ open, onClose, testSuiteId, fetchTestSuites }) => {
     const [buttonCreatedDisabled, setButtonCreatedDisabled] = useState(true);
     const [showToast, setShowToast] = useState(false);
     const [testSuite, setTestSuite] = useState<any | null>(null);
@@ -96,10 +96,10 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
     };
 
     const clearFields = () => {
-      //  setSelectedFeature(null);
-      //  setSelectedScenarioType(null);
-      //  setSelectedPlataformType(null);
-      //  setSelectedStatusAutomationType(null);
+        setSelectedFeature(null);
+        setSelectedScenarioType(null);
+        setSelectedPlataformType(null);
+        setSelectedStatusAutomationType(null);
         setSelectedScenarioStatusType(null);
         setScenarioTitle('');
         setScenarioDescription('');
@@ -137,7 +137,7 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
 
                 const response = await TestCaseService.addTestCase(data);
                 console.log(response);
-          
+
                 setToastMessage('Caso de teste cadastrado com sucesso!');
                 setShowToast(true);
                 clearFields();

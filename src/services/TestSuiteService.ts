@@ -18,13 +18,8 @@ class TestSuiteService {
       }
     }
   }
-  static async addTestSuite(idTime: number, idTproduto: number, idPlano: number, descSuite: string): Promise<any> {
-    const data = {
-      idTime,
-      idTproduto,
-      idPlano,
-      descSuite,
-    };
+  static async addTestSuite(data: any): Promise<any> {
+   
 
     try {
       const response = await axios.post(`${BASE_URL}/api/suiteDeTeste`, data, {

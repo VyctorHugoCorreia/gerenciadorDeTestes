@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, MouseEvent } from 'react';
 import TestPlanService from '../../services/TestPlanService';
 import '../../styles/Table.css';
 import ErrorPopup from '../ErrorPopup';
-import TestPlanModal from './TestPlanModal'; 
+import TestPlanModal from './TestPlanModal';
 import Toast from '../Toast';
 import TablePagination from '@mui/material/TablePagination';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { IconButton, Menu, MenuItem } from '@mui/material';
+import CreateTestSuiteByPlanModal from './CreateTestSuiteByPlanModal';
 
 export interface TestPlan {
   idPlano: number;
@@ -29,7 +32,14 @@ interface TestPlanTableProps {
   fetchTestPlans: () => void;
 }
 
+
+
 const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans }) => {
+  const [anchorElMap, setAnchorElMap] = useState<{ [key: number]: HTMLElement | null }>({});
+  const [isCreateTestPlanModalOpen, setIsCreateTestSuiteModalOpen] = useState(false);
+  const [selectedCreateTestPlanId, setSelectedCreateTestPlanId] = useState<number | null>(null);
+  const [selectedTestPlanId, setSelectedTestPlanId] = useState<number | null>(null);
+
   const [error, setError] = useState<string>('');
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -62,9 +72,37 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
     }
   };
 
+  const handleCreateTestSuite = async (testPlanId: number) => {
+    setIsCreateTestSuiteModalOpen(true)
+    setSelectedCreateTestPlanId(testPlanId);
+  };
+
+  const handleViewTestCase = async (testPlanId: number) => {
+
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTestPlanId(null);
+  };
+
   const handleCloseErrorPopup = () => {
     setErrorPopupOpen(false);
   };
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>, testSuiteId: number) => {
+    setAnchorElMap({
+      ...anchorElMap,
+      [testSuiteId]: event.currentTarget,
+    });
+  };
+
+  const handleClose = (testSuiteId: number) => {
+    setAnchorElMap({
+      ...anchorElMap,
+      [testSuiteId]: null,
+    });
+  };
+
 
   const handleEditTestPlan = (testPlan: TestPlan) => {
     const { idPlano, descPlano, idTime, idTproduto, quantidadeSuites } = testPlan;
@@ -120,8 +158,32 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
                   <td>{testPlan.descPlano}</td>
                   <td>{testPlan.quantidadeSuites}</td>
                   <td className="action-buttons">
-                    <button onClick={() => handleEditTestPlan(testPlan)}>Editar</button>
-                    <button onClick={() => handleDeleteTestPlan(testPlan.idPlano)}>Excluir</button>
+                    <div>
+                      <IconButton
+                        aria-label="Opções"
+                        aria-controls={`menu-options-${testPlan.idPlano}`}
+                        aria-haspopup="true"
+                        onClick={(event) => handleClick(event, testPlan.idPlano)}
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                      <Menu
+                        id={`menu-options-${testPlan.idPlano}`}
+                        anchorEl={anchorElMap[testPlan.idPlano]}
+                        open={Boolean(anchorElMap[testPlan.idPlano])}
+                        onClose={() => handleClose(testPlan.idPlano)}
+                      >
+                        <MenuItem onClick={() => handleEditTestPlan(testPlan)}>Editar</MenuItem>
+                        <MenuItem onClick={() => handleDeleteTestPlan(testPlan.idPlano)}>Excluir</MenuItem>
+                        <MenuItem onClick={() => handleCreateTestSuite(testPlan.idPlano)}>Cadastrar suite de testes</MenuItem>
+                        <MenuItem
+                          disabled={testPlan.quantidadeSuites === 0}
+                          onClick={() => handleViewTestCase(testPlan.idPlano)}
+                        >
+                          Visualizar suites de teste
+                        </MenuItem>
+                      </Menu>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -146,7 +208,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
         errorMessage={error}
       />
 
-      <TestPlanModal 
+      <TestPlanModal
         open={isEditModalOpen}
         onClose={() => {
           setIsEditModalOpen(false);
@@ -159,7 +221,18 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
       <Toast
         message="Operação realizada com sucesso!"
         showToast={showToast}
-        setShowToast={setShowToast} 
+        setShowToast={setShowToast}
+      />
+
+
+       
+      <CreateTestSuiteByPlanModal
+        open={isCreateTestPlanModalOpen}
+        onClose={() => {
+          setIsCreateTestSuiteModalOpen(false);
+        }}
+        testPlanId={selectedCreateTestPlanId}
+        fetchTestPlans={fetchTestPlans}
       />
     </div>
   );

@@ -126,9 +126,16 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
   };
 
   const handleAddTestSuite = async () => {
+    const data = {
+      idTime: (selectedTeam && selectedTeam.idTime) ?? 0,
+      idTproduto: selectedProductId,
+      idPlano: selectedTestPlanId,
+      descSuite: TestSuiteName,
+    };
     try {
+
       if (selectedTeam && selectedProductId !== null && selectedTestPlanId !== null) {
-        await TestSuiteService.addTestSuite(selectedTeam.idTime, selectedProductId, selectedTestPlanId, TestSuiteName);
+        await TestSuiteService.addTestSuite(data);
         setTestSuiteName('');
         setSelectedTeam(null);
         setSelectedTeamId(null);
@@ -192,7 +199,7 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
             selectedTeamId={selectedTeamId}
             disabled={isEditing}
             isEditing={isEditing}
-            resetDropdown={resetProductDropdown} 
+            resetDropdown={resetProductDropdown}
             selectedProductId={selectedTestSuite?.idTproduto.idTproduto || null}
           />
 
