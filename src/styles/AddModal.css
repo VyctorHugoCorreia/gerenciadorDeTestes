@@ -1,4 +1,3 @@
-/* TeamModal.css */
 .team-modal {
   position: fixed;
   top: 50%;
@@ -41,10 +40,10 @@
   padding: 8px 12px;
   font-size: 16px;
   outline: none;
-  appearance: none; /* Remove o estilo padrão do sistema operacional */
-  -webkit-appearance: none; /* Para navegadores WebKit como o Chrome e Safari */
-  -moz-appearance: none; /* Para Firefox */
-  background-image: none; /* Remove a imagem de fundo do dropdown */
+  appearance: none; 
+  -webkit-appearance: none; 
+  -moz-appearance: none;
+  background-image: none;
   height: 59px;
 }
 

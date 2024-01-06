@@ -1,6 +1,3 @@
-/* TimeTable.css */
-
-/* Estilo para a tabela */
 .table-container {
   width: 100%;
   border-collapse: collapse;
@@ -10,48 +7,43 @@
   text-align: center;
 }
 
-/* Estilo para o cabeçalho da tabela (thead) */
 .table-container thead th {
-  border: none; /* Remover todas as bordas do cabeçalho */
-  border-bottom: 1px solid #ddd; /* Manter apenas a borda inferior do cabeçalho */
+  border: none; 
+  border-bottom: 1px solid #ddd;
   padding: 8px;
   text-align: center;
   color: #676767 !important;
 }
 
-/* Estilo para as células do corpo da tabela (tbody) */
 .table-container tbody td {
-  border-bottom: 1px solid #ddd; /* Manter a borda inferior para separar as linhas */
-  padding: 8px;
+  border-bottom: 1px solid #ddd; 
   text-align: center;
   color: #676767 !important;
 }
 
-/* Estilo para a primeira célula do corpo da tabela (opcional, se desejar remover a borda esquerda da primeira coluna) */
 .table-container tbody td:first-child {
-  border-left: none; /* Remover a borda esquerda da primeira célula */
+  border-left: none; 
 }
 
-/* Estilo para os botões */
 .action-buttons button {
   margin-right: 5px;
   padding: 5px 10px;
-  color: #1082BE; /* Cor do texto azul */
-  background-color: transparent; /* Fundo transparente */
-  border: transparent; /* Borda azul */
+  color: #1082BE;
+  background-color: transparent;
+  border: transparent; 
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
 }
 
 .action-buttons button:hover {
-  background-color: #1082BE; /* Fundo azul no hover */
-  color: white; /* Texto branco no hover */
+  background-color: #1082BE; 
+  color: white; 
 }
 
 .no-records-message {
   margin-top: 5%;
-  text-align: center; /* Centralizar o texto horizontalmente */
+  text-align: center;
   color: #676767
 }
 

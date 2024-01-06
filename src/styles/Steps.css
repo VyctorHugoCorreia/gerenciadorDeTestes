@@ -7,17 +7,17 @@
   }
   
   .text-field {
-    width: 40%; /* Ajuste para ocupar mais espaço */
+    width: 40%; 
     height: 50px;
     margin-right: 10px;
   }
   
   .step-button {
     margin-left: 10px;
-    width: 20px; /* Ajuste o tamanho para torná-lo um círculo */
-    height: 20px; /* Mantenha a altura igual à altura do campo de texto */
+    width: 20px; 
+    height: 20px; 
     background-color: #1082BE;
-    border-radius: 50%; /* Faz com que o botão seja um círculo */
+    border-radius: 50%; 
     border: none;
     display: flex;
     justify-content: center;
@@ -25,14 +25,14 @@
   }
 
   .remove-button {
-    width: 20px; /* Defina a largura e altura iguais para criar um círculo */
+    width: 20px; 
     height: 20px;
-    background-color: #FF0000; /* Cor vermelha */
-    border-radius: 50%; /* Esta propriedade faz o elemento se tornar um círculo */
+    background-color: #FF0000; 
+    border-radius: 50%; 
     border: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 10px; /* Ajuste o espaçamento conforme necessário */
+    margin-left: 10px; 
   }
   
