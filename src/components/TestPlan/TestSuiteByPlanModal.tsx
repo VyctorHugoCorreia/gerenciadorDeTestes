@@ -9,6 +9,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { styled } from '@mui/system';
 import TestSuiteService from '../../services/TestSuiteService';
 import TestCaseBySuiteModal from '../TestSuite/TestCaseBySuiteModal';
+import CreateTestCaseBySuiteModal from '../TestSuite/CreateTestCaseBySuiteModal';
 interface TestSuiteModalProps {
     open: boolean;
     onClose?: () => void;
@@ -22,6 +23,8 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({ open, onClose, testPlan
     const [showToast, setShowToast] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedTestSuiteId, setSelectedTestSuiteId] = useState<number | null>(null);
+    const [isCreateTestCaseModalOpen, setIsCreateTestCaseModalOpen] = useState(false);
+    const [selectedCreateTestSuiteId, setSelectedCreateTestSuiteId] = useState<number | null>(null);
 
     const WhiteRefreshIcon = styled(RefreshIcon)({
         color: 'white',
@@ -31,6 +34,11 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({ open, onClose, testPlan
     const handleViewTestCase = async (testSuiteId: number) => {
         setSelectedTestSuiteId(testSuiteId);
 
+    };
+
+    const handleCreateTestCase = async (testSuiteId: number) => {
+        setIsCreateTestCaseModalOpen(true)
+        setSelectedCreateTestSuiteId(testSuiteId);
     };
 
     const handleCloseModal = () => {
@@ -139,6 +147,7 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({ open, onClose, testPlan
                                             >
                                                 Visualizar cenários
                                             </MenuItem>
+                                            <MenuItem onClick={() => handleCreateTestCase(testSuite.idSuite)}>Cadastrar cenário</MenuItem>
                                         </Menu>
                                     </div>
                                 </td>
@@ -171,6 +180,18 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({ open, onClose, testPlan
                             fetchTestSuites={fetchTestSuite}
                         />
                     )
+                }
+
+                {
+
+                    <CreateTestCaseBySuiteModal
+                        open={isCreateTestCaseModalOpen}
+                        onClose={() => {
+                            setIsCreateTestCaseModalOpen(false);
+                        }}
+                        testSuiteId={selectedCreateTestSuiteId}
+                        fetchTestSuites={fetchTestSuite}
+                    />
                 }
             </div>
 

@@ -9,6 +9,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import CreateTestSuiteByPlanModal from './CreateTestSuiteByPlanModal';
 import TestSuiteByPlanModal from './TestSuiteByPlanModal';
+import CreateTestCaseBySuiteModal from '../TestSuite/CreateTestCaseBySuiteModal';
 
 export interface TestPlan {
   idPlano: number;
@@ -40,7 +41,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
   const [isCreateTestPlanModalOpen, setIsCreateTestSuiteModalOpen] = useState(false);
   const [selectedCreateTestPlanId, setSelectedCreateTestPlanId] = useState<number | null>(null);
   const [selectedTestPlanId, setSelectedTestPlanId] = useState<number | null>(null);
-
+  const [isCreateTestCaseModalOpen, setIsCreateTestCaseModalOpen] = useState(false);
   const [error, setError] = useState<string>('');
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
