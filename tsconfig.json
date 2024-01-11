@@ -24,11 +24,11 @@
     "@mui/*": ["node_modules/@mui/*/"]
   },
   "files": [
-    "src/index.tsx", // Substitua pelo arquivo principal do seu projeto, se aplicável
-    "custom.d.ts" // Manter apenas os arquivos necessários aqui
+    "src/index.tsx", 
+    "custom.d.ts" 
   ],
   "include": [
-    "src/**/*.ts", // Especifica os padrões de inclusão dos arquivos TypeScript no diretório src
+    "src/**/*.ts", 
     "src/**/*.tsx"
   ]
 }

@@ -15,6 +15,7 @@ import Toast from '../components/Toast';
 import TextField from '@mui/material/TextField';
 import TestCaseService from '../services/TestCaseService';
 import ScenarioTypeInfo from '../components/TestCase/ScenarioTypeInfo';
+import HistoryStatusScenarioService from '../services/HistoryStatusScenarioService';
 
 interface SelectedTeam {
   idTime: number;
@@ -116,10 +117,20 @@ const CreateTestCaseScreen: React.FC = () => {
         tags: filteredTags
       };
 
+     
       setJsonResult(JSON.stringify(data, null, 2));
 
       const response = await TestCaseService.addTestCase(data);
-      console.log(response);
+
+      const dataHistory = {
+
+        idCenario: response.idCenario,
+        statusBefore: selectedScenarioStatusType || 0,
+        statusAfter: selectedScenarioStatusType || 0
+
+      }
+
+      const responseHistory = await HistoryStatusScenarioService.addHistoryStatusScenario(dataHistory);
 
       setToastMessage('Caso de teste cadastrado com sucesso!');
       setShowToast(true);
@@ -196,7 +207,7 @@ const CreateTestCaseScreen: React.FC = () => {
     setSelectedScenarioType(null);
     setSelectedPlataformType(null);
     setSelectedStatusAutomationType(null);
-    setSelectedScenarioStatusType(null);
+ //   setSelectedScenarioStatusType(null);
     setJsonResult('');
     setScenarioTitle('');
     setscenarioDescription('');

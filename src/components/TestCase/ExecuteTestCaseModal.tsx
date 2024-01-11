@@ -6,6 +6,7 @@ import '../../styles/AddModal.css';
 import '../../styles/Table.css';
 import Toast from '../Toast';
 import TestCaseService from '../../services/TestCaseService';
+import HistoryStatusScenarioService from '../../services/HistoryStatusScenarioService';
 
 interface ExecuteTestCaseModalProps {
   open: boolean;
@@ -61,6 +62,10 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
     try {
       const filteredSteps = steps.filter(step => step.descricao.trim() !== ''); // Filtrar passos vazios, se necessário
 
+      const testCaseDetails = await TestCaseService.searchTestCaseById(idCenario);
+      const statusScenario = testCaseDetails[0]?.idStatus?.idStatus;
+
+
       const data = {
         idTime: testCase.idTime.idTime || 0,
         idPlano: testCase.idPlano.idPlano || 0,
@@ -77,14 +82,25 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
         steps: filteredSteps.map((step, index) => ({
           passo: index + 1,
           descricao: step.descricao,
-          status: step.status === 'A' ? 'A' : 'P', // Inclui o status no objeto de passos
+          status: step.status === 'A' ? 'A' : 'P',
         })),
         tags: testCase.tags,
       };
 
-
       if (idCenario != null) {
-        await TestCaseService.updateTestCase(idCenario, data);
+
+        const response = await TestCaseService.updateTestCase(idCenario, data);
+
+        const dataHistory = {
+
+          idCenario: response.idCenario,
+          statusBefore: statusScenario || 0,
+          statusAfter: selectedScenarioStatusId || 0
+
+        }
+
+        await HistoryStatusScenarioService.addHistoryStatusScenario(dataHistory);
+        
         setToastMessage('Caso de teste editado com sucesso!');
         setShowToast(true);
         onClose();

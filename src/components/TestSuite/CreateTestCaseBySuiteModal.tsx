@@ -13,6 +13,7 @@ import StatusAutomationTypeDropDown from '../Dropdown/StatusAutomationDropDown';
 import DynamicList from '../DynamicList';
 import ScenarioStatusDropDown from '../Dropdown/ScenarioStatusDropDown';
 import TestCaseService from '../../services/TestCaseService';
+import HistoryStatusScenarioService from '../../services/HistoryStatusScenarioService';
 interface CreateTestCaseBySuiteModalProps {
     open: boolean;
     onClose?: () => void;
@@ -137,6 +138,16 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
 
                 const response = await TestCaseService.addTestCase(data);
                 console.log(response);
+                
+                const dataHistory = {
+
+                    idCenario: response.idCenario,
+                    statusBefore: selectedScenarioStatusType || 0,
+                    statusAfter: selectedScenarioStatusType || 0
+            
+                  }
+            
+                  const responseHistory = await HistoryStatusScenarioService.addHistoryStatusScenario(dataHistory);
 
                 setToastMessage('Caso de teste cadastrado com sucesso!');
                 setShowToast(true);
