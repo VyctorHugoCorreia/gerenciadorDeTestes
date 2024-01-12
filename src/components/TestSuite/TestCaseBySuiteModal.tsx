@@ -13,11 +13,11 @@ import ExecuteTestCaseModal from '../TestCase/ExecuteTestCaseModal';
 interface TestCaseModalProps {
     open: boolean;
     onClose?: () => void;
-    testSuiteId: number;
+    idSuite: number;
     fetchTestSuites: () => void;
 }
 
-const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteId, fetchTestSuites }) => {
+const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, idSuite, fetchTestSuites }) => {
     const [testCases, setTestCases] = useState<any[]>([]);
     const [anchorElMap, setAnchorElMap] = useState<{ [key: number]: HTMLElement | null }>({});
     const [showToast, setShowToast] = useState(false);
@@ -45,22 +45,22 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteI
         fetchTestCase();
     };
 
-    const handleClick = (event: MouseEvent<HTMLButtonElement>, testSuiteId: number) => {
+    const handleClick = (event: MouseEvent<HTMLButtonElement>, idSuite: number) => {
         setAnchorElMap({
             ...anchorElMap,
-            [testSuiteId]: event.currentTarget,
+            [idSuite]: event.currentTarget,
         });
     };
 
-    const handleClose = (testSuiteId: number) => {
+    const handleClose = (idSuite: number) => {
         setAnchorElMap({
             ...anchorElMap,
-            [testSuiteId]: null,
+            [idSuite]: null,
         });
     };
     const fetchTestCase = async () => {
         try {
-            const testCaseData = await TestCaseService.searchTestCaseByIdSuite(testSuiteId);
+            const testCaseData = await TestCaseService.searchTestCase({idSuite});
             setTestCases(testCaseData);
         } catch (error) {
             console.error('Erro ao buscar casos de teste:', error);
@@ -70,7 +70,7 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, testSuiteI
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const testCaseData = await TestCaseService.searchTestCaseByIdSuite(testSuiteId);
+                const testCaseData = await TestCaseService.searchTestCase({idSuite});
                 setTestCases(testCaseData);
             } catch (error) {
                 console.error('Erro ao buscar casos de teste:', error);

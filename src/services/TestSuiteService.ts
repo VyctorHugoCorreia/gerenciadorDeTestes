@@ -1,129 +1,65 @@
-
 import axios, { AxiosError } from 'axios';
 
 const BASE_URL = 'http://localhost:8080';
 
 class TestSuiteService {
-   
   static async getAllTestSuite(): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/suiteDeTeste`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('get', '/api/suiteDeTeste');
   }
+
   static async addTestSuite(data: any): Promise<any> {
-   
-
-    try {
-      const response = await axios.post(`${BASE_URL}/api/suiteDeTeste`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('post', '/api/suiteDeTeste', data);
   }
-  
-  static async editTestSuite(idSuite: number,idTime: number, idTproduto: number, idPlano: number, descSuite: string) {
-    const url = `${BASE_URL}/api/suiteDeTeste/${idSuite}`;
-  
-    try {
-      const requestBody = {
-        idTime: idTime,
-        idTproduto: idTproduto,
-        idPlano: idPlano,
-        descSuite: descSuite,
-      };
-  
-      const response = await axios.put(url, requestBody, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+
+  static async editTestSuite(idSuite: number, idTime: number, idTproduto: number, idPlano: number, descSuite: string): Promise<any> {
+    const url = `/api/suiteDeTeste/${idSuite}`;
+
+    const requestBody = {
+      idTime,
+      idTproduto,
+      idPlano,
+      descSuite,
+    };
+
+    return this.request('put', url, requestBody);
   }
 
   static async deleteTestSuite(idSuite: number): Promise<void> {
-    try {
-      await axios.delete(`${BASE_URL}/api/suiteDeTeste/${idSuite}`);
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('delete', `/api/suiteDeTeste/${idSuite}`);
   }
+
   static async searchTestSuite(searchValue?: string): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/suiteDeTeste?descSuite=${searchValue}`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('get', '/api/suiteDeTeste', undefined, { descSuite: searchValue });
   }
 
   static async searchTestSuiteById(searchValue?: string): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/suiteDeTeste?idSuite=${searchValue}`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('get', '/api/suiteDeTeste', undefined, { idSuite: searchValue });
   }
 
   static async getTestSuitesByPlan(searchValue?: number): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/suiteDeTeste?idPlano=${searchValue}`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('get', '/api/suiteDeTeste', undefined, { idPlano: searchValue });
   }
 
   static async getTestSuitesByTeam(searchValue?: string): Promise<any> {
+    return this.request('get', '/api/suiteDeTeste', undefined, { idTime: searchValue });
+  }
+
+  private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {
     try {
-      const response = await axios.get(`${BASE_URL}/api/suiteDeTeste?idTime=${searchValue}`);
+      const config: Record<string, any> = {
+        method,
+        url: `${BASE_URL}${url}`,
+      };
+
+      if (data && method !== 'get') {
+        config.data = data;
+      }
+
+      if (params && method === 'get') {
+        config.params = params;
+      }
+
+      const response = await axios(config);
       return response.data;
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
@@ -134,8 +70,6 @@ class TestSuiteService {
       }
     }
   }
-
-
 }
 
 export default TestSuiteService;

@@ -2,103 +2,61 @@ import axios, { AxiosError } from 'axios';
 
 const BASE_URL = 'http://localhost:8080';
 
+interface Product {
+  idTime: number;
+  descProduto: string;
+}
+
 class ProductService {
   static async addProduct(idTime: number, descProduto: string): Promise<any> {
-    const data = {
+    const data: Product = {
       idTime,
       descProduto,
     };
 
-    try {
-      const response = await axios.post(`${BASE_URL}/api/produto`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('post', '/api/produto', data);
   }
 
   static async getAllProducts(): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/produto`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('get', '/api/produto');
   }
 
   static async deleteProduct(productId: number): Promise<void> {
-    try {
-      await axios.delete(`${BASE_URL}/api/produto/${productId}`);
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('delete', `/api/produto/${productId}`);
   }
 
-
   static async searchProducts(searchValue?: string): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/produto?descProduto=${searchValue}`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('get', '/api/produto', undefined, { descProduto: searchValue });
   }
 
   static async getProductsByTeam(searchValue?: string): Promise<any> {
+    return this.request('get', '/api/produto', undefined, { idTime: searchValue });
+  }
+
+  static async editProduct(productId: number, descProduto: string): Promise<any> {
+    return this.request('put', `/api/produto/${productId}`, { descProduto });
+  }
+
+  private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {
     try {
-      const response = await axios.get(`${BASE_URL}/api/produto?idTime=${searchValue}`);
+      const config: Record<string, any> = {
+        method,
+        url: `${BASE_URL}${url}`,
+      };
+
+      if (data && method !== 'get') {
+        config.data = data;
+      }
+
+      if (params && method === 'get') {
+        config.params = params;
+      }
+
+      const response = await axios(config);
       return response.data;
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
-  }
-  
-
-
-  static async editProduct(productId : number, descProduto: string) {
-    const url = `${BASE_URL}/api/produto/${productId}`;
-
-    try {
-      const response = await axios.put(url, { descProduto }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error;
         throw axiosError.response?.data ?? axiosError.message;
       } else {
         throw error;
@@ -106,7 +64,5 @@ class ProductService {
     }
   }
 }
-
-
 
 export default ProductService;

@@ -1,82 +1,56 @@
 import axios, { AxiosError } from 'axios';
 
-const BASE_URL = 'http://localhost:8080'; 
+const BASE_URL = 'http://localhost:8080';
+
+interface Team {
+  nomeTime: string;
+}
+
 class TeamService {
   static async addTeam(teamName: string): Promise<any> {
-    const data = {
+    const data: Team = {
       nomeTime: teamName,
     };
   
-    try {
-      const response = await axios.post(`${BASE_URL}/api/time`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('post', '/api/time', data);
   }
   
- 
-  static async getAllTimes(): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/time`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+  static async getAllTeams(): Promise<any> {
+    return this.request('get', '/api/time');
   }
 
   static async deleteTeam(teamId: number): Promise<void> {
-    try {
-      await axios.delete(`${BASE_URL}/api/time/${teamId}`);
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('delete', `/api/time/${teamId}`);
   }
 
   static async editTeam(teamId: number, newName: string): Promise<void> {
-    const data = {
+    const data: Team = {
       nomeTime: newName,
     };
 
-    try {
-      await axios.put(`${BASE_URL}/api/time/${teamId}`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('put', `/api/time/${teamId}`, data);
   }
 
-  static async searchTimes(searchValue?: string): Promise<any> {
+  static async searchTeams(searchValue?: string): Promise<any> {
+    return this.request('get', '/api/time', undefined, { nomeTime: searchValue });
+  }
+
+  private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {
     try {
-      const response = await axios.get(`${BASE_URL}/api/time?nomeTime=${searchValue}`);
+      const config: Record<string, any> = {
+        method,
+        url: `${BASE_URL}${url}`,
+      };
+
+      if (data && method !== 'get') {
+        config.data = data;
+      }
+
+      if (params && method === 'get') {
+        config.params = params;
+      }
+
+      const response = await axios(config);
       return response.data;
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
@@ -87,7 +61,6 @@ class TeamService {
       }
     }
   }
-
 }
 
 export default TeamService;

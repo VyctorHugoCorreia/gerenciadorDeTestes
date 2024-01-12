@@ -1,18 +1,32 @@
 import axios, { AxiosError } from 'axios';
 
-const BASE_URL = 'http://localhost:8080'; 
-class TestCaseService {
+const BASE_URL = 'http://localhost:8080';
 
+class historyStatusScenarioService {
   static async addHistoryStatusScenario(data: any): Promise<any> {
-   
-  
+    return this.request('post', '/api/historyStatusScenario', data);
+  }
+
+  static async searchHistoryByTestCaseId(searchValue?: string): Promise<any> {
+    return this.request('get', '/api/historyStatusScenario', undefined, { idCenario: searchValue });
+  }
+
+  private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {
     try {
-      const response = await axios.post(`${BASE_URL}/api/historyStatusScenario`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
+      const config: Record<string, any> = {
+        method,
+        url: `${BASE_URL}${url}`,
+      };
+
+      if (data && method !== 'get') {
+        config.data = data;
+      }
+
+      if (params && method === 'get') {
+        config.params = params;
+      }
+
+      const response = await axios(config);
       return response.data;
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
@@ -23,21 +37,6 @@ class TestCaseService {
       }
     }
   }
-
-  static async searchHistoryByTestCaseId(searchValue?: number): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/historyStatusScenario?idCenario=${searchValue}`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
-  }
-
 }
 
-export default TestCaseService;
+export default historyStatusScenarioService;

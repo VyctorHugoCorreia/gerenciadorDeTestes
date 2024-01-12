@@ -175,7 +175,7 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({ open, onClose, testPlan
                     selectedTestSuiteId !== null && (
                         <TestCaseBySuiteModal
                             open={true}
-                            testSuiteId={selectedTestSuiteId}
+                            idSuite={selectedTestSuiteId}
                             onClose={handleCloseModal}
                             fetchTestSuites={fetchTestSuite}
                         />

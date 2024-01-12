@@ -47,7 +47,7 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
     const navigate = useNavigate();
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
-    const id = testCaseId ? parseInt(testCaseId, 10) : undefined; // Converta para número ou deixe como undefined
+    const idCenario = testCaseId ? parseInt(testCaseId, 10) : undefined; // Converta para número ou deixe como undefined
 
 
     const handleSelectTeam = (team: number | SelectedTeam | null | string) => {
@@ -100,7 +100,7 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
     useEffect(() => {
         const fetchTestCase = async () => {
             try {
-                const testCaseDetails = await TestCaseService.searchTestCaseById(id);
+                const testCaseDetails = await TestCaseService.searchTestCase({idCenario});
                 console.log(testCaseDetails)
                 if (testCaseDetails.length > 0) {
                     const firstTestCase = testCaseDetails[0];
@@ -126,7 +126,7 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
         };
 
         fetchTestCase();
-    }, [id]);
+    }, [idCenario]);
 
 
     const handleEdit = async () => {
@@ -156,8 +156,8 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
 
             setJsonResult(JSON.stringify(data, null, 2));
 
-            if (id != null) {
-                await TestCaseService.updateTestCase(id, data);
+            if (idCenario != null) {
+                await TestCaseService.updateTestCase(idCenario, data);
                 setToastMessage('Caso de teste editado com sucesso!');
                 setShowToast(true);
 

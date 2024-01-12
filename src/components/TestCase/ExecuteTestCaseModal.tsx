@@ -29,7 +29,7 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
     const fetchScenarioStatus = async () => {
       try {
         if (open && idCenario) {
-          const testCaseDetails = await TestCaseService.searchTestCaseById(idCenario);
+          const testCaseDetails = await TestCaseService.searchTestCase({idCenario});
           if (testCaseDetails.length > 0) {
             setSelectedScenarioStatusId(testCaseDetails[0]?.idStatus?.idStatus || null);
             setTestCase(testCaseDetails[0]);
@@ -62,7 +62,7 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
     try {
       const filteredSteps = steps.filter(step => step.descricao.trim() !== ''); // Filtrar passos vazios, se necessário
 
-      const testCaseDetails = await TestCaseService.searchTestCaseById(idCenario);
+      const testCaseDetails = await TestCaseService.searchTestCase({ idCenario });
       const statusScenario = testCaseDetails[0]?.idStatus?.idStatus;
 
 

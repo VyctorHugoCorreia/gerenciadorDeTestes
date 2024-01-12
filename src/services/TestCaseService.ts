@@ -1,53 +1,65 @@
+// TestCaseService.ts
 import axios, { AxiosError } from 'axios';
 
-const BASE_URL = 'http://localhost:8080'; 
-class TestCaseService {
+const BASE_URL = 'http://localhost:8080';
 
+interface SearchParams {
+  tituloCenario?: string;
+  idTime?: number;
+  idCenario?: number;
+  idSuite?: number;
+}
+
+class TestCaseService {
   static async addTestCase(data: any): Promise<any> {
-   
-  
-    try {
-      const response = await axios.post(`${BASE_URL}/api/cenarioDeTeste`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('post', '/api/cenarioDeTeste', data);
   }
 
   static async updateTestCase(idCenario: number, data: any): Promise<any> {
-   
-  
-    try {
-      const response = await axios.put(`${BASE_URL}/api/cenarioDeTeste/${idCenario}`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('put', `/api/cenarioDeTeste/${idCenario}`, data);
   }
-  
+
   static async getAllTestCase(): Promise<any> {
+    return this.request('get', '/api/cenarioDeTeste');
+  }
+
+  static async searchTestCase(params: SearchParams = {}): Promise<any> {
+    const { tituloCenario, idTime, idCenario, idSuite } = params;
+    const url = '/api/cenarioDeTeste';
+
+    const requestParams: Record<string, any> = {
+      idTime,
+      idCenario,
+      idSuite,
+    };
+
+    if (tituloCenario !== undefined && tituloCenario.trim() !== "") {
+      requestParams.tituloCenario = tituloCenario;
+    }
+
+    return this.request('get', url, undefined, requestParams);
+  }
+
+  static async deleteTestCase(testCaseId: number): Promise<void> {
+    return this.request('delete', `/api/cenarioDeTeste/${testCaseId}`);
+  }
+
+  private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {
     try {
-      const response = await axios.get(`${BASE_URL}/api/cenarioDeTeste`);
+      const config: Record<string, any> = {
+        method,
+        url: `${BASE_URL}${url}`,
+      };
+
+      if (data && method !== 'get') {
+        config.data = data;
+      }
+
+      if (params && method === 'get') {
+        config.params = params;
+      }
+
+      const response = await axios(config);
       return response.data;
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
@@ -58,63 +70,6 @@ class TestCaseService {
       }
     }
   }
-
-
-  static async searchTestCase(searchValue?: string): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/cenarioDeTeste?tituloCenario=${searchValue}`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
-  }
-
-  static async searchTestCaseById(searchValue?: number): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/cenarioDeTeste?idCenario=${searchValue}`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
-  }
-
-  static async searchTestCaseByIdSuite(searchValue?: number): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/cenarioDeTeste?idSuite=${searchValue}`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
-  }
-
-  static async deleteTestCase(tesCaseId: number): Promise<void> {
-    try {
-      await axios.delete(`${BASE_URL}/api/cenarioDeTeste/${tesCaseId}`);
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
-  }
-  
 }
 
 export default TestCaseService;

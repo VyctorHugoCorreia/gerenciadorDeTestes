@@ -237,7 +237,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
         selectedTestSuiteId !== null && (
           <TestCaseBySuiteModal
             open={true}
-            testSuiteId={selectedTestSuiteId}
+            idSuite={selectedTestSuiteId}
             onClose={handleCloseModal}
             fetchTestSuites={fetchTestSuites}
           />

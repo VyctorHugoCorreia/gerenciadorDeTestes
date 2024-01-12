@@ -1,22 +1,12 @@
-
 import axios, { AxiosError } from 'axios';
 
-const BASE_URL = 'http://localhost:8080'; 
+const BASE_URL = 'http://localhost:8080';
+
 class TestPlanService {
-   
   static async getAllTestPlan(): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/planoDeTeste`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('get', '/api/planoDeTeste');
   }
+
   static async addTestPlan(idTime: number, idTproduto: number, descPlano: string): Promise<any> {
     const data = {
       idTime,
@@ -24,108 +14,57 @@ class TestPlanService {
       descPlano,
     };
 
-    try {
-      const response = await axios.post(`${BASE_URL}/api/planoDeTeste`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('post', '/api/planoDeTeste', data);
   }
-  
-  static async editTestPlan(idPlano: number,idTime: number, idTproduto: number, descPlano: string) {
-    const url = `${BASE_URL}/api/planoDeTeste/${idPlano}`;
-  
-    try {
-      const requestBody = {
-        idTime: idTime,
-        idTproduto: idTproduto,
-        descPlano: descPlano,
-      };
-  
-      const response = await axios.put(url, requestBody, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+
+  static async editTestPlan(idPlano: number, idTime: number, idTproduto: number, descPlano: string): Promise<any> {
+    const url = `/api/planoDeTeste/${idPlano}`;
+
+    const requestBody = {
+      idTime,
+      idTproduto,
+      descPlano,
+    };
+
+    return this.request('put', url, requestBody);
   }
 
   static async deleteTestPlan(idPlano: number): Promise<void> {
-    try {
-      await axios.delete(`${BASE_URL}/api/planoDeTeste/${idPlano}`);
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('delete', `/api/planoDeTeste/${idPlano}`);
   }
+
   static async searchTestPlan(searchValue?: string): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/planoDeTeste?descPlano=${searchValue}`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('get', `/api/planoDeTeste`, undefined, { descPlano: searchValue });
   }
 
   static async getTestPlansByProduct(searchValue?: string): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/planoDeTeste?idTproduto=${searchValue}`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('get', `/api/planoDeTeste`, undefined, { idTproduto: searchValue });
   }
 
   static async getTestPlansById(searchValue?: string): Promise<any> {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/planoDeTeste?idPlano=${searchValue}`);
-      return response.data;
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        throw axiosError.response?.data ?? axiosError.message;
-      } else {
-        throw error;
-      }
-    }
+    return this.request('get', `/api/planoDeTeste`, undefined, { idPlano: searchValue });
   }
 
   static async getTestPlansByTeam(searchValue?: string): Promise<any> {
+    return this.request('get', `/api/planoDeTeste`, undefined, { idTime: searchValue });
+  }
+
+  private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {
     try {
-      const response = await axios.get(`${BASE_URL}/api/planoDeTeste?idTime=${searchValue}`);
+      const config: Record<string, any> = {
+        method,
+        url: `${BASE_URL}${url}`,
+      };
+
+      if (data && method !== 'get') {
+        config.data = data;
+      }
+
+      if (params && method === 'get') {
+        config.params = params;
+      }
+
+      const response = await axios(config);
       return response.data;
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
@@ -136,7 +75,6 @@ class TestPlanService {
       }
     }
   }
-
 }
 
 export default TestPlanService;

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/TestCase.css';
 import '../styles/Table.css';
 import TestCaseService from '../services/TestCaseService';
+import HistoryStatusTestCaseTable from '../components/TestCase/HistoryStatusTestCaseTable';
+import HistoryStatusScenarioService from '../services/HistoryStatusScenarioService';
 
 
 interface SelectedTeam {
@@ -17,15 +19,16 @@ interface DetailsTestCaseProps {
 
 const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ testCaseId }) => {
     const navigate = useNavigate();
-    const id = testCaseId ? parseInt(testCaseId, 10) : undefined;
+    const idCenario = testCaseId ? parseInt(testCaseId, 10) : undefined;
     const [testCase, setTestCase] = useState<any>(null);
+
 
 
 
     useEffect(() => {
         const fetchTestCase = async () => {
             try {
-                const testCaseDetails = await TestCaseService.searchTestCaseById(id);
+                const testCaseDetails = await TestCaseService.searchTestCase({idCenario});
                 console.log(testCaseDetails)
                 if (testCaseDetails.length > 0) {
                     setTestCase(testCaseDetails[0]);
@@ -36,7 +39,7 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ testCaseId }) =
         };
 
         fetchTestCase();
-    }, [id]);
+    }, [idCenario]);
 
 
     const handleVoltar = () => {
@@ -60,8 +63,9 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ testCaseId }) =
                     </div>
                 )}
 
-            </div>
 
+            </div>
+          
             <div className='cardboard-style'>
                 <div>
                     <span className='span-label'>Titulo:</span>
@@ -164,6 +168,13 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ testCaseId }) =
                     <span className='span-label'>Tags:</span>
                     <h4>{testCase ? (testCase.tags ? testCase.tags.join(' | ') : '') : 'Loading...'}</h4>
                 </div>
+            </div>
+            <div className='cardboard-style container'>
+                <div>
+                    <span className='span-label'>Histórico de execução:</span>
+                    <HistoryStatusTestCaseTable idCenario={testCaseId ? testCaseId : ""} />
+                </div>
+
             </div>
 
 

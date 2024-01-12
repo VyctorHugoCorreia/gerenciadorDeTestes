@@ -34,7 +34,7 @@ const TeamsDropDown: React.FC<TeamsDropDownProps> = ({
 
   const fetchTeams = async () => {
     try {
-      const teamsData = await TeamService.getAllTimes();
+      const teamsData = await TeamService.getAllTeams();
       setTeams(teamsData);
     } catch (error) {
       console.error('Error fetching teams:', error);
