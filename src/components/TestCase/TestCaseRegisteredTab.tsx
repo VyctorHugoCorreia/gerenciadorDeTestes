@@ -1,3 +1,4 @@
+// TestCaseRegisteredTab.tsx
 import React, { useEffect, useState } from 'react';
 import AddTestCaseButton from './AddTestCaseButton';
 import TestCaseTable from './TestCaseTable';
@@ -9,14 +10,19 @@ interface Team {
   nomeTime: string;
 }
 
+export interface Product {
+  idTproduto: number;
+}
+
 interface SearchParams {
   searchValue: string;
   team: Team | null;
+  product: Product | null;
 }
 
 const TestCaseRegisteredTab: React.FC = () => {
   const [testCases, setTestCases] = useState<any[]>([]);
-  const [searchParams, setSearchParams] = useState<SearchParams>({ searchValue: '', team: null });
+  const [searchParams, setSearchParams] = useState<SearchParams>({ searchValue: '', team: null, product: null });
 
   const fetchTestCases = async () => {
     try {
@@ -32,7 +38,9 @@ const TestCaseRegisteredTab: React.FC = () => {
       const filteredTests = await TestCaseService.searchTestCase({
         tituloCenario: searchParams.searchValue,
         idTime: searchParams.team?.idTime ?? undefined,
+        idTproduto: searchParams.product?.idTproduto ?? undefined
       });
+      console.log(searchParams.product?.idTproduto)
       setTestCases(filteredTests);
       setSearchParams(searchParams);
     } catch (error) {
@@ -51,7 +59,7 @@ const TestCaseRegisteredTab: React.FC = () => {
         placeholder="Buscar cenário de teste"
         onSearch={handleSearch}
       />
-      <TestCaseTable testCases={testCases} fetchTestCases={fetchTestCases}/>
+      <TestCaseTable testCases={testCases} fetchTestCases={fetchTestCases} />
     </div>
   );
 };
