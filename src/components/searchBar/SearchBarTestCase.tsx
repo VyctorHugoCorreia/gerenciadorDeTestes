@@ -1,21 +1,10 @@
 // SearchBar.tsx
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import TeamsDropDown from '../Dropdown/TeamsDropDown';
-import '../../styles/SearchBarTeams.css';
 import ProductDropDown from '../Dropdown/ProductDropDown';
-
-interface SearchBarProps {
-  placeholder: string;
-  onSearch: (searchParams: SearchParams) => void;
-}
-
-interface SearchParams {
-  searchValue: string;
-  team: Team | null;
-  product: Product | null;
-}
+import '../../styles/SearchBarTeams.css';
 
 interface Team {
   idTime: number;
@@ -24,6 +13,17 @@ interface Team {
 
 export interface Product {
   idTproduto: number;
+}
+
+interface SearchParams {
+  searchValue: string;
+  team: Team | null;
+  product: Product | null;
+}
+
+interface SearchBarProps {
+  placeholder: string;
+  onSearch: (searchParams: SearchParams) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
@@ -36,7 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
     onSearch({ searchValue, team: selectedTeam, product: selectedProduct });
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
 
@@ -47,9 +47,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
   const handleSelectProduct = (product: Product | string | null) => {
     setSelectedProduct(typeof product === 'string' ? null : product);
   };
+
   return (
     <div>
-      <div className="dropdown-container ">
+      <div className="dropdown-container">
         <div className='dropdown'>
           <TeamsDropDown onSelectTeam={handleSelectTeam} selectedTeam={selectedTeam?.idTime || null} />
         </div>
@@ -57,7 +58,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
           <ProductDropDown
             onSelectProduct={(selectedProductId) => {
               setSelectedProductId(selectedProductId);
-              handleSelectProduct(selectedProductId !== null ? { idTproduto: selectedProductId} : null);
+              handleSelectProduct(selectedProductId !== null ? { idTproduto: selectedProductId } : null);
             }}
             selectedTeamId={selectedTeam?.idTime}
             disabled={false}
