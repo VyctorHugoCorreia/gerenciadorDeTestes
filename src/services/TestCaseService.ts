@@ -1,4 +1,3 @@
-// TestCaseService.ts
 import axios, { AxiosError } from 'axios';
 
 const BASE_URL = 'http://localhost:8080';
@@ -6,7 +5,9 @@ const BASE_URL = 'http://localhost:8080';
 interface SearchParams {
   tituloCenario?: string;
   idTime?: number;
-  idTproduto?:number
+  idTproduto?: number;
+  idFuncionalidade?: number;
+  idPlano?: number;
   idCenario?: number;
   idSuite?: number;
 }
@@ -25,12 +26,14 @@ class TestCaseService {
   }
 
   static async searchTestCase(params: SearchParams = {}): Promise<any> {
-    const { tituloCenario, idTime,idTproduto, idCenario, idSuite } = params;
+    const { tituloCenario, idTime, idTproduto, idFuncionalidade, idPlano, idCenario, idSuite } = params;
     const url = '/api/cenarioDeTeste';
 
     const requestParams: Record<string, any> = {
       idTime,
       idTproduto,
+      idFuncionalidade,
+      idPlano,
       idCenario,
       idSuite,
     };

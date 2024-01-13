@@ -14,15 +14,27 @@ export interface Product {
   idTproduto: number;
 }
 
+export interface Feature {
+  idFuncionalidade: number;
+}
+
+export interface TestPlan {
+  idPlano: number;
+}
+
+
 interface SearchParams {
   searchValue: string;
   team: Team | null;
   product: Product | null;
+  feature: Feature | null;
+  testPlan: TestPlan | null;
 }
+
 
 const TestCaseRegisteredTab: React.FC = () => {
   const [testCases, setTestCases] = useState<any[]>([]);
-  const [searchParams, setSearchParams] = useState<SearchParams>({ searchValue: '', team: null, product: null });
+  const [searchParams, setSearchParams] = useState<SearchParams>({ searchValue: '', team: null, product: null, feature: null, testPlan: null });
 
   const fetchTestCases = async () => {
     try {
@@ -38,8 +50,11 @@ const TestCaseRegisteredTab: React.FC = () => {
       const filteredTests = await TestCaseService.searchTestCase({
         tituloCenario: searchParams.searchValue,
         idTime: searchParams.team?.idTime ?? undefined,
-        idTproduto: searchParams.product?.idTproduto ?? undefined
+        idTproduto: searchParams.product?.idTproduto ?? undefined,
+        idFuncionalidade: searchParams.feature?.idFuncionalidade ?? undefined,
+        idPlano: searchParams.testPlan?.idPlano ?? undefined
       });
+
       console.log(searchParams.product?.idTproduto)
       setTestCases(filteredTests);
       setSearchParams(searchParams);

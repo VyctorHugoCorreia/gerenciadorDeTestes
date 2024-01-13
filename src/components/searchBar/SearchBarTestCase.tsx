@@ -4,7 +4,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import TeamsDropDown from '../Dropdown/TeamsDropDown';
 import ProductDropDown from '../Dropdown/ProductDropDown';
+import FeatureDropDown from '../Dropdown/FeatureDropDown';
 import '../../styles/SearchBarTeams.css';
+import TestPlanDropDown from '../Dropdown/TestPlanDropDown';
 
 interface Team {
   idTime: number;
@@ -15,10 +17,21 @@ export interface Product {
   idTproduto: number;
 }
 
+export interface Feature {
+  idFuncionalidade: number;
+}
+
+export interface TestPlan {
+  idPlano: number;
+}
+
+
 interface SearchParams {
   searchValue: string;
   team: Team | null;
   product: Product | null;
+  feature: Feature | null;
+  testPlan: TestPlan | null;
 }
 
 interface SearchBarProps {
@@ -31,9 +44,19 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+  const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
+  const [selectedTestPlan, setSelectedTestPlan] = useState<TestPlan | null>(null);
+
+
 
   const handleSearch = () => {
-    onSearch({ searchValue, team: selectedTeam, product: selectedProduct });
+    onSearch({
+      searchValue,
+      team: selectedTeam,
+      product: selectedProduct,
+      feature: selectedFeature,
+      testPlan: selectedTestPlan,
+    });
   };
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +71,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
     setSelectedProduct(typeof product === 'string' ? null : product);
   };
 
+  const handleSelectFeature = (feature: Feature | null) => {
+    setSelectedFeature(feature);
+  };
+
+  const handleSelectTestPlan = (testPlan: TestPlan | null) => {
+    setSelectedTestPlan(testPlan);
+  };
+
+
   return (
     <div>
       <div className="dropdown-container">
@@ -61,10 +93,29 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
               handleSelectProduct(selectedProductId !== null ? { idTproduto: selectedProductId } : null);
             }}
             selectedTeamId={selectedTeam?.idTime}
-            disabled={false}
+            disabled={!selectedTeam}
             isEditing={false}
-            resetDropdown={false}
+            resetDropdown={!selectedTeam}
             selectedProductId={selectedProductId || null}
+          />
+        </div>
+        <div className='dropdown'>
+          <FeatureDropDown
+            selectedProductId={selectedProductId}
+            onSelectFeature={(selectedFeature) => handleSelectFeature(selectedFeature !== null ? { idFuncionalidade: selectedFeature } : null)}
+            disabled={!selectedProductId}
+            isEditing={false}
+            selectedFeatureId={selectedFeature?.idFuncionalidade || null}
+          />
+        </div>
+
+        <div className='dropdown'>
+          <TestPlanDropDown
+            selectedProductId={selectedProductId}
+            onSelectTestPlan={(selectedTestPlan) => handleSelectTestPlan(selectedTestPlan !== null ? { idPlano: selectedTestPlan } : null)}
+            disabled={!selectedProductId}
+            isEditing={false}
+            selectedTestPlanId={selectedTestPlan?.idPlano || null}
           />
         </div>
       </div>
