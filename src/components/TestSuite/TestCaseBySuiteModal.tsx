@@ -1,15 +1,23 @@
 import React, { useState, useEffect, MouseEvent } from 'react';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import '../../styles/Table.css'
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import Paper from '@mui/material/Paper';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import TestCaseService from '../../services/TestCaseService';
 import Toast from '../Toast';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import TablePagination from '@mui/material/TablePagination';
+import ExecuteTestCaseModal from '../TestCase/ExecuteTestCaseModal';
+
 import { styled } from '@mui/system';
 
-import ExecuteTestCaseModal from '../TestCase/ExecuteTestCaseModal';
 interface TestCaseModalProps {
     open: boolean;
     onClose?: () => void;
@@ -23,6 +31,9 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, idSuite, f
     const [showToast, setShowToast] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [showExecuteModal, setShowExecuteModal] = useState(false);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [totalItems, setTotalItems] = useState(testCases.length);
 
     const WhiteRefreshIcon = styled(RefreshIcon)({
         color: 'white',
@@ -58,28 +69,21 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, idSuite, f
             [idSuite]: null,
         });
     };
+
     const fetchTestCase = async () => {
         try {
-            const testCaseData = await TestCaseService.searchTestCase({idSuite});
+            const testCaseData = await TestCaseService.searchTestCase({ idSuite });
             setTestCases(testCaseData);
+            setTotalItems(testCaseData.length);
         } catch (error) {
             console.error('Erro ao buscar casos de teste:', error);
         }
     };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const testCaseData = await TestCaseService.searchTestCase({idSuite});
-                setTestCases(testCaseData);
-            } catch (error) {
-                console.error('Erro ao buscar casos de teste:', error);
-            }
-        };
         if (open) {
-            fetchData();
+            fetchTestCase();
         }
-
     }, [open]);
 
     const handleDeleteTestCase = async (id: number) => {
@@ -91,11 +95,18 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, idSuite, f
             fetchTestSuites();
         } catch (error) {
             console.error(error);
-        }
-        finally {
+        } finally {
             setLoading(false);
         }
+    };
 
+    const handleChangePage = (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
     };
 
     return (
@@ -107,53 +118,71 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, idSuite, f
         >
             <div className='team-modal'>
                 <h2 id="test-case-modal-title">Casos de Teste</h2>
-                <table className="table-container">
-                    <thead>
-                        <tr>
-                            <th>Título do cenário</th>
-                            <th>Status do cenário</th>
-                            <th>Status da automação</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {testCases.map((testCase, index) => (
-                            <tr key={index}>
-                                <td>{testCase.tituloCenario}</td>
-                                <td>{testCase.idStatus.descStatus}</td>
-                                <td>{testCase.idAutomatizado.descAutomatizado}</td>
-                                <td className="action-buttons">
-                                    <div>
-                                        <IconButton
-                                            aria-label="Opções"
-                                            aria-controls={`menu-options-${testCase.idCenario}`}
-                                            aria-haspopup="true"
-                                            onClick={(event) => handleClick(event, testCase.idCenario)}
-                                        >
-                                            <MoreVertIcon />
-                                        </IconButton>
-                                        <Menu
-                                            id={`menu-options-${testCase.idCenario}`}
-                                            anchorEl={anchorElMap[testCase.idCenario]}
-                                            open={Boolean(anchorElMap[testCase.idCenario])}
-                                            onClose={() => handleClose(testCase.idCenario)}
-                                        >
-                                            <MenuItem onClick={() => handleEditTestCase(testCase.idCenario)}>Editar</MenuItem>
-                                            <MenuItem onClick={() => handleExecuteTestCase()}>Executar cenário</MenuItem>
-                                            <MenuItem disabled={loading} onClick={() => handleDeleteTestCase(testCase.idCenario)}>{loading ? 'Excluindo...' : 'Excluir'}</MenuItem>
-                                            <MenuItem onClick={() => handleDetailsTestCase(testCase.idCenario)}>Detalhes</MenuItem>
-                                            <ExecuteTestCaseModal
-                                                open={showExecuteModal}
-                                                onClose={handleCloseModal}
-                                                idCenario={Number(testCase.idCenario)}
-                                            />
-                                        </Menu>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Título do cenário</TableCell>
+                                <TableCell>Status do cenário</TableCell>
+                                <TableCell>Status da automação</TableCell>
+                                <TableCell>Ações</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {testCases.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((testCase, index) => (
+                                <TableRow key={index}>
+                                    <TableCell>{testCase.tituloCenario}</TableCell>
+                                    <TableCell>{testCase.idStatus.descStatus}</TableCell>
+                                    <TableCell>{testCase.idAutomatizado.descAutomatizado}</TableCell>
+                                    <TableCell className="action-buttons">
+                                        <div>
+                                            <IconButton
+                                                aria-label="Opções"
+                                                aria-controls={`menu-options-${testCase.idCenario}`}
+                                                aria-haspopup="true"
+                                                onClick={(event) => handleClick(event, testCase.idCenario)}
+                                            >
+                                                <MoreVertIcon />
+                                            </IconButton>
+                                            <Menu
+                                                id={`menu-options-${testCase.idCenario}`}
+                                                anchorEl={anchorElMap[testCase.idCenario]}
+                                                open={Boolean(anchorElMap[testCase.idCenario])}
+                                                onClose={() => handleClose(testCase.idCenario)}
+                                            >
+                                                <MenuItem onClick={() => handleEditTestCase(testCase.idCenario)}>Editar</MenuItem>
+                                                <MenuItem onClick={() => handleExecuteTestCase()}>Executar cenário</MenuItem>
+                                                <MenuItem disabled={loading} onClick={() => handleDeleteTestCase(testCase.idCenario)}>{loading ? 'Excluindo...' : 'Excluir'}</MenuItem>
+                                                <MenuItem onClick={() => handleDetailsTestCase(testCase.idCenario)}>Detalhes</MenuItem>
+                                                <ExecuteTestCaseModal
+                                                    open={showExecuteModal}
+                                                    onClose={handleCloseModal}
+                                                    idCenario={Number(testCase.idCenario)}
+                                                />
+                                            </Menu>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+
+                    <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={totalItems}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    labelRowsPerPage="Itens por página"
+                    labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+                </TableContainer>
+
+               
+
                 <div className="button-container">
                     <Button variant="contained" onClick={onClose} className="team-modal-button">
                         Fechar

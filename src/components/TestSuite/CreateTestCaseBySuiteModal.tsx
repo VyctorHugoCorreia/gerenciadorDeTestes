@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -36,6 +36,14 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
     const [tags, setTags] = useState<string[]>(['']);
     const [steps, setSteps] = useState<string[]>(['']);
     const [toastMessage, setToastMessage] = useState('');
+    const modalRef = useRef<HTMLDivElement | null>(null); 
+
+    const scrollToTop = () => {
+        if (modalRef.current) {
+            modalRef.current.scrollTop = 0;
+        }
+    };
+
 
     useEffect(() => {
         const isAnyFieldEmpty = () => {
@@ -63,6 +71,7 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
         if (open && testSuiteId) {
             fetchTestSuiteById();
             clearFields();
+            scrollToTop();
         }
     }, [open, testSuiteId]);
 
@@ -138,16 +147,16 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
 
                 const response = await TestCaseService.addTestCase(data);
                 console.log(response);
-                
+
                 const dataHistory = {
 
                     idCenario: response.idCenario,
                     statusBefore: selectedScenarioStatusType || 0,
                     statusAfter: selectedScenarioStatusType || 0
-            
-                  }
-            
-                  const responseHistory = await HistoryStatusScenarioService.addHistoryStatusScenario(dataHistory);
+
+                }
+
+                const responseHistory = await HistoryStatusScenarioService.addHistoryStatusScenario(dataHistory);
 
                 setToastMessage('Caso de teste cadastrado com sucesso!');
                 setShowToast(true);
@@ -163,6 +172,7 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
     const handleCreateTestCase = async () => {
         try {
             await fetchTestSuiteById();
+            scrollToTop();
             handleCadastro();
             setShowToast(true);
             // onClose && onClose();
@@ -178,8 +188,9 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
                 onClose={onClose}
                 aria-labelledby="team-modal-title"
                 aria-describedby="team-modal-description"
+               
             >
-                <div className="team-modal">
+                <div className="team-modal"  ref={modalRef} >
                     <h2 id="team-modal-title">Adicionar cenário de teste</h2>
 
                     <div className='cardboard-style container' style={{ width: '915px', height: '100%' }}>
@@ -304,18 +315,17 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
                         </Button>
                     </div>
 
+                    {showToast && (
+                        <div>
+                            <Toast
+                                message="Operação realizada com sucesso!"
+                                showToast={showToast}
+                                setShowToast={setShowToast}
+                            />
+                        </div>
+                    )}
                 </div>
             </Modal>
-
-            {showToast && (
-                <div>
-                    <Toast
-                        message="Operação realizada com sucesso!"
-                        showToast={showToast}
-                        setShowToast={setShowToast}
-                    />
-                </div>
-            )}
         </>
     );
 

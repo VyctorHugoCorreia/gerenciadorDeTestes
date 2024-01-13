@@ -78,6 +78,7 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFeatureName(event.target.value);
     setError('');
+    setIsButtonDisabled(event.target.value === undefined);
     setIsButtonDisabled(event.target.value === '');
   };
 

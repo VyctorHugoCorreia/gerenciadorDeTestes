@@ -26,7 +26,8 @@ const TeamModal: React.FC<TeamModalProps> = ({ open, onClose, fetchTimes, select
     if (open) {
       setTeamName(selectedTeam?.name || '');
       setError('');
-      setIsButtonDisabled(selectedTeam?.name === '');
+      setIsButtonDisabled(selectedTeam?.name === undefined );
+      console.log(selectedTeam?.name)
     }
   }, [open, selectedTeam]);
 

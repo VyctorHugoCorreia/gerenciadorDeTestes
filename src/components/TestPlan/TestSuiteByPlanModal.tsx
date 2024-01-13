@@ -1,15 +1,24 @@
 import React, { useState, useEffect, MouseEvent } from 'react';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import '../../styles/Table.css'
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import Paper from '@mui/material/Paper';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton, Menu, MenuItem } from '@mui/material';
+import TestSuiteService from '../../services/TestSuiteService';
 import Toast from '../Toast';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { styled } from '@mui/system';
-import TestSuiteService from '../../services/TestSuiteService';
+import TablePagination from '@mui/material/TablePagination';
 import TestCaseBySuiteModal from '../TestSuite/TestCaseBySuiteModal';
 import CreateTestCaseBySuiteModal from '../TestSuite/CreateTestCaseBySuiteModal';
+
+import { styled } from '@mui/system';
+
 interface TestSuiteModalProps {
     open: boolean;
     onClose?: () => void;
@@ -25,15 +34,16 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({ open, onClose, testPlan
     const [selectedTestSuiteId, setSelectedTestSuiteId] = useState<number | null>(null);
     const [isCreateTestCaseModalOpen, setIsCreateTestCaseModalOpen] = useState(false);
     const [selectedCreateTestSuiteId, setSelectedCreateTestSuiteId] = useState<number | null>(null);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [totalItems, setTotalItems] = useState(testSuite.length);
 
     const WhiteRefreshIcon = styled(RefreshIcon)({
         color: 'white',
     });
 
-
     const handleViewTestCase = async (testSuiteId: number) => {
         setSelectedTestSuiteId(testSuiteId);
-
     };
 
     const handleCreateTestCase = async (testSuiteId: number) => {
@@ -59,28 +69,21 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({ open, onClose, testPlan
             [testSuiteId]: null,
         });
     };
+
     const fetchTestSuite = async () => {
         try {
             const testSuiteData = await TestSuiteService.getTestSuitesByPlan(testPlanId);
             setTestSuites(testSuiteData);
+            setTotalItems(testSuiteData.length);
         } catch (error) {
             console.error('Erro ao buscar suites de teste:', error);
         }
     };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const testPlanData = await TestSuiteService.getTestSuitesByPlan(testPlanId);
-                setTestSuites(testPlanData);
-            } catch (error) {
-                console.error('Erro ao buscar suites de teste:', error);
-            }
-        };
         if (open) {
-            fetchData();
+            fetchTestSuite();
         }
-
     }, [open]);
 
     const handleDeleteTestSuite = async (id: number) => {
@@ -100,6 +103,15 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({ open, onClose, testPlan
 
     };
 
+    const handleChangePage = (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
     return (
         <Modal
             open={open}
@@ -109,52 +121,67 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({ open, onClose, testPlan
         >
             <div className='team-modal'>
                 <h2 id="test-case-modal-title">Suites de Teste</h2>
-                <table className="table-container">
-                    <thead>
-                        <tr>
-                            <th>Nome da suite</th>
-                            <th>Quantidade de cenários</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {testSuite.map((testSuite, index) => (
-                            <tr key={index}>
-                                <td>{testSuite.descSuite}</td>
-                                <td>{testSuite.quantidadeCenarios}</td>
-                                <td className="action-buttons">
-                                    <div>
-                                        <IconButton
-                                            aria-label="Opções"
-                                            aria-controls={`menu-options-${testSuite.idSuite}`}
-                                            aria-haspopup="true"
-                                            onClick={(event) => handleClick(event, testSuite.idSuite)}
-                                        >
-                                            <MoreVertIcon />
-                                        </IconButton>
-                                        <Menu
-                                            id={`menu-options-${testSuite.idSuite}`}
-                                            anchorEl={anchorElMap[testSuite.idSuite]}
-                                            open={Boolean(anchorElMap[testSuite.idSuite])}
-                                            onClose={() => handleClose(testSuite.idSuite)}
-                                        >
 
-                                            <MenuItem disabled={loading} onClick={() => handleDeleteTestSuite(testSuite.idSuite)}>{loading ? 'Excluindo...' : 'Excluir'}</MenuItem>
-
-                                            <MenuItem
-                                                disabled={testSuite.quantidadeCenarios === 0}
-                                                onClick={() => handleViewTestCase(testSuite.idSuite)}
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Nome da suite</TableCell>
+                                <TableCell>Quantidade de cenários</TableCell>
+                                <TableCell>Ações</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {testSuite.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((testSuite, index) => (
+                                <TableRow key={index}>
+                                    <TableCell>{testSuite.descSuite}</TableCell>
+                                    <TableCell>{testSuite.quantidadeCenarios}</TableCell>
+                                    <TableCell className="action-buttons">
+                                        <div>
+                                            <IconButton
+                                                aria-label="Opções"
+                                                aria-controls={`menu-options-${testSuite.idSuite}`}
+                                                aria-haspopup="true"
+                                                onClick={(event) => handleClick(event, testSuite.idSuite)}
                                             >
-                                                Visualizar cenários
-                                            </MenuItem>
-                                            <MenuItem onClick={() => handleCreateTestCase(testSuite.idSuite)}>Cadastrar cenário</MenuItem>
-                                        </Menu>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                                                <MoreVertIcon />
+                                            </IconButton>
+                                            <Menu
+                                                id={`menu-options-${testSuite.idSuite}`}
+                                                anchorEl={anchorElMap[testSuite.idSuite]}
+                                                open={Boolean(anchorElMap[testSuite.idSuite])}
+                                                onClose={() => handleClose(testSuite.idSuite)}
+                                            >
+
+                                                <MenuItem disabled={loading} onClick={() => handleDeleteTestSuite(testSuite.idSuite)}>{loading ? 'Excluindo...' : 'Excluir'}</MenuItem>
+
+                                                <MenuItem
+                                                    disabled={testSuite.quantidadeCenarios === 0}
+                                                    onClick={() => handleViewTestCase(testSuite.idSuite)}
+                                                >
+                                                    Visualizar cenários
+                                                </MenuItem>
+                                                <MenuItem onClick={() => handleCreateTestCase(testSuite.idSuite)}>Cadastrar cenário</MenuItem>
+                                            </Menu>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={totalItems}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        rowsPerPage={rowsPerPage}
+                        labelRowsPerPage="Itens por página"
+                        labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </TableContainer>
 
                 <div className="button-container">
                     <Button variant="contained" onClick={onClose} className="team-modal-button">
@@ -171,28 +198,23 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({ open, onClose, testPlan
                     setShowToast={setShowToast}
                 />
 
-                {
-                    selectedTestSuiteId !== null && (
-                        <TestCaseBySuiteModal
-                            open={true}
-                            idSuite={selectedTestSuiteId}
-                            onClose={handleCloseModal}
-                            fetchTestSuites={fetchTestSuite}
-                        />
-                    )
-                }
+                {selectedTestSuiteId !== null && (
+                    <TestCaseBySuiteModal
+                        open={true}
+                        idSuite={selectedTestSuiteId}
+                        onClose={handleCloseModal}
+                        fetchTestSuites={fetchTestSuite}
+                    />
+                )}
 
-                {
-
+                {isCreateTestCaseModalOpen && (
                     <CreateTestCaseBySuiteModal
                         open={isCreateTestCaseModalOpen}
-                        onClose={() => {
-                            setIsCreateTestCaseModalOpen(false);
-                        }}
+                        onClose={() => setIsCreateTestCaseModalOpen(false)}
                         testSuiteId={selectedCreateTestSuiteId}
                         fetchTestSuites={fetchTestSuite}
                     />
-                }
+                )}
             </div>
 
         </Modal>

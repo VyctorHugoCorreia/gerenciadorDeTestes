@@ -33,7 +33,7 @@ class ProductService {
     return this.request('get', '/api/produto', undefined, { idTime: searchValue });
   }
 
-  static async editProduct(productId: number, descProduto: string): Promise<any> {
+  static async editProduct(productId: number,  descProduto: string): Promise<any> {
     return this.request('put', `/api/produto/${productId}`, { descProduto });
   }
 
