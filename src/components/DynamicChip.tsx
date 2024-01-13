@@ -3,8 +3,8 @@ import { FaPlus, FaMinus } from 'react-icons/fa';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
-import '../styles/dynamicChip.css';
 import { Clear } from '@mui/icons-material';
+import '../styles/DynamicChip.css'
 
 interface DynamicListProps {
   items: string[];
