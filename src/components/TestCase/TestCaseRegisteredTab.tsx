@@ -35,6 +35,14 @@ export interface ScenarioType {
   idTpcenario: number;
 }
 
+export interface PlataformType {
+  idPlataforma: number;
+}
+
+export interface StatusAutomation {
+  idAutomatizado: number;
+}
+
 interface SearchParams {
   searchValue: string;
   team: Team | null;
@@ -44,12 +52,27 @@ interface SearchParams {
   testSuite: TestSuite | null;
   scenarioStatus: ScenarioStatus | null;
   scenarioType: ScenarioType | null;
+  plataformType: PlataformType | null;
+  statusAutomation: StatusAutomation  | null;
 }
 
 
 const TestCaseRegisteredTab: React.FC = () => {
   const [testCases, setTestCases] = useState<any[]>([]);
-  const [searchParams, setSearchParams] = useState<SearchParams>({ searchValue: '', team: null, product: null, feature: null, testPlan: null, testSuite: null,scenarioStatus: null, scenarioType: null });
+  const [searchParams, setSearchParams] = useState<SearchParams>(
+    {
+      searchValue: '',
+      team: null,
+      product: null,
+      feature: null,
+      testPlan: null,
+      testSuite: null,
+      scenarioStatus: null,
+      scenarioType: null,
+      plataformType: null,
+      statusAutomation: null
+    }
+  );
 
   const fetchTestCases = async () => {
     try {
@@ -70,7 +93,9 @@ const TestCaseRegisteredTab: React.FC = () => {
         idPlano: searchParams.testPlan?.idPlano ?? undefined,
         idSuite: searchParams.testSuite?.idSuite ?? undefined,
         idStatus: searchParams.scenarioStatus?.idStatus ?? undefined,
-        idTpcenario: searchParams.scenarioType?.idTpcenario ?? undefined
+        idTpcenario: searchParams.scenarioType?.idTpcenario ?? undefined,
+        idPlataforma: searchParams.plataformType?.idPlataforma ?? undefined,
+        idAutomatizado: searchParams.statusAutomation?.idAutomatizado ?? undefined
       });
 
       console.log(searchParams.scenarioStatus?.idStatus)

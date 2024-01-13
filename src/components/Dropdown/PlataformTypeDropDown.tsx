@@ -41,8 +41,9 @@ const PlataformTypeDropDown: React.FC<PlataformTypeDropDownProps> = ({
 
   const handlePlataformTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedPlataformTypeId = parseInt(event.target.value, 10);
-    onSelectPlataformType(selectedPlataformTypeId);
-    setSelectedValue(selectedPlataformTypeId);
+    const newValue = isNaN(selectedPlataformTypeId) ? null : selectedPlataformTypeId;
+    onSelectPlataformType(newValue);
+    setSelectedValue(newValue);
   };
 
   return (

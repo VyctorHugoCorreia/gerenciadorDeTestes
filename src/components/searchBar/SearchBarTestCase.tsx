@@ -10,6 +10,8 @@ import TestPlanDropDown from '../Dropdown/TestPlanDropDown';
 import TestSuiteDropDown from '../Dropdown/TestSuiteDropDown';
 import ScenarioStatusDropDown from '../Dropdown/ScenarioStatusDropDown';
 import ScenarioTypeDropDown from '../Dropdown/ScenarioTypeDropDown';
+import PlataformTypeDropDown from '../Dropdown/PlataformTypeDropDown';
+import StatusAutomationTypeDropDown from '../Dropdown/StatusAutomationDropDown';
 
 interface Team {
   idTime: number;
@@ -40,6 +42,15 @@ export interface ScenarioType {
   idTpcenario: number;
 }
 
+export interface PlataformType {
+  idPlataforma: number;
+}
+
+export interface StatusAutomation {
+  idAutomatizado: number;
+}
+
+
 
 
 interface SearchParams {
@@ -51,6 +62,8 @@ interface SearchParams {
   testSuite: TestSuite | null;
   scenarioStatus: ScenarioStatus | null;
   scenarioType: ScenarioType | null;
+  plataformType: PlataformType | null;
+  statusAutomation: StatusAutomation | null;
 }
 
 interface SearchBarProps {
@@ -68,7 +81,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
   const [selectedTestSuite, setSelectedTestSuite] = useState<TestSuite | null>(null);
   const [selectedScenarioStatus, setSelectedScenarioStatus] = useState<ScenarioStatus | null>(null);
   const [selectedScenarioType, setSelectedScenarioType] = useState<ScenarioType | null>(null);
+  const [selectedPlataformType, setSelectedPlataformType] = useState<PlataformType | null>(null);
+  const [selectedStatusAutomationType, setSelectedStatusAutomationType] = useState<StatusAutomation | null>(null);
 
+  
 
 
   const handleSearch = () => {
@@ -80,7 +96,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
       testPlan: selectedTestPlan,
       testSuite: selectedTestSuite,
       scenarioStatus: selectedScenarioStatus,
-      scenarioType: selectedScenarioType
+      scenarioType: selectedScenarioType,
+      plataformType: selectedPlataformType,
+      statusAutomation: selectedStatusAutomationType
     });
   };
 
@@ -116,6 +134,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
     setSelectedScenarioType(scenarioType);
   };
 
+  const handleSelectPlataformType = (plataformType: PlataformType | null) => {
+    setSelectedPlataformType(plataformType);
+  };
+
+  const handleSelectStatusAutomationType = (statusAutomation: StatusAutomation | null) => {
+    setSelectedStatusAutomationType(statusAutomation);
+  };
 
   return (
     <div>
@@ -155,6 +180,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
             selectedTestPlanId={selectedTestPlan?.idPlano || null}
           />
         </div>
+
+
       </div>
 
       <div className='dropdown-container'>
@@ -186,11 +213,32 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
           />
         </div>
 
+        <div className='dropdown'>
+          <PlataformTypeDropDown
+            onSelectPlataformType={(selectedPlataformType) => handleSelectPlataformType(selectedPlataformType !== null ? { idPlataforma: selectedPlataformType } : null)}
+            disabled={false}
+            isEditing={false}
+            selectedPlataformTypeId={selectedPlataformType?.idPlataforma || null}
+          />
+        </div>
+
 
 
 
 
       </div>
+
+
+      <div className="dropdown-container">
+          <div className="dropdown">
+          <StatusAutomationTypeDropDown
+            onSelectStatusAutomationType={ (selectedStatusAutomationType) => handleSelectStatusAutomationType(selectedStatusAutomationType !== null ? { idAutomatizado: selectedStatusAutomationType } : null)}
+            disabled={false}
+            isEditing={false}
+            selectedStatusAutomationTypeId={selectedStatusAutomationType?.idAutomatizado || null}
+          />
+          </div>
+        </div>
 
       <div className="search-container">
         <TextField

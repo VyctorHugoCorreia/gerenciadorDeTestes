@@ -41,8 +41,9 @@ const StatusAutomationTypeDropDown: React.FC<StatusAutomationTypeDropDownProps> 
 
   const handleStatusAutomationTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedStatusAutomationTypeId = parseInt(event.target.value, 10);
-    onSelectStatusAutomationType(selectedStatusAutomationTypeId);
-    setSelectedValue(selectedStatusAutomationTypeId);
+    const newValue = isNaN(selectedStatusAutomationTypeId) ? null : selectedStatusAutomationTypeId;
+    onSelectStatusAutomationType(newValue);
+    setSelectedValue(newValue);
   };
 
   return (
