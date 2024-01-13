@@ -29,26 +29,51 @@ const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const productsData = await ProductService.getProductsByTeam(idTime);
-        setProducts(productsData);
-
-        const featureData = await FeatureService.getFeatureByTeam(idTime);
-        setFeature(featureData)
-
-        const testPlanData = await TestPlanService.getTestPlansByTeam(idTime);
-        setTestPlan(testPlanData)
-
-        const testSuiteData = await TestSuiteService.getTestSuitesByTeam(idTime);
-        setTestSuite(testSuiteData)
-
-        const ScenarioTypeData = await ScenarioTypeService.getScenarioTypeByTeam(idTime);
-        setScenarioType(ScenarioTypeData)
-
-        const ScenarioStatusData = await ScenarioStatusService.getStatusTypesByTeam(idTime);
-        setScenarioStatus(ScenarioStatusData)
-
-        const ScenarioStatusAutomationData = await StatusAutomationService.getStatusTypesByTeam(idTime);
-        setScenarioStatusAutomation(ScenarioStatusAutomationData)
+        if(idTime == "dashboard"){
+          const productsData = await ProductService.getAllProducts();
+          setProducts(productsData);
+  
+          const featureData = await FeatureService.getAllFeatures();
+          setFeature(featureData)
+  
+          const testPlanData = await TestPlanService.getAllTestPlan();
+          setTestPlan(testPlanData)
+  
+          const testSuiteData = await TestSuiteService.getAllTestSuite();
+          setTestSuite(testSuiteData)
+  
+          const ScenarioTypeData = await ScenarioTypeService.getScenarioTypes();
+          setScenarioType(ScenarioTypeData)
+  
+          const ScenarioStatusData = await ScenarioStatusService.getStatusTypes();
+          setScenarioStatus(ScenarioStatusData)
+  
+          const ScenarioStatusAutomationData = await StatusAutomationService.getStatusTypes();
+          setScenarioStatusAutomation(ScenarioStatusAutomationData)
+        }
+        else{
+          const productsData = await ProductService.getProductsByTeam(idTime);
+          setProducts(productsData);
+  
+          const featureData = await FeatureService.getFeatureByTeam(idTime);
+          setFeature(featureData)
+  
+          const testPlanData = await TestPlanService.getTestPlansByTeam(idTime);
+          setTestPlan(testPlanData)
+  
+          const testSuiteData = await TestSuiteService.getTestSuitesByTeam(idTime);
+          setTestSuite(testSuiteData)
+  
+          const ScenarioTypeData = await ScenarioTypeService.getScenarioTypeByTeam(idTime);
+          setScenarioType(ScenarioTypeData)
+  
+          const ScenarioStatusData = await ScenarioStatusService.getStatusTypesByTeam(idTime);
+          setScenarioStatus(ScenarioStatusData)
+  
+          const ScenarioStatusAutomationData = await StatusAutomationService.getStatusTypesByTeam(idTime);
+          setScenarioStatusAutomation(ScenarioStatusAutomationData)
+        }
+       
       } catch (error) {
         console.error("Erro ao buscar os produtos:", error);
       }
