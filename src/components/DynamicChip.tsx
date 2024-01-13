@@ -44,7 +44,7 @@ const DynamicList: React.FC<DynamicListProps> = ({ items, setItems }) => {
                 />
               </div>
             }
-            onDelete={() => removeItem(index)}
+            onDelete={index !== 0 ? () => removeItem(index) : undefined}
             color="primary"
             className="chip"
             deleteIcon={<Clear className="delete-icon" />}
