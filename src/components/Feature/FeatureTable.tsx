@@ -5,6 +5,8 @@ import ErrorPopup from '../ErrorPopup';
 import FeatureModal from './FeatureModal';
 import Toast from '../Toast';
 import TablePagination from '@mui/material/TablePagination';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { IconButton, Menu, MenuItem } from '@mui/material';
 
 export interface Feature {
   idFuncionalidade: number;
@@ -47,21 +49,20 @@ const FeatureTable: React.FC<FeatureTableProps> = ({ features, fetchFeatures }) 
   const [showToast, setShowToast] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [anchorElMap, setAnchorElMap] = useState<{ [key: number]: HTMLElement | null }>({});
 
-  const handleDeleteFeature = async (featureId: number) => {
-    try {
-      await FeatureService.deleteFeature(featureId);
-      fetchFeatures();
-      setShowToast(true);
-    } catch (err) {
-      console.error('Error deleting feature:', err);
-      setError(`${err}`);
-      setErrorPopupOpen(true);
-    }
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>, featureId: number) => {
+    setAnchorElMap({
+      ...anchorElMap,
+      [featureId]: event.currentTarget,
+    });
   };
 
-  const handleCloseErrorPopup = () => {
-    setErrorPopupOpen(false);
+  const handleClose = (featureId: number) => {
+    setAnchorElMap({
+      ...anchorElMap,
+      [featureId]: null,
+    });
   };
 
   const handleEditFeature = (feature: Feature) => {
@@ -82,6 +83,22 @@ const FeatureTable: React.FC<FeatureTableProps> = ({ features, fetchFeatures }) 
 
     setSelectedFeature(formattedFeature);
     setIsEditModalOpen(true);
+  };
+
+  const handleDeleteFeature = async (featureId: number) => {
+    try {
+      await FeatureService.deleteFeature(featureId);
+      fetchFeatures();
+      setShowToast(true);
+    } catch (err) {
+      console.error('Error deleting feature:', err);
+      setError(`${err}`);
+      setErrorPopupOpen(true);
+    }
+  };
+
+  const handleCloseErrorPopup = () => {
+    setErrorPopupOpen(false);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -115,8 +132,25 @@ const FeatureTable: React.FC<FeatureTableProps> = ({ features, fetchFeatures }) 
                   <td>{feature.descFuncionalidade}</td>
                   <td>{feature.idTproduto.descProduto}</td>
                   <td className="action-buttons">
-                    <button onClick={() => handleEditFeature(feature)}>Editar</button>
-                    <button onClick={() => handleDeleteFeature(feature.idFuncionalidade)}>Excluir</button>
+                    <div>
+                      <IconButton
+                        aria-label="Opções"
+                        aria-controls={`menu-options-${feature.idFuncionalidade}`}
+                        aria-haspopup="true"
+                        onClick={(event) => handleClick(event, feature.idFuncionalidade)}
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                      <Menu
+                        id={`menu-options-${feature.idFuncionalidade}`}
+                        anchorEl={anchorElMap[feature.idFuncionalidade]}
+                        open={Boolean(anchorElMap[feature.idFuncionalidade])}
+                        onClose={() => handleClose(feature.idFuncionalidade)}
+                      >
+                        <MenuItem onClick={() => handleEditFeature(feature)}>Editar</MenuItem>
+                        <MenuItem onClick={() => handleDeleteFeature(feature.idFuncionalidade)}>Excluir</MenuItem>
+                      </Menu>
+                    </div>
                   </td>
                 </tr>
               ))}
