@@ -15,6 +15,7 @@ import Toast from '../components/Toast';
 import TextField from '@mui/material/TextField';
 import TestCaseService from '../services/TestCaseService';
 import ScenarioTypeInfo from '../components/TestCase/ScenarioTypeInfo';
+import DynamicChip from '../components/DynamicChip';
 
 interface SelectedTeam {
     idTime: number;
@@ -100,7 +101,7 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
     useEffect(() => {
         const fetchTestCase = async () => {
             try {
-                const testCaseDetails = await TestCaseService.searchTestCase({idCenario});
+                const testCaseDetails = await TestCaseService.searchTestCase({ idCenario });
                 console.log(testCaseDetails)
                 if (testCaseDetails.length > 0) {
                     const firstTestCase = testCaseDetails[0];
@@ -327,14 +328,8 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
 
                 <div className="text-field-container ">
                     <span className='span-label'>Tags:</span>
-                    <DynamicList items={tags} setItems={setTags} />
+                    <DynamicChip items={tags} setItems={setTags} />
                 </div>
-
-
-
-
-
-
 
             </div>
 

@@ -14,6 +14,7 @@ import DynamicList from '../DynamicList';
 import ScenarioStatusDropDown from '../Dropdown/ScenarioStatusDropDown';
 import TestCaseService from '../../services/TestCaseService';
 import HistoryStatusScenarioService from '../../services/HistoryStatusScenarioService';
+import DynamicChip from '../DynamicChip';
 interface CreateTestCaseBySuiteModalProps {
     open: boolean;
     onClose?: () => void;
@@ -246,7 +247,7 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
 
                         <div className="text-field-container">
                             <span className='span-label'>Tags:</span>
-                            <DynamicList items={tags} setItems={setTags} />
+                            <DynamicChip items={tags} setItems={setTags} />
                         </div>
                     </div>
 
