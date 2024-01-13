@@ -7,6 +7,9 @@ import ProductDropDown from '../Dropdown/ProductDropDown';
 import FeatureDropDown from '../Dropdown/FeatureDropDown';
 import '../../styles/SearchBarTeams.css';
 import TestPlanDropDown from '../Dropdown/TestPlanDropDown';
+import TestSuiteDropDown from '../Dropdown/TestSuiteDropDown';
+import ScenarioStatusDropDown from '../Dropdown/ScenarioStatusDropDown';
+import ScenarioTypeDropDown from '../Dropdown/ScenarioTypeDropDown';
 
 interface Team {
   idTime: number;
@@ -25,6 +28,19 @@ export interface TestPlan {
   idPlano: number;
 }
 
+export interface TestSuite {
+  idSuite: number;
+}
+
+export interface ScenarioStatus {
+  idStatus: number;
+}
+
+export interface ScenarioType {
+  idTpcenario: number;
+}
+
+
 
 interface SearchParams {
   searchValue: string;
@@ -32,6 +48,9 @@ interface SearchParams {
   product: Product | null;
   feature: Feature | null;
   testPlan: TestPlan | null;
+  testSuite: TestSuite | null;
+  scenarioStatus: ScenarioStatus | null;
+  scenarioType: ScenarioType | null;
 }
 
 interface SearchBarProps {
@@ -46,6 +65,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
   const [selectedTestPlan, setSelectedTestPlan] = useState<TestPlan | null>(null);
+  const [selectedTestSuite, setSelectedTestSuite] = useState<TestSuite | null>(null);
+  const [selectedScenarioStatus, setSelectedScenarioStatus] = useState<ScenarioStatus | null>(null);
+  const [selectedScenarioType, setSelectedScenarioType] = useState<ScenarioType | null>(null);
 
 
 
@@ -56,6 +78,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
       product: selectedProduct,
       feature: selectedFeature,
       testPlan: selectedTestPlan,
+      testSuite: selectedTestSuite,
+      scenarioStatus: selectedScenarioStatus,
+      scenarioType: selectedScenarioType
     });
   };
 
@@ -77,6 +102,18 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
 
   const handleSelectTestPlan = (testPlan: TestPlan | null) => {
     setSelectedTestPlan(testPlan);
+  };
+
+  const handleSelectTestSuite = (testSuite: TestSuite | null) => {
+    setSelectedTestSuite(testSuite);
+  };
+
+  const handleSelectScenarioStatusType = (scenarioStatus: ScenarioStatus | null) => {
+    setSelectedScenarioStatus(scenarioStatus);
+  };
+
+  const handleSelectScenarioType = (scenarioType: ScenarioType | null) => {
+    setSelectedScenarioType(scenarioType);
   };
 
 
@@ -118,6 +155,41 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
             selectedTestPlanId={selectedTestPlan?.idPlano || null}
           />
         </div>
+      </div>
+
+      <div className='dropdown-container'>
+        <div className='dropdown'>
+          <TestSuiteDropDown
+            selectedTestPlanId={selectedTestPlan?.idPlano || null}
+            onSelectTestSuite={(selectedTestSuite) => handleSelectTestSuite(selectedTestSuite !== null ? { idSuite: selectedTestSuite } : null)}
+            disabled={!selectedTestPlan}
+            isEditing={false}
+            selectedTestSuiteId={selectedTestSuite?.idSuite || null}
+          />
+        </div>
+
+        <div className='dropdown'>
+          <ScenarioStatusDropDown
+            onSelectScenarioStatus={(selectedScenarioStatus) => handleSelectScenarioStatusType(selectedScenarioStatus !== null ? { idStatus: selectedScenarioStatus } : null)}
+            disabled={false}
+            isEditing={true}
+            selectedScenarioStatusId={selectedScenarioStatus?.idStatus || null}
+          />
+        </div>
+
+        <div className='dropdown'>
+          <ScenarioTypeDropDown
+            onSelectScenarioType={(selectedScenarioType) => handleSelectScenarioType(selectedScenarioType !== null ? { idTpcenario: selectedScenarioType } : null)}
+            disabled={false}
+            isEditing={false}
+            selectedScenarioTypeId={selectedScenarioType?.idTpcenario || null}
+          />
+        </div>
+
+
+
+
+
       </div>
 
       <div className="search-container">

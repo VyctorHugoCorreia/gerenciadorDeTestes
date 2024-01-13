@@ -25,7 +25,7 @@ const ScenarioStatusDropDown: React.FC<ScenarioStatusDropDownProps> = ({
 
   const fetchScenarioStatus = useCallback(async () => {
     try {
-      const typesData = await ScenarioStatusService.getStatusTypes(); // Método para buscar os tipos de cenário
+      const typesData = await ScenarioStatusService.getStatusTypes(); 
       setScenarioStatuss(typesData);
     } catch (error) {
       console.error('Error fetching plataform types:', error);
@@ -34,8 +34,8 @@ const ScenarioStatusDropDown: React.FC<ScenarioStatusDropDownProps> = ({
 
   useEffect(() => {
     if (!isEditing) {
-      onSelectScenarioStatus(3); 
-      setSelectedValue(3); 
+      onSelectScenarioStatus(3);
+      setSelectedValue(3);
     } else {
       setSelectedValue(selectedScenarioStatusId);
     }
@@ -52,8 +52,9 @@ const ScenarioStatusDropDown: React.FC<ScenarioStatusDropDownProps> = ({
 
   const handleScenarioStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedScenarioStatusId = parseInt(event.target.value, 10);
-    onSelectScenarioStatus(selectedScenarioStatusId);
-    setSelectedValue(selectedScenarioStatusId);
+    const newValue = isNaN(selectedScenarioStatusId) ? null : selectedScenarioStatusId;
+    onSelectScenarioStatus(newValue);
+    setSelectedValue(newValue);
   };
 
   return (
@@ -63,6 +64,7 @@ const ScenarioStatusDropDown: React.FC<ScenarioStatusDropDownProps> = ({
       className="select-dropdown scenario-status-dropdown"
       disabled={disabled}
     >
+      <option value="">Selecione o status</option>
       {scenarioStatus.map((scenarioStatus) => (
         <option key={scenarioStatus.idStatus} value={scenarioStatus.idStatus}>
           {scenarioStatus.descStatus}

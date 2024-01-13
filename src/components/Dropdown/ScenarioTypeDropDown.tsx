@@ -41,8 +41,11 @@ const ScenarioTypeDropDown: React.FC<ScenarioTypeDropDownProps> = ({
 
   const handleScenarioTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedScenarioTypeId = parseInt(event.target.value, 10);
-    onSelectScenarioType(selectedScenarioTypeId);
-    setSelectedValue(selectedScenarioTypeId);
+
+    const newValue = isNaN(selectedScenarioTypeId) ? null : selectedScenarioTypeId;
+
+    onSelectScenarioType(newValue);
+    setSelectedValue(newValue);
   };
 
   return (
