@@ -184,14 +184,10 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({ open, onClose, testPlan
                 </TableContainer>
 
                 <div className="button-container">
-                    <Button variant="contained" onClick={onClose} className="team-modal-button">
-                        Fechar
-                    </Button>
                     <IconButton onClick={fetchTestSuite} className="team-modal-button">
                         <WhiteRefreshIcon />
                     </IconButton>
-                </div>
-
+                </div> 
                 <Toast
                     message="Operação realizada com sucesso!"
                     showToast={showToast}

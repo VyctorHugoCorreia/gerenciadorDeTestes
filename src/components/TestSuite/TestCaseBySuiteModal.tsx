@@ -184,9 +184,6 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, idSuite, f
                
 
                 <div className="button-container">
-                    <Button variant="contained" onClick={onClose} className="team-modal-button">
-                        Fechar
-                    </Button>
                     <IconButton onClick={fetchTestCase} className="team-modal-button">
                         <WhiteRefreshIcon />
                     </IconButton>

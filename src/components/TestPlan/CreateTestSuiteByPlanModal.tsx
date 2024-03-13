@@ -114,14 +114,6 @@ const CreateTestSuiteByPlanModal: React.FC<CreateTestSuiteByPlanModalProps> = ({
                             className="team-modal-button"
                             variant="contained"
                             color="primary"
-                            onClick={onClose}
-                        >
-                            Voltar
-                        </Button>
-                        <Button
-                            className="team-modal-button"
-                            variant="contained"
-                            color="primary"
                             onClick={handleCreateTestSuite}
                             disabled={buttonCreatedDisabled}
                         >
