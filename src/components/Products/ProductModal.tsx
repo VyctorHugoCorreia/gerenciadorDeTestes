@@ -43,11 +43,13 @@ const ProductModal: React.FC<ProductModalProps> = ({
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
 
+  useEffect(() => {
+      setIsButtonDisabled(productName === '' || selectedTeam === null)
+  });
 
   useEffect(() => {
     if (open && selectedProduct) {
       setError('');
-      setIsButtonDisabled(!selectedProduct.name);
       setProductName(selectedProduct.name || '');
       setSelectedTeam(selectedProduct.idTime ? {
         idTime: selectedProduct.idTime.idTime,
@@ -55,7 +57,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
       } : null);
     } else {
       setError('');
-      setIsButtonDisabled(true);
       setProductName('');
       setSelectedTeam(null);
     }
@@ -64,17 +65,14 @@ const ProductModal: React.FC<ProductModalProps> = ({
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setProductName(event.target.value);
     setError('');
-    setIsButtonDisabled(event.target.value === '' || selectedTeam === null);
   };
 
   const handleSelectTeam = (team: { idTime: number; nomeTime: string } | string) => {
     if (!selectedProduct) {
       if (typeof team === 'string') {
-        setIsButtonDisabled(true);
         setSelectedTeam(null);
       } else {
         setError('');
-        if(productName != ''){  setIsButtonDisabled(false);}
         setSelectedTeam({ idTime: team.idTime, nomeTime: team.nomeTime });
       }
     }
