@@ -57,16 +57,14 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
   const [resetProductDropdown, setResetProductDropdown] = useState(false);
   const [showToast, setShowToast] = useState(false); 
 
-  useEffect(() => {
-    setIsButtonDisabled(featureName === '' || selectedTeam === null || selectedProductId === null);
-});
+
   useEffect(() => {
     if (open && selectedFeature) {
       setError('');
       setFeatureName(selectedFeature.name || '');
       setSelectedTeam(selectedFeature.idTime || null);
       setSelectedTeamId(selectedFeature.idTime?.idTime || null);
-      setSelectedProductId(null);
+      setSelectedProductId(selectedFeature.idTproduto?.idTproduto);
     } else {
       setError('');
       setFeatureName('');
@@ -76,6 +74,9 @@ const FeatureModal: React.FC<FeatureModalProps> = ({
     }
   }, [open, selectedFeature]);
 
+  useEffect(() => {
+    setIsButtonDisabled(featureName === '' || selectedTeam === null || selectedProductId === null);
+});
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFeatureName(event.target.value);
     setError('');
