@@ -74,7 +74,6 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
   useEffect(() => {
     if (open && selectedTestSuite) {
       setError('');
-      setIsButtonDisabled(!selectedTestSuite.name);
       setTestSuiteName(selectedTestSuite.name || '')
       setSelectedTeam(selectedTestSuite.idTime || null);
       setSelectedTeamId(selectedTestSuite.idTime?.idTime || null);
@@ -82,7 +81,6 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
       setSelectedProductId(selectedTestSuite.idTproduto?.idTproduto);
     } else {
       setError('');
-      setIsButtonDisabled(true);
       setTestSuiteName('');
       setSelectedTeam(null);
       setSelectedTeamId(null);
@@ -91,16 +89,19 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
     }
   }, [open, selectedTestSuite]);
 
+  useEffect(() => {
+    setIsButtonDisabled(selectedTeam === null || selectedProductId === null || selectedTestPlanId === null || TestSuiteName === '' );
+
+});
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTestSuiteName(event.target.value);
     setError('');
-    setIsButtonDisabled(event.target.value === '');
   };
 
   const handleSelectTeam = async (team: { idTime: number; nomeTime: string } | string) => {
     if (!selectedTestSuite) {
       if (typeof team === 'string') {
-        setIsButtonDisabled(true);
         setSelectedTeam(null);
         setSelectedTeamId(null);
         setSelectedProductId(null);
@@ -108,7 +109,6 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
         setResetProductDropdown(true);
       } else {
         setError('');
-        setIsButtonDisabled(false);
         setSelectedTeam(team);
         setSelectedTeamId(team.idTime);
         setSelectedProductId(null);
