@@ -31,10 +31,11 @@
     margin-left: 10px;
     width: 25px;
     height: 25px;
-    background-color: #1082BE;
+    background-color: #1082BE !important;
     border-radius: 50%;
     border: none;
-    color: white;
+    color: #1082BE !important;
+    
 }
 
 .add-button:hover {

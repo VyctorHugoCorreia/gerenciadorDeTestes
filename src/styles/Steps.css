@@ -14,8 +14,8 @@
   
   .step-button {
     margin-left: 10px;
-    width: 20px; 
-    height: 20px; 
+    width: 25px; 
+    height: 25px; 
     background-color: #1082BE;
     border-radius: 50%; 
     border: none;
@@ -25,8 +25,8 @@
   }
 
   .remove-button {
-    width: 20px; 
-    height: 20px;
+    width: 25px; 
+    height: 25px;
     background-color: #FF0000; 
     border-radius: 50%; 
     border: none;
