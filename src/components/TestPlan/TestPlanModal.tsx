@@ -58,6 +58,7 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
   const [resetProductDropdown, setResetProductDropdown] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
+
   useEffect(() => {
     if (open && selectedTestPlan) {
       setError('');
@@ -65,7 +66,7 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
       setTestPlanName(selectedTestPlan.name || '')
       setSelectedTeam(selectedTestPlan.idTime || null);
       setSelectedTeamId(selectedTestPlan.idTime?.idTime || null);
-      setSelectedProductId(null);
+      setSelectedProductId(selectedTestPlan.idTproduto?.idTproduto);
     } else {
       setError('');
       setIsButtonDisabled(true);
@@ -76,16 +77,19 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
     }
   }, [open, selectedTestPlan]);
 
+  useEffect(() => {
+      setIsButtonDisabled(selectedTeam === null || selectedProductId === null || TestPlanName === '');
+  
+  });
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTestPlanName(event.target.value);
     setError('');
-    setIsButtonDisabled(event.target.value === '');
   };
 
   const handleSelectTeam = async (team: { idTime: number; nomeTime: string } | string) => {
     if (!selectedTestPlan) {
       if (typeof team === 'string') {
-        setIsButtonDisabled(true);
         setSelectedTeam(null);
         setSelectedTeamId(null);
         setSelectedProductId(null);
@@ -93,7 +97,6 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
         setResetProductDropdown(true);
       } else {
         setError('');
-        setIsButtonDisabled(false);
         setSelectedTeam(team);
         setSelectedTeamId(team.idTime);
         setSelectedProductId(null);
@@ -175,8 +178,8 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
             selectedTeamId={selectedTeamId}
             disabled={isEditing}
             isEditing={isEditing}
-            resetDropdown={resetProductDropdown} 
-            selectedProductId={selectedTestPlan?.idTproduto.idTproduto || null} 
+            resetDropdown={resetProductDropdown}
+            selectedProductId={selectedTestPlan?.idTproduto.idTproduto || null}
           />
 
           <TextField
