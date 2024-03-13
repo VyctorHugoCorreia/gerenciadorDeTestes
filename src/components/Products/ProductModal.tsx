@@ -64,7 +64,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setProductName(event.target.value);
     setError('');
-    setIsButtonDisabled(event.target.value === '');
+    setIsButtonDisabled(event.target.value === '' || selectedTeam === null);
   };
 
   const handleSelectTeam = (team: { idTime: number; nomeTime: string } | string) => {
@@ -74,7 +74,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
         setSelectedTeam(null);
       } else {
         setError('');
-        setIsButtonDisabled(false);
+        if(productName != ''){  setIsButtonDisabled(false);}
         setSelectedTeam({ idTime: team.idTime, nomeTime: team.nomeTime });
       }
     }
