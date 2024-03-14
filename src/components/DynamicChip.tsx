@@ -4,7 +4,7 @@ import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import { Clear } from '@mui/icons-material';
-import '../styles/DynamicChip.css'
+import '../styles/dynamicChip.css'
 
 interface DynamicListProps {
   items: string[];

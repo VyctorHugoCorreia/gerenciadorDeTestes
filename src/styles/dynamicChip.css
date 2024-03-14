@@ -2,7 +2,7 @@
     background-color: #ffffff !important;
     color: rgb(0, 0, 0);
     border: 1px solid black !important;
-    margin: 5px;
+    margin: 5px !important;
 }
 
 .chip:hover {

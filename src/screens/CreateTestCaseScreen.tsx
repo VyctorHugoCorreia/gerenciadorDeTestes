@@ -16,6 +16,7 @@ import TestCaseService from '../services/TestCaseService';
 import ScenarioTypeInfo from '../components/TestCase/ScenarioTypeInfo';
 import HistoryStatusScenarioService from '../services/HistoryStatusScenarioService';
 import DynamicChip from '../components/DynamicChip';
+import FileUpload from '../components/FileUpload'; 
 
 interface SelectedTeam {
   idTime: number;
@@ -297,6 +298,11 @@ const CreateTestCaseScreen: React.FC = () => {
         <div className="input-container">
           <span className='span-label'>Tags:</span>
           <DynamicChip items={tags} setItems={setTags} />
+        </div>
+
+        <div className="input-container">
+          <span className='span-label'>Upload de arquivo:</span>
+          <FileUpload onFileChange={(file) => console.log('Arquivo selecionado:', file)} />
         </div>
 
 
