@@ -6,7 +6,6 @@ interface SearchParams {
   tituloCenario?: string;
   idTime?: number;
   idTproduto?: number;
-  idFuncionalidade?: number;
   idPlano?: number;
   idSuite?: number;
   idStatus?: number;
@@ -31,13 +30,12 @@ class TestCaseService {
   }
 
   static async searchTestCase(params: SearchParams = {}): Promise<any> {
-    const { tituloCenario, idTime, idTproduto, idFuncionalidade, idPlano,idSuite, idStatus,idTpcenario,idPlataforma,idAutomatizado, idCenario,  } = params;
+    const { tituloCenario, idTime, idTproduto, idPlano,idSuite, idStatus,idTpcenario,idPlataforma,idAutomatizado, idCenario,  } = params;
     const url = '/api/cenarioDeTeste';
 
     const requestParams: Record<string, any> = {
       idTime,
       idTproduto,
-      idFuncionalidade,
       idPlano,
       idSuite,
       idStatus,

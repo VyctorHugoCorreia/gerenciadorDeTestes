@@ -5,7 +5,6 @@ import Button from '@mui/material/Button';
 import '../../styles/AddModal.css';
 import Toast from '../Toast';
 import TestSuiteService from '../../services/TestSuiteService';
-import FeatureDropDown from '../Dropdown/FeatureDropDown';
 import ScenarioTypeDropDown from '../Dropdown/ScenarioTypeDropDown';
 import ScenarioTypeInfo from '../TestCase/ScenarioTypeInfo';
 import PlataformTypeDropDown from '../Dropdown/PlataformTypeDropDown';
@@ -26,7 +25,6 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
     const [buttonCreatedDisabled, setButtonCreatedDisabled] = useState(true);
     const [showToast, setShowToast] = useState(false);
     const [testSuite, setTestSuite] = useState<any | null>(null);
-    const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
     const [scenarioTitle, setScenarioTitle] = useState<string>('');
     const [scenarioDescription, setScenarioDescription] = useState<string>('');
     const [scenarioLink, setScenarioLink] = useState<string>('');
@@ -76,10 +74,6 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
         }
     }, [open, testSuiteId]);
 
-    const handleSelectFeature = (featureId: number | null) => {
-        setSelectedFeature(featureId);
-    };
-
     const handleSelectScenarioType = (scenarioTypeId: number | null) => {
         setSelectedScenarioType(scenarioTypeId);
     };
@@ -107,7 +101,6 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
     };
 
     const clearFields = () => {
-        setSelectedFeature(null);
         setSelectedScenarioType(null);
         setSelectedPlataformType(null);
         setSelectedStatusAutomationType(null);
@@ -130,7 +123,6 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
                     idTproduto: testSuite[0]?.idTproduto?.idTproduto || 0,
                     idPlano: testSuite[0]?.idPlano?.idPlano || 0,
                     idSuite: testSuite[0]?.idSuite || 0,
-                    idFuncionalidade: selectedFeature || 0,
                     idTpcenario: selectedScenarioType || 0,
                     idPlataforma: selectedPlataformType || 0,
                     idStatus: selectedScenarioStatusType || 0,
@@ -195,16 +187,6 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
                     <h2 id="team-modal-title">Adicionar cenário de teste</h2>
 
                     <div className='cardboard-style container' style={{ width: '915px', height: '100%' }}>
-                        <div className="input-container">
-                            <span className='span-label'>Selecione a funcionalidade:</span>
-                            <FeatureDropDown
-                                selectedProductId={testSuite && testSuite[0] && testSuite[0]?.idTproduto?.idTproduto}
-                                onSelectFeature={handleSelectFeature}
-                                disabled={false}
-                                isEditing={false}
-                                selectedFeatureId={selectedFeature}
-                            />
-                        </div>
 
                         <div className="input-container">
                             <span className='span-label'>Status da execução:</span>

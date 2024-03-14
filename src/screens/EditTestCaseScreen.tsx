@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/TestCase.css';
 import TeamsDropDown from '../components/Dropdown/TeamsDropDown';
 import ProductDropDown from '../components/Dropdown/ProductDropDown';
-import FeatureDropDown from '../components/Dropdown/FeatureDropDown';
 import TestPlanDropDown from '../components/Dropdown/TestPlanDropDown';
 import TestSuiteDropDown from '../components/Dropdown/TestSuiteDropDown';
 import ScenarioTypeDropDown from '../components/Dropdown/ScenarioTypeDropDown';
@@ -31,7 +30,6 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
     const [buttonCreatedDisabled, setButtonCreatedDisabled] = useState(true);
     const [selectedTeam, setSelectedTeam] = useState<number | null>(null);
     const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
-    const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
     const [resetProductDropdown, setResetProductDropdown] = useState(false);
     const [selectedTestPlan, setSelectedTestPlan] = useState<number | null>(null);
     const [selectedTestSuite, setSelectedTestSuite] = useState<number | null>(null);
@@ -63,14 +61,11 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
 
     const handleSelectProduct = (productId: number | null) => {
         setSelectedProductId(productId);
-        setSelectedFeature(null);
         setSelectedTestSuite(null)
         setSelectedTestPlan(null)
     };
 
-    const handleSelectFeature = (featureId: number | null) => {
-        setSelectedFeature(featureId);
-    };
+
 
     const handleSelectTestPlan = (testPlanId: number | null) => {
         setSelectedTestPlan(testPlanId);
@@ -108,7 +103,6 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
 
                     setSelectedTeam(firstTestCase.idTime?.idTime || null);
                     setSelectedProductId(firstTestCase.idTproduto?.idTproduto || null);
-                    setSelectedFeature(firstTestCase.idFuncionalidade?.idFuncionalidade || null);
                     setSelectedTestPlan(firstTestCase.idPlano?.idPlano || null);
                     setSelectedTestSuite(firstTestCase.idSuite?.idSuite || null);
                     setSelectedScenarioType(firstTestCase.idTpcenario?.idTpcenario || null);
@@ -140,7 +134,6 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
                 idPlano: selectedTestPlan || 0,
                 idSuite: selectedTestSuite || 0,
                 idTproduto: selectedProductId || 0,
-                idFuncionalidade: selectedFeature || 0,
                 idTpcenario: selectedScenarioType || 0,
                 idPlataforma: selectedPlataformType || 0,
                 idStatus: selectedScenarioStatusType || 0,
@@ -248,17 +241,6 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
                         isEditing={false}
                         resetDropdown={resetProductDropdown}
                         selectedProductId={selectedProductId}
-                    />
-                </div>
-
-                <div className="input-container">
-                    <span className='span-label'>Selecione a funcionalidade:</span>
-                    <FeatureDropDown
-                        selectedProductId={selectedProductId}
-                        onSelectFeature={handleSelectFeature}
-                        disabled={!selectedProductId}
-                        isEditing={false}
-                        selectedFeatureId={selectedFeature}
                     />
                 </div>
 

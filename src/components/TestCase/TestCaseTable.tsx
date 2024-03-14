@@ -34,10 +34,6 @@ interface TestCase {
     idTproduto: number;
     descProduto: string;
   };
-  idFuncionalidade: {
-    idFuncionalidade: number;
-    descFuncionalidade: string;
-  };
   idStatus: {
     idStatus: number;
     descStatus: string;
@@ -56,7 +52,6 @@ interface TestCaseTableProps {
 type ColumnNames =
   | 'Nome do time'
   | 'Produto'
-  | 'Funcionalidade'
   | 'Plano de teste'
   | 'Suite de teste'
   | 'Cenário'
@@ -73,7 +68,6 @@ const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases
   const initialColumnsState: Record<ColumnNames, boolean> = {
     'Nome do time': true,
     'Produto': true,
-    'Funcionalidade': true,
     'Plano de teste': true,
     'Suite de teste': true,
     'Cenário': true,
@@ -170,7 +164,6 @@ const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases
                         <td key={columnName} className="action-buttons">
                           {columnName === 'Nome do time' && testCase.idTime.nomeTime}
                           {columnName === 'Produto' && testCase.idTproduto.descProduto}
-                          {columnName === 'Funcionalidade' && testCase.idFuncionalidade.descFuncionalidade}
                           {columnName === 'Plano de teste' && testCase.idPlano.descPlano}
                           {columnName === 'Suite de teste' && testCase.idSuite.descSuite}
                           {columnName === 'Cenário' && testCase.tituloCenario}

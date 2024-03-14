@@ -1,10 +1,10 @@
 // SearchBar.tsx
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
+
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import TeamsDropDown from '../Dropdown/TeamsDropDown';
 import ProductDropDown from '../Dropdown/ProductDropDown';
-import FeatureDropDown from '../Dropdown/FeatureDropDown';
 import '../../styles/SearchBarTeams.css';
 import TestPlanDropDown from '../Dropdown/TestPlanDropDown';
 import TestSuiteDropDown from '../Dropdown/TestSuiteDropDown';
@@ -22,9 +22,6 @@ export interface Product {
   idTproduto: number;
 }
 
-export interface Feature {
-  idFuncionalidade: number;
-}
 
 export interface TestPlan {
   idPlano: number;
@@ -57,7 +54,6 @@ interface SearchParams {
   searchValue: string;
   team: Team | null;
   product: Product | null;
-  feature: Feature | null;
   testPlan: TestPlan | null;
   testSuite: TestSuite | null;
   scenarioStatus: ScenarioStatus | null;
@@ -76,7 +72,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
-  const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
   const [selectedTestPlan, setSelectedTestPlan] = useState<TestPlan | null>(null);
   const [selectedTestSuite, setSelectedTestSuite] = useState<TestSuite | null>(null);
   const [selectedScenarioStatus, setSelectedScenarioStatus] = useState<ScenarioStatus | null>(null);
@@ -84,7 +79,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
   const [selectedPlataformType, setSelectedPlataformType] = useState<PlataformType | null>(null);
   const [selectedStatusAutomationType, setSelectedStatusAutomationType] = useState<StatusAutomation | null>(null);
 
-  
+
 
 
   const handleSearch = () => {
@@ -92,7 +87,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
       searchValue,
       team: selectedTeam,
       product: selectedProduct,
-      feature: selectedFeature,
       testPlan: selectedTestPlan,
       testSuite: selectedTestSuite,
       scenarioStatus: selectedScenarioStatus,
@@ -101,6 +95,26 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
       statusAutomation: selectedStatusAutomationType
     });
   };
+
+
+  useEffect(() => {
+    if (selectedTeam === null) {
+      setSelectedProduct(null);
+      setSelectedTestPlan(null);
+      setSelectedTestSuite(null);
+    }
+
+    if (selectedProduct === null) {
+      setSelectedTestPlan(null);
+      setSelectedTestSuite(null);
+    }
+
+    if (selectedTestPlan === null) {
+      setSelectedTestSuite(null);
+    }
+  }, [selectedTeam, selectedProduct, selectedTestPlan]);
+
+
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -112,10 +126,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
 
   const handleSelectProduct = (product: Product | string | null) => {
     setSelectedProduct(typeof product === 'string' ? null : product);
-  };
-
-  const handleSelectFeature = (feature: Feature | null) => {
-    setSelectedFeature(feature);
   };
 
   const handleSelectTestPlan = (testPlan: TestPlan | null) => {
@@ -161,15 +171,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
             selectedProductId={selectedProductId || null}
           />
         </div>
-        <div className='dropdown'>
-          <FeatureDropDown
-            selectedProductId={selectedProductId}
-            onSelectFeature={(selectedFeature) => handleSelectFeature(selectedFeature !== null ? { idFuncionalidade: selectedFeature } : null)}
-            disabled={!selectedProductId}
-            isEditing={false}
-            selectedFeatureId={selectedFeature?.idFuncionalidade || null}
-          />
-        </div>
 
         <div className='dropdown'>
           <TestPlanDropDown
@@ -181,10 +182,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
           />
         </div>
 
-
-      </div>
-
-      <div className='dropdown-container'>
         <div className='dropdown'>
           <TestSuiteDropDown
             selectedTestPlanId={selectedTestPlan?.idPlano || null}
@@ -194,6 +191,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
             selectedTestSuiteId={selectedTestSuite?.idSuite || null}
           />
         </div>
+      </div>
+
+      <div className='dropdown-container'>
+
 
         <div className='dropdown'>
           <ScenarioStatusDropDown
@@ -223,22 +224,19 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
         </div>
 
 
-
+        <div className="dropdown">
+          <StatusAutomationTypeDropDown
+            onSelectStatusAutomationType={(selectedStatusAutomationType) => handleSelectStatusAutomationType(selectedStatusAutomationType !== null ? { idAutomatizado: selectedStatusAutomationType } : null)}
+            disabled={false}
+            isEditing={false}
+            selectedStatusAutomationTypeId={selectedStatusAutomationType?.idAutomatizado || null}
+          />
+        </div>
 
 
       </div>
 
 
-      <div className="dropdown-container">
-          <div className="dropdown">
-          <StatusAutomationTypeDropDown
-            onSelectStatusAutomationType={ (selectedStatusAutomationType) => handleSelectStatusAutomationType(selectedStatusAutomationType !== null ? { idAutomatizado: selectedStatusAutomationType } : null)}
-            disabled={false}
-            isEditing={false}
-            selectedStatusAutomationTypeId={selectedStatusAutomationType?.idAutomatizado || null}
-          />
-          </div>
-        </div>
 
       <div className="search-container">
         <TextField
