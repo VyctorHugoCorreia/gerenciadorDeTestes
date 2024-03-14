@@ -49,7 +49,6 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ testCaseId }) =
 
     return (
         <div className='text-style'>
-            <h2>Status</h2>
             <div className='cardboard-style container'>
                 <div>
                     <span className='span-label'>Status da execução:</span>

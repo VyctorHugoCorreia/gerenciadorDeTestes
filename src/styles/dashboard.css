@@ -54,6 +54,11 @@ h3{
   color: gray;
 }
 
+h2 {
+  flex-grow: 1; 
+}
+
+
 span{
   color: black;
 }

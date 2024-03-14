@@ -1,5 +1,6 @@
 // SearchBar.tsx
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
+
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import TeamsDropDown from '../Dropdown/TeamsDropDown';
@@ -78,7 +79,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
   const [selectedPlataformType, setSelectedPlataformType] = useState<PlataformType | null>(null);
   const [selectedStatusAutomationType, setSelectedStatusAutomationType] = useState<StatusAutomation | null>(null);
 
-  
+
 
 
   const handleSearch = () => {
@@ -94,6 +95,26 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
       statusAutomation: selectedStatusAutomationType
     });
   };
+
+
+  useEffect(() => {
+    if (selectedTeam === null) {
+      setSelectedProduct(null);
+      setSelectedTestPlan(null);
+      setSelectedTestSuite(null);
+    }
+
+    if (selectedProduct === null) {
+      setSelectedTestPlan(null);
+      setSelectedTestSuite(null);
+    }
+
+    if (selectedTestPlan === null) {
+      setSelectedTestSuite(null);
+    }
+  }, [selectedTeam, selectedProduct, selectedTestPlan]);
+
+
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -205,12 +226,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch }) => {
 
         <div className="dropdown">
           <StatusAutomationTypeDropDown
-            onSelectStatusAutomationType={ (selectedStatusAutomationType) => handleSelectStatusAutomationType(selectedStatusAutomationType !== null ? { idAutomatizado: selectedStatusAutomationType } : null)}
+            onSelectStatusAutomationType={(selectedStatusAutomationType) => handleSelectStatusAutomationType(selectedStatusAutomationType !== null ? { idAutomatizado: selectedStatusAutomationType } : null)}
             disabled={false}
             isEditing={false}
             selectedStatusAutomationTypeId={selectedStatusAutomationType?.idAutomatizado || null}
           />
-          </div>
+        </div>
 
 
       </div>
