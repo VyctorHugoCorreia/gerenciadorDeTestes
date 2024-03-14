@@ -133,13 +133,6 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ testCaseId }) =
                 </div>
 
                 <div>
-
-                    <span className='span-label'>Funcionalidade:</span>
-                    <h4>{testCase ? testCase.idFuncionalidade.descFuncionalidade : 'Loading...'}</h4>
-                </div>
-
-
-                <div>
                     <span className='span-label'>Plano de teste:</span>
                     <h4>{testCase ? testCase.idPlano.descPlano : 'Loading...'}</h4>
                 </div>

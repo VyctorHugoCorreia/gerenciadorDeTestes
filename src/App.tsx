@@ -4,7 +4,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import TeamRegisteredTab from './components/Teams/TeamRegisteredTab';
 import ProductRegisteredTab from './components/Products/ProductRegisteredTab';
-import FeatureRegisteredTab from './components/Feature/FeatureRegisteredTab';
 import TestPlanRegisteredTab from './components/TestPlan/TestPlanRegisteredTab';
 import TestSuiteRegisteredTab from './components/TestSuite/TestSuiteRegisteredTab';
 import TestCaseRegisteredTab from './components/TestCase/TestCaseRegisteredTab';
@@ -45,7 +44,6 @@ const App: React.FC = () => {
         <Tab label="Suíte de teste" value="/suite-de-teste" component={Link} to="/suite-de-teste" />
         <Tab label="Times cadastrados" value="/times-cadastrados" component={Link} to="/times-cadastrados" />
         <Tab label="Produtos cadastrados" value="/produtos-cadastrados" component={Link} to="/produtos-cadastrados" />
-        <Tab label="Funcionalidades cadastradas" value="/funcionalidades-cadastradas" component={Link} to="/funcionalidades-cadastradas" />
       </Tabs>
       <RouterContent />
     </>
@@ -60,7 +58,6 @@ const RouterContent: React.FC = () => {
       <Route path="/suite-de-teste" element={<TestSuiteRegisteredTab />} />
       <Route path="/times-cadastrados" element={<TeamRegisteredTab />} />
       <Route path="/produtos-cadastrados" element={<ProductRegisteredTab />} />
-      <Route path="/funcionalidades-cadastradas" element={<FeatureRegisteredTab />} />
       <Route path="/criar-caso-de-teste" element={<CreateTestCase />} />
       <Route path="/edit-test-case/:id" element={<EditTestCase />} /> 
       <Route path="/details-test-case/:id" element={<DetailsTestCase />} /> 

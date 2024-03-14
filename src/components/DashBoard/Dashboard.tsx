@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import ProductService from '../../services/ProductService';
 import Metric from './Metric';
 import '../../styles/dashboard.css'
-import FeatureService from '../../services/FeatureService';
 import TestPlanService from '../../services/TestPlanService';
 import TestSuiteService from '../../services/TestSuiteService';
 import ScenarioTypeService from '../../services/ScenarioTypeService';
@@ -19,7 +18,6 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
   const [products, setProducts] = useState<any[]>([]);
-  const [feature, setFeature] = useState<any[]>([]);
   const [testPlan, setTestPlan] = useState<any[]>([]);
   const [testSuite, setTestSuite] = useState<any[]>([]);
   const [ScenarioType, setScenarioType] = useState<any[]>([]);
@@ -32,9 +30,6 @@ const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
         if(idTime == "dashboard"){
           const productsData = await ProductService.getAllProducts();
           setProducts(productsData);
-  
-          const featureData = await FeatureService.getAllFeatures();
-          setFeature(featureData)
   
           const testPlanData = await TestPlanService.getAllTestPlan();
           setTestPlan(testPlanData)
@@ -54,9 +49,6 @@ const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
         else{
           const productsData = await ProductService.getProductsByTeam(idTime);
           setProducts(productsData);
-  
-          const featureData = await FeatureService.getFeatureByTeam(idTime);
-          setFeature(featureData)
   
           const testPlanData = await TestPlanService.getTestPlansByTeam(idTime);
           setTestPlan(testPlanData)
@@ -89,10 +81,6 @@ const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
     return acc;
   }, {});
 
-  const metricsDataFeatures: Record<string, number> = feature.reduce((acc, functionality) => {
-    acc[functionality.descFuncionalidade] = functionality.quantidadeCenarios;
-    return acc;
-  }, {});
 
   const metricsDataTestPlan: Record<string, number> = testPlan.reduce((acc, testPlan) => {
     acc[testPlan.descPlano] = testPlan.quantidadeCenarios;
@@ -172,7 +160,6 @@ const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
           <Metric title="Produtos" metrics={metricsDataProducts} />
           <Metric title="Planos de teste" metrics={metricsDataTestPlan} />
           <Metric title="Suites de teste" metrics={metricsDataTestSuite} />
-          <Metric title="Funcionalidades" metrics={metricsDataFeatures} />
         </div>
       </div>
     </div>

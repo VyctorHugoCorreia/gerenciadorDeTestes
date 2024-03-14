@@ -14,10 +14,6 @@ export interface Product {
   idTproduto: number;
 }
 
-export interface Feature {
-  idFuncionalidade: number;
-}
-
 export interface TestPlan {
   idPlano: number;
 }
@@ -47,7 +43,6 @@ interface SearchParams {
   searchValue: string;
   team: Team | null;
   product: Product | null;
-  feature: Feature | null;
   testPlan: TestPlan | null;
   testSuite: TestSuite | null;
   scenarioStatus: ScenarioStatus | null;
@@ -64,7 +59,6 @@ const TestCaseRegisteredTab: React.FC = () => {
       searchValue: '',
       team: null,
       product: null,
-      feature: null,
       testPlan: null,
       testSuite: null,
       scenarioStatus: null,
@@ -89,7 +83,6 @@ const TestCaseRegisteredTab: React.FC = () => {
         tituloCenario: searchParams.searchValue,
         idTime: searchParams.team?.idTime ?? undefined,
         idTproduto: searchParams.product?.idTproduto ?? undefined,
-        idFuncionalidade: searchParams.feature?.idFuncionalidade ?? undefined,
         idPlano: searchParams.testPlan?.idPlano ?? undefined,
         idSuite: searchParams.testSuite?.idSuite ?? undefined,
         idStatus: searchParams.scenarioStatus?.idStatus ?? undefined,
