@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AddProductButton from './AddProductButton';
-import SearchBar from '../searchBar/SearchBarWithTeam';
+import SearchBar from '../searchBar/SearchBar';
 import ProductTable, { Product } from './ProductTable';
 import ProductService from '../../services/ProductService';
 

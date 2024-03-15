@@ -6,6 +6,10 @@ interface Team {
   nomeTime: string;
 }
 
+interface SearchParams {
+  nomeTime?: string;
+}
+
 class TeamService {
   static async addTeam(teamName: string): Promise<any> {
     const data: Team = {
@@ -31,8 +35,19 @@ class TeamService {
     return this.request('put', `/api/time/${teamId}`, data);
   }
 
-  static async searchTeams(searchValue?: string): Promise<any> {
-    return this.request('get', '/api/time', undefined, { nomeTime: searchValue });
+  static async searchTeams(params: SearchParams = {}): Promise<any> {
+    const { nomeTime} = params;
+    const url = '/api/time';
+
+    const requestParams: Record<string, any> = {
+      nomeTime
+    };
+
+    if (nomeTime !== undefined && nomeTime.trim() !== "") {
+      requestParams.nomeTime = nomeTime;
+    }
+
+    return this.request('get', url, undefined, requestParams);
   }
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {

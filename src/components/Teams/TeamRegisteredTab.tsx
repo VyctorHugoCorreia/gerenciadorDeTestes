@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import AddTeamButton from './AddTeamButton';
-import SearchBarTeams from '../searchBar/SearchBarTestCase';
 import TeamTable from './TeamTable';
 import TeamService from '../../services/TimeService';
-import SearchBar from '../SearchBar';
-const TeamRegisteredTab: React.FC = () => {
-  const [times, setTimes] = useState<any[]>([]);
+import SearchBar from '../searchBar/SearchBar';
 
+interface SearchParams {
+  searchValue: string;
+}
+
+
+const TeamRegisteredTab: React.FC = () => {
+  const [teams, setTeams] = useState<any[]>([]);
+  const [searchParams, setSearchParams] = useState<SearchParams>(
+    {
+      searchValue: '',
+    }
+  );
   const fetchTimes = async () => {
     try {
       const timesData = await TeamService.getAllTeams();
-      setTimes(timesData);
+      setTeams(timesData);
     } catch (error) {
       console.error(error);
     }
@@ -20,10 +29,14 @@ const TeamRegisteredTab: React.FC = () => {
     fetchTimes();
   }, []);
 
-  const handleSearch = async (searchValue: string) => {
+  const handleSearch = async (searchParams: SearchParams) => {
     try {
-      const filteredTimes = await TeamService.searchTeams(searchValue);
-      setTimes(filteredTimes);
+      const filteredTeams = await TeamService.searchTeams({
+        nomeTime: searchParams.searchValue
+      });
+
+      setTeams(filteredTeams);
+      setSearchParams(searchParams);
     } catch (error) {
       console.error(error);
     }
@@ -36,7 +49,7 @@ const TeamRegisteredTab: React.FC = () => {
       placeholder="Buscar time" 
       onSearch={handleSearch}
        />
-      <TeamTable times={times} fetchTimes={fetchTimes} />
+      <TeamTable times={teams} fetchTimes={fetchTimes} />
     </div>
   );
 };
