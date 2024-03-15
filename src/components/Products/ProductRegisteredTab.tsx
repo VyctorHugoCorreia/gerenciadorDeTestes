@@ -1,12 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import AddProductButton from './AddProductButton';
-import SearchBar from '../SearchBar';
+import SearchBar from '../searchBar/SearchBarWithTeam';
 import ProductTable, { Product } from './ProductTable';
 import ProductService from '../../services/ProductService';
 
+interface Team {
+  idTime: number;
+  nomeTime: string;
+}
+
+interface SearchParams {
+  searchValue: string;
+  team: Team | null;
+}
+
+
 const ProductRegisteredTab: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-
+  const [searchParams, setSearchParams] = useState<SearchParams>(
+    {
+      searchValue: '',
+      team: null,
+    }
+  );
+  
   const fetchProducts = async () => {
     try {
       const productsData = await ProductService.getAllProducts();
@@ -29,10 +46,15 @@ const ProductRegisteredTab: React.FC = () => {
     }
   };
 
-  const handleSearch = async (searchValue: string) => {
+  const handleSearch = async (searchParams: SearchParams) => {
     try {
-      const filteredProducts = await ProductService.searchProducts(searchValue);
+      const filteredProducts = await ProductService.searchProducts({
+        descProduto: searchParams.searchValue,
+        idTime: searchParams.team?.idTime ?? undefined,
+      });
+
       setProducts(filteredProducts);
+      setSearchParams(searchParams);
     } catch (error) {
       console.error(error);
     }

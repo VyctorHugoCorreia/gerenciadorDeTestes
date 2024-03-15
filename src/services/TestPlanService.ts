@@ -2,6 +2,11 @@ import axios, { AxiosError } from 'axios';
 
 const BASE_URL = 'http://localhost:8080';
 
+interface SearchParams {
+  descPlano?: string;
+  idTime?: number;
+}
+
 class TestPlanService {
   static async getAllTestPlan(): Promise<any> {
     return this.request('get', '/api/planoDeTeste');
@@ -33,10 +38,6 @@ class TestPlanService {
     return this.request('delete', `/api/planoDeTeste/${idPlano}`);
   }
 
-  static async searchTestPlan(searchValue?: string): Promise<any> {
-    return this.request('get', `/api/planoDeTeste`, undefined, { descPlano: searchValue });
-  }
-
   static async getTestPlansByProduct(searchValue?: string): Promise<any> {
     return this.request('get', `/api/planoDeTeste`, undefined, { idTproduto: searchValue });
   }
@@ -48,6 +49,23 @@ class TestPlanService {
   static async getTestPlansByTeam(searchValue?: string): Promise<any> {
     return this.request('get', `/api/planoDeTeste`, undefined, { idTime: searchValue });
   }
+
+  static async searchTestPlan(params: SearchParams = {}): Promise<any> {
+    const { descPlano, idTime} = params;
+    const url = '/api/planoDeTeste';
+
+    const requestParams: Record<string, any> = {
+      idTime
+    };
+
+    if (descPlano !== undefined && descPlano.trim() !== "") {
+      requestParams.descPlano = descPlano;
+    }
+
+    return this.request('get', url, undefined, requestParams);
+  }
+
+
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {
     try {

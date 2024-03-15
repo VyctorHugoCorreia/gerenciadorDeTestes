@@ -2,6 +2,11 @@ import axios, { AxiosError } from 'axios';
 
 const BASE_URL = 'http://localhost:8080';
 
+interface SearchParams {
+  descSuite?: string;
+  idTime?: number;
+}
+
 class TestSuiteService {
   static async getAllTestSuite(): Promise<any> {
     return this.request('get', '/api/suiteDeTeste');
@@ -28,8 +33,19 @@ class TestSuiteService {
     return this.request('delete', `/api/suiteDeTeste/${idSuite}`);
   }
 
-  static async searchTestSuite(searchValue?: string): Promise<any> {
-    return this.request('get', '/api/suiteDeTeste', undefined, { descSuite: searchValue });
+  static async searchTestSuite(params: SearchParams = {}): Promise<any> {
+    const { descSuite, idTime} = params;
+    const url = '/api/suiteDeTeste';
+
+    const requestParams: Record<string, any> = {
+      idTime
+    };
+
+    if (descSuite !== undefined && descSuite.trim() !== "") {
+      requestParams.descSuite = descSuite;
+    }
+
+    return this.request('get', url, undefined, requestParams);
   }
 
   static async searchTestSuiteById(searchValue?: string): Promise<any> {

@@ -7,6 +7,11 @@ interface Product {
   descProduto: string;
 }
 
+interface SearchParams {
+  descProduto?: string;
+  idTime?: number;
+}
+
 class ProductService {
   static async addProduct(idTime: number, descProduto: string): Promise<any> {
     const data: Product = {
@@ -25,9 +30,21 @@ class ProductService {
     return this.request('delete', `/api/produto/${productId}`);
   }
 
-  static async searchProducts(searchValue?: string): Promise<any> {
-    return this.request('get', '/api/produto', undefined, { descProduto: searchValue });
+  static async searchProducts(params: SearchParams = {}): Promise<any> {
+    const { descProduto, idTime} = params;
+    const url = '/api/produto';
+
+    const requestParams: Record<string, any> = {
+      idTime
+    };
+
+    if (descProduto !== undefined && descProduto.trim() !== "") {
+      requestParams.descProduto = descProduto;
+    }
+
+    return this.request('get', url, undefined, requestParams);
   }
+
 
   static async getProductsByTeam(searchValue?: string): Promise<any> {
     return this.request('get', '/api/produto', undefined, { idTime: searchValue });
