@@ -72,6 +72,7 @@ const ProductRegisteredTab: React.FC = () => {
       <SearchBar 
         placeholder="Buscar produto" 
         onSearch={handleSearch}
+        showTeamsDropdown
       />
       <ProductTable 
         {...defaultProductTableProps}
