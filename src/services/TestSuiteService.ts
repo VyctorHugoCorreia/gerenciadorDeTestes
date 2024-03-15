@@ -5,6 +5,8 @@ const BASE_URL = 'http://localhost:8080';
 interface SearchParams {
   descSuite?: string;
   idTime?: number;
+  idTproduto?: number;
+  idPlano?: number;
 }
 
 class TestSuiteService {
@@ -34,11 +36,13 @@ class TestSuiteService {
   }
 
   static async searchTestSuite(params: SearchParams = {}): Promise<any> {
-    const { descSuite, idTime} = params;
+    const { descSuite, idTime, idTproduto, idPlano } = params;
     const url = '/api/suiteDeTeste';
 
     const requestParams: Record<string, any> = {
-      idTime
+      idTime,
+      idTproduto,
+      idPlano
     };
 
     if (descSuite !== undefined && descSuite.trim() !== "") {

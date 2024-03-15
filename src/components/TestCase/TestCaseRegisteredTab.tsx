@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import AddTestCaseButton from './AddTestCaseButton';
 import TestCaseTable from './TestCaseTable';
 import TestCaseService from '../../services/TestCaseService';
-import SearchBarTestCase from '../searchBar/SearchBarTestCase';
+import SearchBar from '../searchBar/SearchBar';
 
 interface Team {
   idTime: number;
@@ -106,9 +106,17 @@ const TestCaseRegisteredTab: React.FC = () => {
   return (
     <div>
       <AddTestCaseButton />
-      <SearchBarTestCase
+      <SearchBar
         placeholder="Buscar cenário de teste"
         onSearch={handleSearch}
+        showTeamsDropdown
+        showProductsDropdown
+        showTestPlansDropdown
+        showTestSuitesDropdown
+        showPlataformTypeDropdown
+        showScenarioStatusDropdown
+        showScenarioTypeDropdown
+        showStatusAutomationDropdown
       />
       <TestCaseTable testCases={testCases} fetchTestCases={fetchTestCases} />
     </div>

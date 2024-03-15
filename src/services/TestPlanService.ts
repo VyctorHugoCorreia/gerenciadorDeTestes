@@ -5,6 +5,7 @@ const BASE_URL = 'http://localhost:8080';
 interface SearchParams {
   descPlano?: string;
   idTime?: number;
+  idTproduto?: number;
 }
 
 class TestPlanService {
@@ -51,11 +52,12 @@ class TestPlanService {
   }
 
   static async searchTestPlan(params: SearchParams = {}): Promise<any> {
-    const { descPlano, idTime} = params;
+    const { descPlano, idTime, idTproduto } = params;
     const url = '/api/planoDeTeste';
 
     const requestParams: Record<string, any> = {
-      idTime
+      idTime,
+      idTproduto
     };
 
     if (descPlano !== undefined && descPlano.trim() !== "") {

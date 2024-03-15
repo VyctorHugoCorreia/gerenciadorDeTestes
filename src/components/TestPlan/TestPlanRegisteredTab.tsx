@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AddTestPlanButton from './AddTestPlanButton';
-import SearchBar from '../searchBar/SearchBarWithTeam';
+import SearchBar from '../searchBar/SearchBar';
 import TestPlanTable, { TestPlan } from './TestPlanTable';
 import TestPlanService from '../../services/TestPlanService';
 
@@ -9,9 +9,16 @@ interface Team {
   nomeTime: string;
 }
 
+export interface Product {
+  idTproduto: number;
+}
+
+
 interface SearchParams {
   searchValue: string;
   team: Team | null;
+  product: Product | null;
+
 }
 
 const TestPlanRegisteredTab: React.FC = () => {
@@ -20,6 +27,7 @@ const TestPlanRegisteredTab: React.FC = () => {
     {
       searchValue: '',
       team: null,
+      product: null
     }
   );
 
@@ -41,6 +49,7 @@ const TestPlanRegisteredTab: React.FC = () => {
       const filteredTestsPlans = await TestPlanService.searchTestPlan({
         descPlano: searchParams.searchValue,
         idTime: searchParams.team?.idTime ?? undefined,
+        idTproduto: searchParams.product?.idTproduto ?? undefined,
       });
 
 
@@ -65,6 +74,8 @@ const TestPlanRegisteredTab: React.FC = () => {
       <SearchBar
         placeholder="Buscar plano de teste"
         onSearch={handleSearch}
+        showTeamsDropdown={true}
+        showProductsDropdown={true}
       />
       <TestPlanTable
         {...defaultTestPlansTableProps}

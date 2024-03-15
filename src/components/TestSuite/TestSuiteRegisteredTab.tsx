@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AddTestSuiteButton from './AddTestSuiteButton';
-import SearchBar from '../searchBar/SearchBarWithTeam';
+import SearchBar from '../searchBar/SearchBar';
 import TestSuiteTable, { testSuite } from './TestSuiteTable';
 import TestSuiteService from '../../services/TestSuiteService';
 
@@ -9,9 +9,19 @@ interface Team {
   nomeTime: string;
 }
 
+export interface Product {
+  idTproduto: number;
+}
+
+export interface TestPlan {
+  idPlano: number;
+}
+
 interface SearchParams {
   searchValue: string;
   team: Team | null;
+  product: Product | null;
+  testPlan: TestPlan | null;
 }
 
 const TestSuiteRegisteredTab: React.FC = () => {
@@ -20,6 +30,8 @@ const TestSuiteRegisteredTab: React.FC = () => {
     {
       searchValue: '',
       team: null,
+      product: null,
+      testPlan: null
     }
   );
   const fetchTestSuite = async () => {
@@ -40,6 +52,8 @@ const TestSuiteRegisteredTab: React.FC = () => {
       const filteredTestsSuites = await TestSuiteService.searchTestSuite({
         descSuite: searchParams.searchValue,
         idTime: searchParams.team?.idTime ?? undefined,
+        idTproduto: searchParams.product?.idTproduto ?? undefined,
+        idPlano: searchParams.testPlan?.idPlano ?? undefined,
       });
 
       setTestSuites(filteredTestsSuites);
@@ -52,23 +66,26 @@ const TestSuiteRegisteredTab: React.FC = () => {
 
   const defaultTestSuitesTableProps = {
     open: false,
-    onClose: () => {},
-    onEdit: (testSuite: testSuite) => {},
+    onClose: () => { },
+    onEdit: (testSuite: testSuite) => { },
   };
 
 
 
   return (
     <div>
-        <AddTestSuiteButton fetchTestSuite={fetchTestSuite} />
-      <SearchBar 
-        placeholder="Buscar suite de teste" 
+      <AddTestSuiteButton fetchTestSuite={fetchTestSuite} />
+      <SearchBar
+        placeholder="Buscar suite de teste"
         onSearch={handleSearch}
+        showTeamsDropdown
+        showProductsDropdown
+        showTestPlansDropdown
       />
-      <TestSuiteTable 
+      <TestSuiteTable
         {...defaultTestSuitesTableProps}
-        testSuites={testSuites} 
-        fetchTestSuites={fetchTestSuite} 
+        testSuites={testSuites}
+        fetchTestSuites={fetchTestSuite}
       />
     </div>
   );
