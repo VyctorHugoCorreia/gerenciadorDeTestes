@@ -360,7 +360,15 @@ const CreateTestCaseScreen: React.FC = () => {
         </button>
       </div>
 
-      <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
+      {showToast && (
+        <div>
+          <Toast
+            message="Operação realizada com sucesso!"
+            showToast={showToast}
+            setShowToast={setShowToast}
+          />
+        </div>
+      )}
     </div>
   );
 };

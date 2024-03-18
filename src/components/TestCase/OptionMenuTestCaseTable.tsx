@@ -4,6 +4,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
 import TestService from '../../services/TestCaseService';
 import ExecuteTestCaseModal from './ExecuteTestCaseModal'
+import CloneScenarioModal from './CloneScenarioModal';
+
 interface OpcoesMenuProps {
   idCenario: string;
   fetchTestCases: () => void;
@@ -16,6 +18,7 @@ const OpcoesMenu: React.FC<OpcoesMenuProps> = ({ idCenario, fetchTestCases }) =>
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [showExecuteModal, setShowExecuteModal] = useState(false);
+  const [showCloneModal, setShowCloneModal] = useState(false);
 
   const handleExecute = () => {
     setShowExecuteModal(true);
@@ -38,6 +41,32 @@ const OpcoesMenu: React.FC<OpcoesMenuProps> = ({ idCenario, fetchTestCases }) =>
     handleClose();
   };
 
+  const handleClone = () => {
+    setShowCloneModal(true);
+    handleClose();
+  };
+
+  const handleCloneModalClose = () => {
+    setShowCloneModal(false);
+  };
+
+  const handleCloneSubmit = async (data: any) => {
+    try {
+      // Envie os dados de clonagem para o serviço
+      // Aqui você deve chamar a função de serviço para clonar o cenário com os dados em data
+      console.log('Dados de clonagem:', data);
+      // Após a clonagem bem-sucedida, feche o modal
+      handleCloneModalClose();
+      // Atualize os casos de teste após a clonagem
+      fetchTestCases();
+      // Exiba um toast ou mensagem de sucesso
+      setShowToast(true);
+    } catch (error) {
+      console.error(error);
+      setError(`${error}`);
+      setErrorPopupOpen(true);
+    }
+  };
 
 
   const handleDelete = async (id: number) => {
@@ -76,6 +105,7 @@ const OpcoesMenu: React.FC<OpcoesMenuProps> = ({ idCenario, fetchTestCases }) =>
       >
            <MenuItem onClick={handleExecute}>Executar</MenuItem>
         <MenuItem onClick={() => handleDetails(Number(idCenario))}>Detalhes</MenuItem>
+        <MenuItem onClick={handleClone}>Clonar Cenário</MenuItem>
         <MenuItem onClick={() => handleEdit(Number(idCenario))}>Editar</MenuItem>
         <MenuItem onClick={() => handleDelete(Number(idCenario))}>Excluir</MenuItem>
       </Menu>
@@ -85,6 +115,12 @@ const OpcoesMenu: React.FC<OpcoesMenuProps> = ({ idCenario, fetchTestCases }) =>
         onClose={handleCloseModal}
         idCenario ={Number(idCenario)}
         fetchTestCases={fetchTestCases}
+      />
+
+<CloneScenarioModal
+        open={showCloneModal}
+        onClose={handleCloneModalClose}
+        idCenario ={Number(idCenario)}
       />
     </div>
   );

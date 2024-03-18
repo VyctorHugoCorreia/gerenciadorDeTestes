@@ -7,6 +7,7 @@ import '../../styles/Table.css';
 import Toast from '../Toast';
 import TestCaseService from '../../services/TestCaseService';
 import HistoryStatusScenarioService from '../../services/HistoryStatusScenarioService';
+import FileUpload from '../FileUpload'; 
 
 interface ExecuteTestCaseModalProps {
   open: boolean;
@@ -117,6 +118,7 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
 
   return (
     <>
+   
       <Modal
         open={open}
         onClose={onClose}
@@ -162,6 +164,15 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
           ) : (
             <p>Não há steps disponíveis para exibição.</p>
           )}
+          <div className='cardboard-style'>
+          <div className="input-container">
+          <span className='span-label'>Upload de arquivo:</span>
+          <FileUpload onFileChange={(file) => console.log('Arquivo selecionado:', file)} />
+        </div>
+          </div>
+         
+
+         
 
           <Button
             className="team-modal-button"
