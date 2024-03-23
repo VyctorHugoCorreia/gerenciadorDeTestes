@@ -1,0 +1,42 @@
+.cardboard-style {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px; /* Aumentei o padding para dar mais espaço */
+    width: 50%; 
+    max-width: 500px; 
+    margin: auto;
+    position: absolute; 
+    top: 30%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+  }
+  
+  .title-container {
+    margin-bottom: 20px;
+  }
+  
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; 
+  }
+  
+  .form-group {
+    margin-bottom: 20px; 
+    width: 100%; 
+  }
+  
+
+  .MuiFormControl-root {
+    width: 100%;
+  }
+  
+  button {
+    margin-top: 10px;
+  }
+  

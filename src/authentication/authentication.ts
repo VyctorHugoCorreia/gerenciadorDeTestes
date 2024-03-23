@@ -21,7 +21,7 @@ export const getAuthentication = (): boolean => {
     const lastActiveTime = parseInt(lastActiveTimeString, 10);
     const currentTime = Date.now();
     const elapsedTime = currentTime - lastActiveTime;
-    if (elapsedTime < 7200000) { // 2 hours in milliseconds
+    if (elapsedTime < 7200000) { 
       return true;
     } else {
       setAuthentication(false);
