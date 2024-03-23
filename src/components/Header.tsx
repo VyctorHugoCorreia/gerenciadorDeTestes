@@ -30,6 +30,11 @@ const Header: React.FC = () => {
       title = 'Dashboard cenários de teste';
       subtitle = 'Visualize detalhes de quantidade de testes.';
       break;
+
+      case location.pathname.startsWith('/login'):
+        title = '';
+        subtitle = '';
+        break;
   
     default:
       break;

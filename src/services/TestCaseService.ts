@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import { getAuthToken } from '../authentication/token'; 
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -62,6 +63,9 @@ class TestCaseService {
       const config: Record<string, any> = {
         method,
         url: `${BASE_URL}${url}`,
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}` 
+        }
       };
 
       if (data && method !== 'get') {

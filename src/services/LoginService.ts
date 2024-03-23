@@ -1,25 +1,31 @@
 import axios, { AxiosError } from 'axios';
-import { getAuthToken } from '../authentication/token'; 
 
 const BASE_URL = 'http://localhost:8080';
 
-class ScenarioTypeService {
-  static async getScenarioTypes(): Promise<any> {
-    return this.request('get', '/api/tipoCenario');
-  }
+interface Login {
+  login: string;
+  senha: string;
+}
 
-  static async getScenarioTypeByTeam(searchValue?: string): Promise<any> {
-    return this.request('get', '/api/tipoCenario', undefined, { idTime: searchValue });
+
+
+class LoginService {
+  static async postLogin(login: string, senha: string): Promise<any> {
+    const data: Login = {
+      login: login,
+      senha: senha,
+    };
+  
+    return this.request('post', '/api/login', data);
   }
+  
+  
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {
     try {
       const config: Record<string, any> = {
         method,
         url: `${BASE_URL}${url}`,
-        headers: {
-          Authorization: `Bearer ${getAuthToken()}` 
-        }
       };
 
       if (data && method !== 'get') {
@@ -43,4 +49,4 @@ class ScenarioTypeService {
   }
 }
 
-export default ScenarioTypeService;
+export default LoginService;

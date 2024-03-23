@@ -1,18 +1,12 @@
 import axios, { AxiosError } from 'axios';
+import { getAuthToken } from '../authentication/token'; 
 
 const BASE_URL = 'http://localhost:8080';
 
-interface Team {
-  nomeTime: string;
-}
-
-interface SearchParams {
-  nomeTime?: string;
-}
-
 class TeamService {
+
   static async addTeam(teamName: string): Promise<any> {
-    const data: Team = {
+    const data = {
       nomeTime: teamName,
     };
   
@@ -28,15 +22,14 @@ class TeamService {
   }
 
   static async editTeam(teamId: number, newName: string): Promise<void> {
-    const data: Team = {
+    const data = {
       nomeTime: newName,
     };
-
     return this.request('put', `/api/time/${teamId}`, data);
   }
 
-  static async searchTeams(params: SearchParams = {}): Promise<any> {
-    const { nomeTime} = params;
+  static async searchTeams(params: { nomeTime?: string } = {}): Promise<any> {
+    const { nomeTime } = params;
     const url = '/api/time';
 
     const requestParams: Record<string, any> = {
@@ -50,11 +43,19 @@ class TeamService {
     return this.request('get', url, undefined, requestParams);
   }
 
-  private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {
+  private static async request(
+    method: 'get' | 'post' | 'put' | 'delete', 
+    url: string, 
+    data?: any, 
+    params?: any, 
+  ): Promise<any> {
     try {
       const config: Record<string, any> = {
         method,
         url: `${BASE_URL}${url}`,
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}` 
+        }
       };
 
       if (data && method !== 'get') {
