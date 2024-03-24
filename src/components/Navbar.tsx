@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from '@mui/material';
 import { AccountCircle } from '@mui/icons-material';
 import { getAuthentication, setAuthentication } from '../authentication/authentication'; 
+import { getUsername } from '../authentication/token'; 
+
 import logo from '../images/logo-pagbank.svg';
 import '../styles/Navbar.css';
 import { useNavigate } from 'react-router-dom';
@@ -44,7 +46,7 @@ const Navbar: React.FC = () => {
               onClick={handleMenu}
             >
               <AccountCircle />
-              <Typography variant="body2" >Vyctor Hugo Chrispim Correia</Typography>
+              <Typography variant="body2" >{getUsername()}</Typography>
             </IconButton>
             <Menu
               id="menu-appbar"

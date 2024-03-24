@@ -16,4 +16,13 @@ export function setAcessProfile(profile: string): void {
   localStorage.setItem('acessProfile', profile);
 }
 
+export function getUsername(): string | null {
+  return localStorage.getItem('username');
+}
+
+export function setUsername(name: string): void {
+  localStorage.setItem('username', name);
+}
+
+
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import LoginService from '../services/LoginService'; 
-import { setAuthToken,setAcessProfile } from '../authentication/token'; 
+import { setAuthToken,setAcessProfile,setUsername } from '../authentication/token'; 
 import { setAuthentication } from '../authentication/authentication'; 
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import '../styles/login.css'
 import { Button, TextField } from '@mui/material';
 
@@ -11,25 +11,26 @@ interface LoginFormProps {}
 const LoginForm: React.FC<LoginFormProps> = () => {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState('');
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string>('');
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
 
   // Verificar se ambos os campos estão preenchidos
   useEffect(() => {
-    setIsButtonDisabled(!(username && password));
-  }, [username, password]);
+    setIsButtonDisabled(!(login && password));
+  }, [login, password]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthentication(false);
     try {
-      const response = await LoginService.postLogin(username, password);
+      const response = await LoginService.postLogin(login, password);
       const { token } = response;
       setAuthToken(token);
       setAuthentication(true);
       setAcessProfile(response.perfilDeAcesso)
+      setUsername(response.nome)
     
       console.log(response.perfilDeAcesso)
       navigate('/');
@@ -50,8 +51,8 @@ const LoginForm: React.FC<LoginFormProps> = () => {
           <TextField
             label="Preencha seu login"
             variant="outlined"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={login}
+            onChange={(e) => setLogin(e.target.value)}
           />
         </div>
         <div className="form-group">
