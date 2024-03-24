@@ -12,12 +12,17 @@ import TestPlanRegisteredTab from './components/TestPlan/TestPlanRegisteredTab';
 import TestSuiteRegisteredTab from './components/TestSuite/TestSuiteRegisteredTab';
 import TeamRegisteredTab from './components/Teams/TeamRegisteredTab';
 import ProductRegisteredTab from './components/Products/ProductRegisteredTab';
+import UserRegisteredTab from './components/User/UserRegisteredTab';
+
 import { getAuthentication } from './authentication/authentication'; 
+import { getAcessProfile } from './authentication/token'; 
+
 
 const App: React.FC = () => {
   const navigate = useNavigate();
 
   const isLoggedIn = getAuthentication();
+  const acessProfile = getAcessProfile();
 
   const AuthenticatedTabs = () => (
     <Tabs>
@@ -26,6 +31,9 @@ const App: React.FC = () => {
       <Tab label="Suíte de teste" component={Link} to="/suite-de-teste" />
       <Tab label="Times cadastrados" component={Link} to="/times-cadastrados" />
       <Tab label="Produtos cadastrados" component={Link} to="/produtos-cadastrados" />
+      {acessProfile === 'Administrador' && (
+      <Tab label="Administração de usuários" component={Link} to="/usuarios" />
+    )}
     </Tabs>
   );
 
@@ -52,6 +60,9 @@ const App: React.FC = () => {
         <Route path="/suite-de-teste" element={requireAuth(<TestSuiteRegisteredTab />)} />
         <Route path="/times-cadastrados" element={requireAuth(<TeamRegisteredTab />)} />
         <Route path="/produtos-cadastrados" element={requireAuth(<ProductRegisteredTab />)} />
+        {acessProfile === 'Administrador' && (
+      <Route path="/usuarios" element={requireAuth(<UserRegisteredTab />)} />
+    )}
         <Route path="*" element={<Navigate to={isLoggedIn ? '' : '/login'} />} />
       </Routes>
     </>

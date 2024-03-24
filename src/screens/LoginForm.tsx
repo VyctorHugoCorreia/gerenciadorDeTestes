@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import LoginService from '../services/LoginService'; 
-import { setAuthToken } from '../authentication/token'; 
+import { setAuthToken,setAcessProfile } from '../authentication/token'; 
 import { setAuthentication } from '../authentication/authentication'; 
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import '../styles/login.css'
@@ -29,6 +29,9 @@ const LoginForm: React.FC<LoginFormProps> = () => {
       const { token } = response;
       setAuthToken(token);
       setAuthentication(true);
+      setAcessProfile(response.perfilDeAcesso)
+    
+      console.log(response.perfilDeAcesso)
       navigate('/');
     } catch (err:any) {
       if (Array.isArray(err) && err.length > 0) {

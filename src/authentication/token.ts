@@ -7,3 +7,13 @@ export function setAuthToken(token: string): void {
 }
 
 
+
+export function getAcessProfile(): string | null {
+  return localStorage.getItem('acessProfile');
+}
+
+export function setAcessProfile(profile: string): void {
+  localStorage.setItem('acessProfile', profile);
+}
+
+
