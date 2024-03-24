@@ -16,7 +16,6 @@ const LoginForm: React.FC<LoginFormProps> = () => {
   const [error, setError] = useState<string>('');
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
 
-  // Verificar se ambos os campos estão preenchidos
   useEffect(() => {
     setIsButtonDisabled(!(login && password));
   }, [login, password]);
