@@ -4,11 +4,12 @@ import { getAuthToken } from '../authentication/token';
 const BASE_URL = 'http://localhost:8080';
 
 interface User {
-  id: number;
   nome: string;
   login: string;
+  senha: string;
   perfilDeAcesso: string;
 }
+
 
 interface SearchParams {
   nome?: string;
@@ -21,6 +22,17 @@ class UserService {
 
   static async getAllUsers(): Promise<any> {
     return this.request('get', '/api/usuarios');
+  }
+
+  static async addUser( nome: string, login:string, senha:string, perfilDeAcesso: string): Promise<any> {
+    const data: User = {
+      nome,
+      login,
+      senha,
+      perfilDeAcesso
+    };
+
+    return this.request('post', '/api/usuarios', data);
   }
 
 

@@ -16,6 +16,7 @@
 .team-modal-input {
   width: calc(100% - 40px);
   margin-bottom: 20px;
+  margin: 10px !important;
 }
 
 .team-modal-button {
@@ -25,7 +26,6 @@
   background-color: #1082BE !important;
 }
 
-/* Estilo para o botão desabilitado */
 .team-modal-button:disabled {
   background-color: #ccc !important;
   color: #666 !important;
@@ -34,7 +34,7 @@
 
 .select-dropdown {
   width: calc(100% - 40px);
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border: 1px solid #ced4da;
   border-radius: 4px;
   padding: 8px 12px;

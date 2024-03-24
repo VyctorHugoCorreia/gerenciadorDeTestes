@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import AddIcon from '@mui/icons-material/Add';
 import '../../styles/AddButton.css';
+import UserModal from './UserModal';
 
 interface AddUserButtonProps {
   fetchUsers: () => void;
@@ -29,6 +30,7 @@ const AddUserButton: React.FC<AddUserButtonProps> = ({ fetchUsers }) => {
       >
         Adicionar um novo usuário
       </Button>
+      <UserModal open={openModal} onClose={handleModalClose} fetchUser={fetchUsers} />
     </div>
   );
 };

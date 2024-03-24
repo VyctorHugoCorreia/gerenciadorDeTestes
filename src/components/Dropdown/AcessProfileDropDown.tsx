@@ -7,13 +7,13 @@ interface acessProfile {
   nome: string;
 }
 
-interface TeamsDropDownProps {
+interface AcessProfileDropDownProps {
   onSelectAcessProfile: (perfilDeAcesso: { id: string; nome: string } | string) => void;
   selectedAcessProfile?: string | null;
   disabled?: boolean; 
 }
 
-const TeamsDropDown: React.FC<TeamsDropDownProps> = ({
+const AcessProfileDropDown: React.FC<AcessProfileDropDownProps> = ({
   onSelectAcessProfile,
   selectedAcessProfile,
   disabled = false, 
@@ -73,4 +73,4 @@ const TeamsDropDown: React.FC<TeamsDropDownProps> = ({
   );
 };
 
-export default TeamsDropDown;
+export default AcessProfileDropDown;

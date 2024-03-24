@@ -12,6 +12,7 @@ export interface User {
     id: string;
     nome: string;
   };
+  status:string;
 }
 
 interface ProductTableProps {
@@ -63,6 +64,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ users, fetchUsers }) => {
                 <th>Nome</th>
                 <th>Login</th>
                 <th>Perfil de acesso</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -71,6 +73,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ users, fetchUsers }) => {
                   <td>{users.nome}</td>
                   <td>{users.login}</td>
                   <td>{users.perfilDeAcesso.nome}</td>
+                  <td>{users.status === 'ACTIVE' ? 'Ativo' : 'Inativo'}</td>
                 </tr>
               ))}
             </tbody>
