@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import LoginForm from './screens/LoginForm';
@@ -14,81 +14,45 @@ import TeamRegisteredTab from './components/Teams/TeamRegisteredTab';
 import ProductRegisteredTab from './components/Products/ProductRegisteredTab';
 import { getAuthentication } from './authentication/authentication'; 
 
-
 const App: React.FC = () => {
   const navigate = useNavigate();
 
-  const checkAuthentication = () => {
-   
-    return getAuthentication();
-  };
+  const isLoggedIn = getAuthentication();
 
-  const AuthenticatedTabs = () => {
-    return (
-      <Tabs>
-        <Tab label="Cenários de teste" component={Link} to="/cenarios-de-teste" />
-        <Tab label="Plano de teste" component={Link} to="/plano-de-teste" />
-        <Tab label="Suíte de teste" component={Link} to="/suite-de-teste" />
-        <Tab label="Times cadastrados" component={Link} to="/times-cadastrados" />
-        <Tab label="Produtos cadastrados" component={Link} to="/produtos-cadastrados" />
-      </Tabs>
-    );
-  };
+  const AuthenticatedTabs = () => (
+    <Tabs>
+      <Tab label="Cenários de teste" component={Link} to="/cenarios-de-teste" />
+      <Tab label="Plano de teste" component={Link} to="/plano-de-teste" />
+      <Tab label="Suíte de teste" component={Link} to="/suite-de-teste" />
+      <Tab label="Times cadastrados" component={Link} to="/times-cadastrados" />
+      <Tab label="Produtos cadastrados" component={Link} to="/produtos-cadastrados" />
+    </Tabs>
+  );
 
   const requireAuth = (element: React.ReactNode) => {
-    if (checkAuthentication()) {
+    if (isLoggedIn) {
       return element;
     } else {
-      navigate('/login');
-      return null;
+      return <Navigate to="/login" />;
     }
   };
 
   return (
     <>
-      {checkAuthentication() && <AuthenticatedTabs />}
+      {isLoggedIn && <AuthenticatedTabs />}
 
       <Routes>
-        <Route
-          path="/login"
-          element={<LoginForm/>}
-        />
-        <Route
-          path="/dashboard"
-          element={requireAuth(<Dashboard />)}
-        />
-        <Route
-          path="/criar-caso-de-teste"
-          element={requireAuth(<CreateTestCase />)}
-        />
-        <Route
-          path="/edit-test-case/:id"
-          element={requireAuth(<EditTestCase />)}
-        />
-        <Route
-          path="/details-test-case/:id"
-          element={requireAuth(<DetailsTestCase />)}
-        />
-        <Route
-          path="/cenarios-de-teste"
-          element={requireAuth(<TestCaseRegisteredTab />)}
-        />
-        <Route
-          path="/plano-de-teste"
-          element={requireAuth(<TestPlanRegisteredTab />)}
-        />
-        <Route
-          path="/suite-de-teste"
-          element={requireAuth(<TestSuiteRegisteredTab />)}
-        />
-        <Route
-          path="/times-cadastrados"
-          element={requireAuth(<TeamRegisteredTab />)}
-        />
-        <Route
-          path="/produtos-cadastrados"
-          element={requireAuth(<ProductRegisteredTab />)}
-        />
+        <Route path="/login" element={<LoginForm/>} />
+        <Route path="/dashboard" element={requireAuth(<Dashboard />)} />
+        <Route path="/criar-caso-de-teste" element={requireAuth(<CreateTestCase />)} />
+        <Route path="/edit-test-case/:id" element={requireAuth(<EditTestCase />)} />
+        <Route path="/details-test-case/:id" element={requireAuth(<DetailsTestCase />)} />
+        <Route path="/cenarios-de-teste" element={requireAuth(<TestCaseRegisteredTab />)} />
+        <Route path="/plano-de-teste" element={requireAuth(<TestPlanRegisteredTab />)} />
+        <Route path="/suite-de-teste" element={requireAuth(<TestSuiteRegisteredTab />)} />
+        <Route path="/times-cadastrados" element={requireAuth(<TeamRegisteredTab />)} />
+        <Route path="/produtos-cadastrados" element={requireAuth(<ProductRegisteredTab />)} />
+        <Route path="*" element={<Navigate to={isLoggedIn ? '' : '/login'} />} />
       </Routes>
     </>
   );
