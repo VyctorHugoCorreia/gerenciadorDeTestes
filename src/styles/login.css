@@ -36,7 +36,7 @@
     width: 100%;
   }
   
-  button {
+  .button-login {
     margin-top: 10px;
     min-width: 150px !important;
     min-height: 50px !important;
