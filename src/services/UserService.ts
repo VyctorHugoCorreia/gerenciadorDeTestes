@@ -35,6 +35,10 @@ class UserService {
     return this.request('post', '/api/usuarios', data);
   }
 
+  static async ActiveOrInactiveUser( id:string, status:string): Promise<any> {
+    return this.request('delete', `/api/usuarios/${id}?status=${status}`,);
+  }
+
 
   static async searchUsers(params: SearchParams = {}): Promise<any> {
     const { nome,login,perfilDeAcesso} = params;
