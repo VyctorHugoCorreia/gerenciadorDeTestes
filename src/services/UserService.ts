@@ -51,6 +51,7 @@ class UserService {
     return this.request('put', `/api/usuarios/${id}`, data);
   }
 
+
   static async searchUsers(params: SearchParams = {}): Promise<any> {
     const { nome,login,perfilDeAcesso} = params;
     const url = '/api/usuarios';

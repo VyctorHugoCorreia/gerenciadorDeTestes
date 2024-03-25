@@ -16,6 +16,7 @@ import UserRegisteredTab from './components/User/UserRegisteredTab';
 
 import { getAuthentication } from './authentication/authentication'; 
 import { getAcessProfile } from './authentication/token'; 
+import ChangePasswordForm from './screens/ChangePasswordForm';
 
 
 const App: React.FC = () => {
@@ -51,6 +52,7 @@ const App: React.FC = () => {
 
       <Routes>
         <Route path="/login" element={<LoginForm/>} />
+        <Route path="/trocar-senha" element={<ChangePasswordForm/>} />
         <Route path="/dashboard" element={requireAuth(<Dashboard />)} />
         <Route path="/criar-caso-de-teste" element={requireAuth(<CreateTestCase />)} />
         <Route path="/edit-test-case/:id" element={requireAuth(<EditTestCase />)} />
@@ -60,6 +62,7 @@ const App: React.FC = () => {
         <Route path="/suite-de-teste" element={requireAuth(<TestSuiteRegisteredTab />)} />
         <Route path="/times-cadastrados" element={requireAuth(<TeamRegisteredTab />)} />
         <Route path="/produtos-cadastrados" element={requireAuth(<ProductRegisteredTab />)} />
+      
         {acessProfile === 'Administrador' && (
       <Route path="/usuarios" element={requireAuth(<UserRegisteredTab />)} />
     )}

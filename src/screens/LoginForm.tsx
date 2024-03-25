@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import LoginService from '../services/LoginService'; 
-import { setAuthToken,setAcessProfile,setUsername } from '../authentication/token'; 
-import { setAuthentication } from '../authentication/authentication'; 
-import {useNavigate } from 'react-router-dom';
+import LoginService from '../services/LoginService';
+import { setAuthToken, setAcessProfile, setUsername } from '../authentication/token';
+import { setAuthentication } from '../authentication/authentication';
+import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import '../styles/login.css'
 import { Button, TextField } from '@mui/material';
 
-interface LoginFormProps {}
+interface LoginFormProps { }
 
 const LoginForm: React.FC<LoginFormProps> = () => {
   const navigate = useNavigate();
@@ -30,12 +30,12 @@ const LoginForm: React.FC<LoginFormProps> = () => {
       setAuthentication(true);
       setAcessProfile(response.perfilDeAcesso)
       setUsername(response.nome)
-    
+
       console.log(response.perfilDeAcesso)
       navigate('/');
-    } catch (err:any) {
+    } catch (err: any) {
       if (Array.isArray(err) && err.length > 0) {
-        setError(err[0]); 
+        setError(err[0]);
       } else {
         setError('Não foi possível realizar login, tente novamente mais tarde.');
       }
@@ -44,7 +44,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
 
   return (
     <div className='cardboard-style'>
-      <h2 className="title-container">Login</h2> 
+      <h2 className="title-container">Login</h2>
       <form onSubmit={handleLogin} className="form-container">
         <div className="form-group">
           <TextField
@@ -63,13 +63,19 @@ const LoginForm: React.FC<LoginFormProps> = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        <div className='form-group'>
+          <span>
+            <Link to="/trocar-senha">Alterar senha</Link>
+          </span>
+
+        </div>
         {error && <p className='error-message'>{error}</p>}
         <Button
           className='button-login'
           variant="contained"
           color="primary"
           type="submit"
-          disabled={isButtonDisabled} 
+          disabled={isButtonDisabled}
         >
           Login
         </Button>

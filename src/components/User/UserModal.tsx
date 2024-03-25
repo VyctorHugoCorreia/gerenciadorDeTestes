@@ -82,10 +82,10 @@ const UserModal: React.FC<UserModalProps> = ({
   }, [password, confirmPassword]);
 
   useEffect(() => {
-    if (selectedUser && open)
+    if (open)
       clearFieldsPassword();
 
-  }, [selectedUser, open]);
+  }, [open]);
 
   useEffect(() => {
     if (password != '' && oldPassword != '' && oldPassword == password)

@@ -7,6 +7,7 @@ import { IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import UserService from '../../services/UserService';
 import UserModal from './UserModal';
+import { getUsername } from '../../authentication/token';
 
 export interface User {
   id: string;
@@ -122,27 +123,32 @@ const ProductTable: React.FC<ProductTableProps> = ({ users, fetchUsers }) => {
                   <td>{users.login}</td>
                   <td>{users.perfilDeAcesso.nome}</td>
                   <td>{users.status === 'ACTIVE' ? 'Ativo' : 'Inativo'}</td>
-                  <td className="action-buttons">
-                    <div>
-                      <IconButton
-                        aria-label="Opções"
-                        aria-controls={`menu-options-${users.id}`}
-                        aria-haspopup="true"
-                        onClick={(event) => handleClick(event, users.id)}
-                      >
-                        <MoreVertIcon />
-                      </IconButton>
-                      <Menu
-                        id={`menu-options-${users.id}`}
-                        anchorEl={anchorElMap[users.id]}
-                        open={Boolean(anchorElMap[users.id])}
-                        onClose={() => handleClose(users.id)}
-                      >
-                        <MenuItem onClick={() => { users.status === 'ACTIVE' ? handleInactiveOrActiveUser(users.id, "INACTIVE") : handleInactiveOrActiveUser(users.id, "ACTIVE") }}>{users.status === 'ACTIVE' ? 'Ativar usuário' : 'Inativar usuário'}</MenuItem>
-                        <MenuItem onClick={() => handleEditUser(users)}>Editar usuário</MenuItem>
-                      </Menu>
-                    </div>
-                  </td>
+                  
+                  {users.nome !== getUsername() ? (
+                    <td className="action-buttons">
+                      <div>
+                        <IconButton
+                          aria-label="Opções"
+                          aria-controls={`menu-options-${users.id}`}
+                          aria-haspopup="true"
+                          onClick={(event) => handleClick(event, users.id)}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                          id={`menu-options-${users.id}`}
+                          anchorEl={anchorElMap[users.id]}
+                          open={Boolean(anchorElMap[users.id])}
+                          onClose={() => handleClose(users.id)}
+                        >
+                          <MenuItem onClick={() => { users.status === 'ACTIVE' ? handleInactiveOrActiveUser(users.id, "INACTIVE") : handleInactiveOrActiveUser(users.id, "ACTIVE") }}>{users.status === 'ACTIVE' ? 'Ativar usuário' : 'Inativar usuário'}</MenuItem>
+                          <MenuItem onClick={() => handleEditUser(users)}>Editar usuário</MenuItem>
+                        </Menu>
+                      </div>
+                    </td>
+                  ) : (
+                    <td>Ação indisponível</td>
+                  )}
                 </tr>
               ))}
             </tbody>

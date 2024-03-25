@@ -35,6 +35,11 @@ const Header: React.FC = () => {
         title = '';
         subtitle = '';
         break;
+
+        case location.pathname.startsWith('/trocar-senha'):
+        title = '';
+        subtitle = '';
+        break;
   
     default:
       break;

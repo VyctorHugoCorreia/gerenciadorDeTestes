@@ -2,10 +2,7 @@ import axios, { AxiosError } from 'axios';
 
 const BASE_URL = 'http://localhost:8080';
 
-interface Login {
-  login: string;
-  senha: string;
-}
+
 
 interface User {
   login: string;
@@ -14,16 +11,8 @@ interface User {
 }
 
 
-class LoginService {
-  static async postLogin(login: string, senha: string): Promise<any> {
-    const data: Login = {
-      login: login,
-      senha: senha,
-    };
-  
-    return this.request('post', '/api/login', data);
-  }
-  
+class ChangePasswordService {
+
   static async EditPassword(login:string, senha:string, senhaAntiga:string): Promise<any> {
     const data: User = {
       login,
@@ -31,7 +20,7 @@ class LoginService {
       senhaAntiga,
     };
 
-    return this.request('put', `/api/login/trocar-senha`, data);
+    return this.request('put', `/api/trocar-senha`, data);
   }
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {
@@ -62,4 +51,4 @@ class LoginService {
   }
 }
 
-export default LoginService;
+export default ChangePasswordService;
