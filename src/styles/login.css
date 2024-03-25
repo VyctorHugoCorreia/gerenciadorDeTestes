@@ -6,11 +6,12 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 20px;
+    background-color: #fff;
     width: 50%; 
     max-width: 500px; 
     margin: auto;
     position: absolute; 
-    top: 30%; 
+    top: 40%; 
     left: 50%; 
     transform: translate(-50%, -50%);
   }
@@ -61,7 +62,7 @@
     color: red;
   }
 
-  .form-group {
+  .form-group-login {
     margin-bottom: 20px;
     width: 100%;
     display: flex;
@@ -69,11 +70,11 @@
   }
   
   
-  .form-group span {
+  .form-group-login span {
     margin-left: auto;
   }
 
-  .form-group a {
+  .form-group-login a {
     color: black; 
     text-decoration: underline; 
     margin-left: auto; 
