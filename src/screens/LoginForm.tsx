@@ -43,10 +43,10 @@ const LoginForm: React.FC<LoginFormProps> = () => {
   };
 
   return (
-    <div className='cardboard-style'>
+    <div className='cardboard-style-login'>
       <h2 className="title-container">Login</h2>
-      <form onSubmit={handleLogin} className="form-container">
-        <div className="form-group">
+      <form onSubmit={handleLogin} className="form-container-login">
+        <div className="form-group-login">
           <TextField
             label="Preencha seu login"
             variant="outlined"
@@ -54,7 +54,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
             onChange={(e) => setLogin(e.target.value)}
           />
         </div>
-        <div className="form-group">
+        <div className="form-group-login">
           <TextField
             label="Preencha sua senha"
             variant="outlined"
@@ -63,7 +63,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className='form-group'>
+        <div className='form-group-login'>
           <span>
             <Link to="/trocar-senha">Alterar senha</Link>
           </span>

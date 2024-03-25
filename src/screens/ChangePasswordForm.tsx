@@ -81,7 +81,7 @@ const ChangePasswordForm: React.FC<ChangePasswordProps> = () => {
   
 
   return (
-    <div className='cardboard-style'>
+    <div className='cardboard-style-change-password'>
       <h2 className="title-container">Alterar senha</h2>
       <form onSubmit={handleChangePassword} className="form-container">
         <div className="form-group">
