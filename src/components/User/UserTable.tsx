@@ -6,6 +6,7 @@ import TablePagination from '@mui/material/TablePagination';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import UserService from '../../services/UserService';
+import UserModal from './UserModal';
 
 export interface User {
   id: string;
@@ -15,7 +16,7 @@ export interface User {
     id: string;
     nome: string;
   };
-  status:string;
+  status: string;
 }
 
 interface ProductTableProps {
@@ -27,12 +28,13 @@ const ProductTable: React.FC<ProductTableProps> = ({ users, fetchUsers }) => {
   const [error, setError] = useState<string>('');
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<{
-    id: number;
-    name: string;
-    idTime: {
-      idTime: number;
-      nomeTime: string;
+  const [selectedUser, setSelectedUser] = useState<{
+    id: string;
+    nome: string;
+    login:string;
+    perfilDeAcesso: {
+      id: string;
+      nome: string;
     };
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
@@ -67,9 +69,27 @@ const ProductTable: React.FC<ProductTableProps> = ({ users, fetchUsers }) => {
     setPage(0);
   };
 
+  const handleEditUser = (user: User) => {
+    const { id, nome, login, perfilDeAcesso } = user;
+
+    const formattedUser = {
+      id: id,
+      nome: nome,
+      login: login,
+      perfilDeAcesso: {
+        id: perfilDeAcesso.id,
+        nome: perfilDeAcesso.nome,
+      },
+    };
+
+    setSelectedUser(formattedUser);
+    setIsEditModalOpen(true);
+  };
+
+
   const handleInactiveOrActiveUser = async (id: string, status: string) => {
     try {
-      await UserService.ActiveOrInactiveUser(id,status);
+      await UserService.ActiveOrInactiveUser(id, status);
       fetchUsers();
       setShowToast(true);
     } catch (err) {
@@ -110,7 +130,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ users, fetchUsers }) => {
                         aria-haspopup="true"
                         onClick={(event) => handleClick(event, users.id)}
                       >
-                         <MoreVertIcon />
+                        <MoreVertIcon />
                       </IconButton>
                       <Menu
                         id={`menu-options-${users.id}`}
@@ -118,7 +138,8 @@ const ProductTable: React.FC<ProductTableProps> = ({ users, fetchUsers }) => {
                         open={Boolean(anchorElMap[users.id])}
                         onClose={() => handleClose(users.id)}
                       >
-                        <MenuItem onClick={() => {users.status === 'ACTIVE' ? handleInactiveOrActiveUser(users.id, "INACTIVE"): handleInactiveOrActiveUser(users.id, "ACTIVE")} }>{users.status === 'ACTIVE' ? 'Ativar usuário' : 'Inativar usuário'}</MenuItem>
+                        <MenuItem onClick={() => { users.status === 'ACTIVE' ? handleInactiveOrActiveUser(users.id, "INACTIVE") : handleInactiveOrActiveUser(users.id, "ACTIVE") }}>{users.status === 'ACTIVE' ? 'Ativar usuário' : 'Inativar usuário'}</MenuItem>
+                        <MenuItem onClick={() => handleEditUser(users)}>Editar usuário</MenuItem>
                       </Menu>
                     </div>
                   </td>
@@ -144,6 +165,16 @@ const ProductTable: React.FC<ProductTableProps> = ({ users, fetchUsers }) => {
         open={errorPopupOpen}
         onClose={handleCloseErrorPopup}
         errorMessage={error}
+      />
+
+      <UserModal
+        open={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setSelectedUser(null);
+        }}
+        fetchUser={fetchUsers}
+        selectedUser={selectedUser}
       />
 
       <Toast

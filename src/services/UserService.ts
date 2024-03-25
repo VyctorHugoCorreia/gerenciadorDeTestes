@@ -6,7 +6,8 @@ const BASE_URL = 'http://localhost:8080';
 interface User {
   nome: string;
   login: string;
-  senha: string;
+  senha?: string;
+  senhaAntiga?:string;
   perfilDeAcesso: string;
 }
 
@@ -38,7 +39,17 @@ class UserService {
   static async ActiveOrInactiveUser( id:string, status:string): Promise<any> {
     return this.request('delete', `/api/usuarios/${id}?status=${status}`,);
   }
+  static async EditUser( id:string, nome: string, login:string, senha:string, senhaAntiga:string, perfilDeAcesso: string): Promise<any> {
+    const data: User = {
+      nome,
+      login,
+      senha,
+      senhaAntiga,
+      perfilDeAcesso
+    };
 
+    return this.request('put', `/api/usuarios/${id}`, data);
+  }
 
   static async searchUsers(params: SearchParams = {}): Promise<any> {
     const { nome,login,perfilDeAcesso} = params;

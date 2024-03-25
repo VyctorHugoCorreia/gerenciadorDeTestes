@@ -29,9 +29,12 @@ const AcessProfileDropDown: React.FC<AcessProfileDropDownProps> = ({
     if (selectedAcessProfile !== null && selectedAcessProfile !== undefined) {
       setSelectedValue(selectedAcessProfile);
       onSelectAcessProfileSelected(selectedAcessProfile);
+    } else {
+      setSelectedValue('');
     }
   }, [selectedAcessProfile]);
 
+  
   const fetchAcessProfile = async () => {
     try {
       const acessProfilesData = await AcessProfileService.getAllAcessProfile();

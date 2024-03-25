@@ -3,12 +3,9 @@ import Modal from '@mui/material/Modal';
 import AcessProfileDropDown from '../Dropdown/AcessProfileDropDown';
 import '../../styles/AddModal.css';
 import UserService from '../../services/UserService';
-
 import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
-
 import Toast from '../Toast';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { log } from 'console';
 
 
 export interface User {
@@ -43,30 +40,61 @@ const UserModal: React.FC<UserModalProps> = ({
   const [username, setUsername] = useState<string>('');
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [oldPassword, setOldPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [showPassword, setShowPassword] = useState(false); // Novo estado para controlar a exibição da senha
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Novo estado para controlar a exibição da senha
+  const [showPassword, setShowPassword] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errorConfirmPassword, setErrorConfirmPassword] = useState<string>('');
   const [errorPassword, setErrorPassword] = useState<string>('');
-
-  const [selectedAcessProfile, setSelectedAcessProfile] = useState<{
+  const [editPassword, setEditPassword] = useState<boolean>(false);
+  const [selectedAcessProfile, setSelectedAccessProfile] = useState<{
     id: string;
     nome: string;
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
+  const isEditing = !!selectedUser;
 
   useEffect(() => {
-    setIsButtonDisabled(username === '' || login === '' || password === '' || confirmPassword === '' || selectedAcessProfile === null)
-  });
+    let isDisabled;
+
+    if (isEditing) {
+      if (editPassword) {
+        isDisabled = username === '' || login === '' || password === '' || oldPassword === '' || confirmPassword === '' || selectedAcessProfile === null;
+      } else {
+        isDisabled = username === '' || login === '' || selectedAcessProfile === null;
+      }
+    } else {
+      isDisabled = username === '' || login === '' || password === '' || confirmPassword === '' || selectedAcessProfile === null;
+    }
+
+    setIsButtonDisabled(isDisabled);
+  }, [isEditing, editPassword, username, login, password, oldPassword, confirmPassword, selectedAcessProfile]);
+
 
   useEffect(() => {
     if (password != '' && confirmPassword != '' && password != confirmPassword)
-      setErrorPassword("O valor está diferente do preenchido em 'Senha do usuário'")
+      setErrorConfirmPassword("O valor está diferente do preenchido em 'Senha do usuário'")
+    else {
+      setErrorConfirmPassword("")
+
+    }
+  }, [password, confirmPassword]);
+
+  useEffect(() => {
+    if (selectedUser && open)
+      clearFieldsPassword();
+
+  }, [selectedUser, open]);
+
+  useEffect(() => {
+    if (password != '' && oldPassword != '' && oldPassword == password)
+      setErrorPassword("Não é possível cadastrar a senha atual como a nova senha para o usuário.")
     else {
       setErrorPassword("")
 
     }
   }, [password, confirmPassword]);
-
 
   useEffect(() => {
     if (open && selectedUser) {
@@ -74,20 +102,28 @@ const UserModal: React.FC<UserModalProps> = ({
       setUsername(selectedUser.nome || '');
       setLogin(selectedUser.login || '');
 
-      setSelectedAcessProfile(selectedUser.id ? {
-        id: selectedUser.id,
-        nome: selectedUser.nome,
+      setSelectedAccessProfile(selectedUser.perfilDeAcesso.id ? {
+        id: selectedUser.perfilDeAcesso.id,
+        nome: selectedUser.perfilDeAcesso.nome,
       } : null);
     } else {
       setError('');
       setUsername('');
       setLogin('');
+      setSelectedAccessProfile(null);
     }
   }, [open, selectedUser]);
 
   const handleInputChangeUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
     setError('');
+  };
+
+  const clearFieldsPassword = () => {
+    setPassword('');
+    setConfirmPassword('');
+    setOldPassword('');
+    setEditPassword(false);
   };
 
   const handleInputChangeLogin = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,20 +141,25 @@ const UserModal: React.FC<UserModalProps> = ({
     setError('');
   };
 
-
-
-  const handleSelectAcessProfile = (acessProfile: { id: string; nome: string } | string) => {
-    if (!selectedUser) {
-      if (typeof acessProfile === 'string') {
-        setSelectedAcessProfile(null);
-      } else {
-        setError('');
-        setSelectedAcessProfile({ id: acessProfile.id, nome: acessProfile.nome });
-      }
-    }
+  const handleInputChangeOldPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOldPassword(event.target.value);
+    setError('');
   };
 
 
+  const handleSelectAccessProfile = (accessProfile: { id: string; nome: string } | string) => {
+    if (!selectedUser) {
+      setSelectedAccessProfile(typeof accessProfile === 'string' ? null : { id: accessProfile.id, nome: accessProfile.nome });
+      setError('');
+    } else {
+      setSelectedAccessProfile(typeof accessProfile === 'string' ? selectedAcessProfile : { id: accessProfile.id, nome: accessProfile.nome });
+      setError('');
+    }
+  };
+
+  const handleToggleEditPassword = () => {
+    setEditPassword(!editPassword);
+  };
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -127,20 +168,23 @@ const UserModal: React.FC<UserModalProps> = ({
   const handleToggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
-
+  const handleToggleOldPasswordVisibility = () => {
+    setShowOldPassword(!showOldPassword);
+  };
 
   const handleAddUser = async () => {
     try {
-       await UserService.addUser(username,login,password,selectedAcessProfile?.nome ?? '');
-        setUsername('');
-        setUsername('');
-        setLogin('');
-        setPassword('');
-        setConfirmPassword('')
-        setSelectedAcessProfile(null);
-        onClose();
-        fetchUser();
-        setShowToast(true)
+      await UserService.addUser(username, login, password, selectedAcessProfile?.nome ?? '');
+      setUsername('');
+      setUsername('');
+      setLogin('');
+      setPassword('');
+      setConfirmPassword('')
+      setSelectedAccessProfile(null);
+      onClose();
+      clearFieldsPassword();
+      fetchUser();
+      setShowToast(true)
     } catch (err) {
       setError(`${err}`);
     }
@@ -149,14 +193,18 @@ const UserModal: React.FC<UserModalProps> = ({
   const handleEditUser = async () => {
     try {
       if (selectedAcessProfile && selectedUser) {
-        // await ProductService.editProduct(selectedProduct.id, productName);
+        await UserService.EditUser(selectedUser.id, username, login, password, oldPassword, selectedAcessProfile?.nome ?? '');
         setUsername('');
         setUsername('');
         setLogin('');
-        setPassword('');
-        setConfirmPassword('')
-        setSelectedAcessProfile(null);
+        if (editPassword) {
+          setOldPassword('');
+          setPassword('');
+          setConfirmPassword('')
+        }
+        setSelectedAccessProfile(null);
         onClose();
+        clearFieldsPassword();
         fetchUser();
         setShowToast(true)
       }
@@ -165,7 +213,6 @@ const UserModal: React.FC<UserModalProps> = ({
     }
   };
 
-  const isEditing = !!selectedUser;
 
   return (
     <>
@@ -180,9 +227,8 @@ const UserModal: React.FC<UserModalProps> = ({
             {selectedUser ? 'Editar usuário' : 'Adicionar novo usuário'}
           </h2>
           <AcessProfileDropDown
-            onSelectAcessProfile={handleSelectAcessProfile}
+            onSelectAcessProfile={handleSelectAccessProfile}
             selectedAcessProfile={selectedAcessProfile?.id || null}
-            disabled={isEditing}
           />
 
           <TextField
@@ -201,58 +247,142 @@ const UserModal: React.FC<UserModalProps> = ({
             value={login}
             onChange={handleInputChangeLogin}
           />
-          <TextField
-            className="team-modal-input"
-            id="password"
-            label="Senha do usuário"
-            placeholder="Preencha a senha do usuário"
-            type={showPassword ? 'text' : 'password'}
-            value={password}
-            onChange={handleInputChangePassword}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleTogglePasswordVisibility}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextField
-            error={errorPassword != ''}
-            className="team-modal-input"
-            id="confirm-password"
-            label="Confirmar senha do usuário"
-            placeholder="Confirme a senha do usuário"
-            type={showConfirmPassword ? 'text' : 'password'}
-            value={confirmPassword}
-            onChange={handleInputChangeConfirmPassword}
-            helperText={errorPassword}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleToggleConfirmPasswordVisibility}
-                    edge="end"
-                  >
-                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
+
+          {isEditing && <Button onClick={handleToggleEditPassword}>Editar Senha</Button>}
+
+          {isEditing && editPassword && (
+            <>
+              <TextField
+                className="team-modal-input"
+                id="old-password"
+                label="Senha atual do usuário"
+                placeholder="Preencha a senha atual do usuário"
+                type={showOldPassword ? 'text' : 'password'}
+                value={oldPassword}
+                onChange={handleInputChangeOldPassword}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle old password visibility"
+                        onClick={handleToggleOldPasswordVisibility}
+                        edge="end"
+                      >
+                        {showOldPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                error={errorPassword !== ''}
+                helperText={errorPassword}
+                className="team-modal-input"
+                id="password"
+                label="Nova senha do usuário"
+                placeholder="Preencha a nova senha do usuário"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={handleInputChangePassword}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleTogglePasswordVisibility}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                error={errorConfirmPassword !== ''}
+                className="team-modal-input"
+                id="confirm-password"
+                label="Confirmar nova senha do usuário"
+                placeholder="Confirme a nova senha do usuário"
+                type={showConfirmPassword ? 'text' : 'password'}
+                value={confirmPassword}
+                onChange={handleInputChangeConfirmPassword}
+                helperText={errorConfirmPassword}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleToggleConfirmPasswordVisibility}
+                        edge="end"
+                      >
+                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </>
+          )}
+
+          {!isEditing && (
+            <>
+              <TextField
+                error={errorPassword !== ''}
+                helperText={errorPassword}
+                className="team-modal-input"
+                id="password"
+                label="Senha do usuário"
+                placeholder="Preencha a senha do usuário"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={handleInputChangePassword}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleTogglePasswordVisibility}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                error={errorConfirmPassword !== ''}
+                className="team-modal-input"
+                id="confirm-password"
+                label="Confirmar senha do usuário"
+                placeholder="Confirme a senha do usuário"
+                type={showConfirmPassword ? 'text' : 'password'}
+                value={confirmPassword}
+                onChange={handleInputChangeConfirmPassword}
+                helperText={errorConfirmPassword}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleToggleConfirmPasswordVisibility}
+                        edge="end"
+                      >
+                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </>
+          )}
           {error && <p style={{ color: 'red' }}>{error}</p>}
           <Button
             className="team-modal-button"
             variant="contained"
             color="primary"
-            id='cadastrar'
+            id="cadastrar"
             onClick={selectedUser ? handleEditUser : handleAddUser}
             disabled={isButtonDisabled}
           >
@@ -271,6 +401,7 @@ const UserModal: React.FC<UserModalProps> = ({
         </div>
       )}
     </>
+
   );
 };
 
