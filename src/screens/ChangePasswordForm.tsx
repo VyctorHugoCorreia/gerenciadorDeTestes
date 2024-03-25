@@ -180,7 +180,7 @@ const ChangePasswordForm: React.FC<ChangePasswordProps> = () => {
           type="submit"
           disabled={isButtonDisabled}
         >
-          Login
+          Alterar senha
         </Button>
         
       </form>
