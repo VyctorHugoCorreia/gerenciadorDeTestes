@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
 import '../styles/TestCase.css';
 import '../styles/Table.css';
 import TestCaseService from '../services/TestCaseService';
 import HistoryStatusTestCaseTable from '../components/TestCase/HistoryStatusTestCaseTable';
-import HistoryStatusScenarioService from '../services/HistoryStatusScenarioService';
 
 
 interface SelectedTeam {
@@ -13,16 +12,16 @@ interface SelectedTeam {
 }
 
 interface DetailsTestCaseProps {
-    testCaseId?: string;
 }
 
 
-const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ testCaseId }) => {
+
+const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
+    const { testCaseId } = useParams<{ testCaseId: string }>(); 
+
     const navigate = useNavigate();
     const idCenario = testCaseId ? parseInt(testCaseId, 10) : undefined;
     const [testCase, setTestCase] = useState<any>(null);
-
-
 
 
     useEffect(() => {

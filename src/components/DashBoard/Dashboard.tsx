@@ -7,17 +7,18 @@ import TestSuiteService from '../../services/TestSuiteService';
 import ScenarioTypeService from '../../services/ScenarioTypeService';
 import ScenarioStatusService from '../../services/ScenarioStatusService';
 import StatusAutomationService from '../../services/StatusAutomationService';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import '../../styles/Table.css'
 
 interface DashboardProps {
-  idTime?: string;
 }
 
 
 
-const Dashboard: React.FC<DashboardProps> = ({ idTime }) => {
+const Dashboard: React.FC<DashboardProps> = () => {
+  const { idTime } = useParams<{ idTime: string }>(); 
+
   const navigate = useNavigate();
   const [products, setProducts] = useState<any[]>([]);
   const [testPlan, setTestPlan] = useState<any[]>([]);

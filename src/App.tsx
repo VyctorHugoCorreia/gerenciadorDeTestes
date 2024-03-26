@@ -35,7 +35,8 @@ const App: React.FC = () => {
       '/suite-de-teste': 2,
       '/times-cadastrados': 3,
       '/produtos-cadastrados': 4,
-      '/usuarios': 5
+      '/usuarios': 5,
+      '/dashboard': 6
     };
     return pathToIndex[location.pathname] || 0;
   });
@@ -47,37 +48,45 @@ const App: React.FC = () => {
       '/suite-de-teste': 2,
       '/times-cadastrados': 3,
       '/produtos-cadastrados': 4,
-      '/usuarios': 5
+      '/usuarios': 5,
+      '/dashboard': 6
     };
-  
+
     const newIndex = pathToIndex[location.pathname];
-  
+
     if (newIndex !== undefined && defaultTabIndex !== newIndex) {
       setDefaultTabIndex(newIndex);
     }
   }, [location.pathname]);
 
-  const AuthenticatedTabs = () => (
-    <Tabs value={defaultTabIndex}>
-      <Tab label="Cenários de teste" component={Link} to="/cenarios-de-teste" />
-      <Tab label="Plano de teste" component={Link} to="/plano-de-teste" />
-      <Tab label="Suíte de teste" component={Link} to="/suite-de-teste" />
-      <Tab label="Times cadastrados" component={Link} to="/times-cadastrados" />
-      <Tab label="Produtos cadastrados" component={Link} to="/produtos-cadastrados" />
-      {acessProfile === 'Administrador' && (
-        <Tab label="Administração de usuários" component={Link} to="/usuarios" />
-      )}
-    </Tabs>
-  );
+  const AuthenticatedTabs = () => {
+    const hideTabsForRoutes = ['/login', '/trocar-senha', '/dashboard', '/criar-caso-de-teste', '/edit-test-case', '/details-test-case'];
+    if (hideTabsForRoutes.some(route => location.pathname.includes(route))) {
+      return null;
+    }
+
+    return (
+      <Tabs value={defaultTabIndex}>
+        <Tab label="Cenários de teste" component={Link} to="/cenarios-de-teste" />
+        <Tab label="Plano de teste" component={Link} to="/plano-de-teste" />
+        <Tab label="Suíte de teste" component={Link} to="/suite-de-teste" />
+        <Tab label="Times cadastrados" component={Link} to="/times-cadastrados" />
+        <Tab label="Produtos cadastrados" component={Link} to="/produtos-cadastrados" />
+        {acessProfile === 'Administrador' && (
+          <Tab label="Administração de usuários" component={Link} to="/usuarios" />
+        )}
+      </Tabs>
+    );
+  };
 
   const RouterContent: React.FC = () => (
     <Routes>
       <Route path="/login" element={<LoginForm />} />
       <Route path="/trocar-senha" element={<ChangePasswordForm />} />
-      <Route path="/dashboard" element={requireAuth(<Dashboard />)} />
+      <Route path="/dashboard/:idTime" element={requireAuth(<Dashboard />)} />
       <Route path="/criar-caso-de-teste" element={requireAuth(<CreateTestCase />)} />
-      <Route path="/edit-test-case/:id" element={requireAuth(<EditTestCase />)} />
-      <Route path="/details-test-case/:id" element={requireAuth(<DetailsTestCase />)} />
+      <Route path="/edit-test-case/:testCaseId" element={requireAuth(<EditTestCase />)} />
+      <Route path="/details-test-case/:testCaseId" element={requireAuth(<DetailsTestCase />)} />
       <Route path="/cenarios-de-teste" element={requireAuth(<TestCaseRegisteredTab />)} />
       <Route path="/plano-de-teste" element={requireAuth(<TestPlanRegisteredTab />)} />
       <Route path="/suite-de-teste" element={requireAuth(<TestSuiteRegisteredTab />)} />

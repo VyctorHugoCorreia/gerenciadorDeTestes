@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/TestCase.css';
 import TeamsDropDown from '../components/Dropdown/TeamsDropDown';
 import ProductDropDown from '../components/Dropdown/ProductDropDown';
@@ -22,11 +22,12 @@ interface SelectedTeam {
 }
 
 interface EditTestCaseProps {
-    testCaseId?: string;
 }
 
 
-const EditTestCaseScreen: React.FC<EditTestCaseProps> = ({ testCaseId }) => {
+const EditTestCaseScreen: React.FC<EditTestCaseProps> = () => {
+    const { testCaseId } = useParams<{ testCaseId: string }>(); 
+
     const [buttonCreatedDisabled, setButtonCreatedDisabled] = useState(true);
     const [selectedTeam, setSelectedTeam] = useState<number | null>(null);
     const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
