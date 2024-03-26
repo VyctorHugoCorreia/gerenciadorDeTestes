@@ -72,7 +72,6 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
         idPlano: testCase.idPlano.idPlano || 0,
         idSuite: testCase.idSuite.idSuite || 0,
         idTproduto: testCase.idTproduto.idTproduto || 0,
-        idFuncionalidade: testCase.idFuncionalidade.idFuncionalidade || 0,
         idTpcenario: testCase.idTpcenario.idTpcenario || 0,
         idPlataforma: testCase.idPlataforma.idPlataforma || 0,
         idStatus: selectedScenarioStatusId || 0,
@@ -89,7 +88,6 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
       };
 
       if (idCenario != null) {
-
         const response = await TestCaseService.updateTestCase(idCenario, data);
 
         const dataHistory = {
