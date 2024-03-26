@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AddTeamButton from './AddTeamButton';
 import TeamTable from './TeamTable';
-import TeamService from '../../services/TimeService';
+import TeamService from '../../services/TeamService';
 import SearchBar from '../searchBar/SearchBar';
 
 interface SearchParams {

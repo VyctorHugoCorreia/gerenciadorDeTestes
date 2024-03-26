@@ -139,7 +139,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
-    setPage(0); // Resetar para a primeira página ao alterar a quantidade de itens por página
+    setPage(0); 
   };
   return (
 

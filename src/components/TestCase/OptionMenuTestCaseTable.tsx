@@ -50,25 +50,6 @@ const OpcoesMenu: React.FC<OpcoesMenuProps> = ({ idCenario, fetchTestCases }) =>
     setShowCloneModal(false);
   };
 
-  const handleCloneSubmit = async (data: any) => {
-    try {
-      // Envie os dados de clonagem para o serviço
-      // Aqui você deve chamar a função de serviço para clonar o cenário com os dados em data
-      console.log('Dados de clonagem:', data);
-      // Após a clonagem bem-sucedida, feche o modal
-      handleCloneModalClose();
-      // Atualize os casos de teste após a clonagem
-      fetchTestCases();
-      // Exiba um toast ou mensagem de sucesso
-      setShowToast(true);
-    } catch (error) {
-      console.error(error);
-      setError(`${error}`);
-      setErrorPopupOpen(true);
-    }
-  };
-
-
   const handleDelete = async (id: number) => {
     try {
       await TestService.deleteTestCase(id);

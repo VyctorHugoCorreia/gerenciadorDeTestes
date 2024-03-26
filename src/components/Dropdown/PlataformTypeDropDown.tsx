@@ -24,7 +24,7 @@ const PlataformTypeDropDown: React.FC<PlataformTypeDropDownProps> = ({
 
   const fetchPlataformTypes = useCallback(async () => {
     try {
-      const typesData = await PlataformTypeService.getPlataformTypes(); // Método para buscar os tipos de cenário
+      const typesData = await PlataformTypeService.getPlataformTypes();
       setPlataformTypes(typesData);
     } catch (error) {
       console.error('Error fetching plataform types:', error);

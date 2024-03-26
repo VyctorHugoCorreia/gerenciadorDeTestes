@@ -24,7 +24,7 @@ const ScenarioTypeDropDown: React.FC<ScenarioTypeDropDownProps> = ({
 
   const fetchScenarioTypes = useCallback(async () => {
     try {
-      const typesData = await ScenarioTypeService.getScenarioTypes(); // Método para buscar os tipos de cenário
+      const typesData = await ScenarioTypeService.getScenarioTypes(); 
       setScenarioTypes(typesData);
     } catch (error) {
       console.error('Error fetching scenario types:', error);

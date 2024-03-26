@@ -140,8 +140,8 @@
   }
   
   .cardboard-style-adicional.container > div {
-    width: calc(33.33% - 20px); /* 33.33% of the container width minus margin */
-    margin: 10px; /* Adjust as needed */
+    width: calc(33.33% - 20px); 
+    margin: 10px; 
   }
   .column-selection{
     margin-left: 10px;

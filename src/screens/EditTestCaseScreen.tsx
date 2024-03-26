@@ -47,7 +47,7 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = () => {
     const navigate = useNavigate();
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
-    const idCenario = testCaseId ? parseInt(testCaseId, 10) : undefined; // Converta para número ou deixe como undefined
+    const idCenario = testCaseId ? parseInt(testCaseId, 10) : undefined; 
 
 
     const handleSelectTeam = (team: number | SelectedTeam | null | string) => {

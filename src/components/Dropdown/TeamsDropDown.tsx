@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import TeamService from '../../services/TimeService';
+import TeamService from '../../services/TeamService';
 import '../../styles/AddModal.css';
 
 interface Team {

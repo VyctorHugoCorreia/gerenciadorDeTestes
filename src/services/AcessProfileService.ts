@@ -3,10 +3,6 @@ import { getAuthToken } from '../authentication/token';
 
 const BASE_URL = 'http://localhost:8080';
 
-interface AcessProfile {
-  id: string;
-  nome: string;
-}
 
 interface SearchParams {
   id?: string;

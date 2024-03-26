@@ -24,7 +24,7 @@ const StatusAutomationTypeDropDown: React.FC<StatusAutomationTypeDropDownProps> 
 
   const fetchStatusAutomationTypes = useCallback(async () => {
     try {
-      const typesData = await StatusAutomationTypeService.getStatusTypes(); // Método para buscar os tipos de cenário
+      const typesData = await StatusAutomationTypeService.getStatusTypes(); 
       setStatusAutomationTypes(typesData);
     } catch (error) {
       console.error('Error fetching plataform types:', error);

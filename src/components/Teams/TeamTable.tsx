@@ -1,5 +1,5 @@
 import React, { useState, MouseEvent } from 'react';
-import TeamService from '../../services/TimeService';
+import TeamService from '../../services/TeamService';
 import '../../styles/Table.css'
 import ErrorPopup from '../ErrorPopup';
 import TeamModal from './TeamModal'; 

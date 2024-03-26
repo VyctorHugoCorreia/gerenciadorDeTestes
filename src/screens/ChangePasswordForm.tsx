@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { setAuthToken, setAcessProfile, setUsername } from '../authentication/token';
-import { setAuthentication } from '../authentication/authentication';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/ChangePassword.css'
 import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';

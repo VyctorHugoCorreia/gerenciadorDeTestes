@@ -61,7 +61,7 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
 
   const handleExecute = async () => {
     try {
-      const filteredSteps = steps.filter(step => step.descricao.trim() !== ''); // Filtrar passos vazios, se necessário
+      const filteredSteps = steps.filter(step => step.descricao.trim() !== ''); 
 
       const testCaseDetails = await TestCaseService.searchTestCase({ idCenario });
       const statusScenario = testCaseDetails[0]?.idStatus?.idStatus;

@@ -14,7 +14,6 @@ const FileUpload: React.FC<{ onFileChange: (file: File | null) => void }> = ({ o
 
   const handleRemoveFile = () => {
     setSelectedFile(null);
-    // Reset input value to allow selecting the same file again
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
     if (fileInput) {
       fileInput.value = '';

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import TestSuiteService from '../../services/TestSuiteService'; // Importe o serviço de suítes de teste
+import TestSuiteService from '../../services/TestSuiteService';
 
 interface TestSuite {
   idSuite: number;

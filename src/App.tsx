@@ -23,7 +23,6 @@ type PathToIndexMap = {
 };
 
 const App: React.FC = () => {
-  const navigate = useNavigate();
   const isLoggedIn = getAuthentication();
   const acessProfile = getAcessProfile();
   const location = useLocation();

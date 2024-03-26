@@ -6,7 +6,7 @@ import '../../styles/AddModal.css';
 import Toast from '../Toast';
 
 
-import TeamService from '../../services/TimeService'; 
+import TeamService from '../../services/TeamService'; 
 
 interface TeamModalProps {
   open: boolean;

@@ -1,4 +1,3 @@
-// TestCaseRegisteredTab.tsx
 import React, { useEffect, useState } from 'react';
 import AddTestCaseButton from './AddTestCaseButton';
 import TestCaseTable from './TestCaseTable';
