@@ -12,8 +12,9 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    
   }
-  
+
   .input-container {
     flex: 1 1 30%;
     margin-bottom: 15px;
@@ -121,5 +122,25 @@
     color: #222222; 
     text-shadow: 1px 1px 1px rgba(150, 150, 150, 1); 
     font-weight: normal; 
+  }
+  
+  .cardboard-style-adicional {
+    padding: 20px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+  }
+  
+  .cardboard-style-adicional.container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .cardboard-style-adicional.container > div {
+    width: calc(33.33% - 20px); /* 33.33% of the container width minus margin */
+    margin: 10px; /* Adjust as needed */
   }
   

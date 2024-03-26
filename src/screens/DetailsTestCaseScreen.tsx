@@ -28,7 +28,7 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ testCaseId }) =
     useEffect(() => {
         const fetchTestCase = async () => {
             try {
-                const testCaseDetails = await TestCaseService.searchTestCase({idCenario});
+                const testCaseDetails = await TestCaseService.searchTestCase({ idCenario });
                 console.log(testCaseDetails)
                 if (testCaseDetails.length > 0) {
                     setTestCase(testCaseDetails[0]);
@@ -64,7 +64,7 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ testCaseId }) =
 
 
             </div>
-          
+
             <div className='cardboard-style'>
                 <div>
                     <span className='span-label'>Titulo:</span>
@@ -121,7 +121,7 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ testCaseId }) =
                 </div>
             )}
             <h2>Informações adicionais</h2>
-            <div className='cardboard-style container'>
+            <div className='cardboard-style-adicional container'>
                 <div>
                     <span className='span-label'>Time:</span>
                     <h4>{testCase ? testCase.idTime.nomeTime : 'Loading...'}</h4>
@@ -155,11 +155,11 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ testCaseId }) =
                     <span className='span-label'>Status da automação:</span>
                     <h4>{testCase ? testCase.idAutomatizado.descAutomatizado : 'Loading...'}</h4>
                 </div>
+                    <div>
+                        <span className='span-label'>Tags:</span>
+                        <h4>{testCase ? (testCase.tags ? testCase.tags.join(' | ') : '') : 'Loading...'}</h4>
+                    </div>
 
-                <div>
-                    <span className='span-label'>Tags:</span>
-                    <h4>{testCase ? (testCase.tags ? testCase.tags.join(' | ') : '') : 'Loading...'}</h4>
-                </div>
             </div>
             <div className='cardboard-style container'>
                 <div>

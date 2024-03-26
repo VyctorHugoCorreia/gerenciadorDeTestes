@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, Link, useNavigate, Navigate, useLocation } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -18,36 +18,35 @@ import { getAuthentication } from './authentication/authentication';
 import { getAcessProfile } from './authentication/token';
 import ChangePasswordForm from './screens/ChangePasswordForm';
 
+type PathToIndexMap = {
+  [key: string]: number;
+};
 
 const App: React.FC = () => {
   const navigate = useNavigate();
-
   const isLoggedIn = getAuthentication();
   const acessProfile = getAcessProfile();
-
   const location = useLocation();
 
-  if (location.pathname === '/criar-caso-de-teste') {
-    return <CreateTestCase />;
-  }
+  const [defaultTabIndex, setDefaultTabIndex] = useState(0);
 
-  if (location.pathname.startsWith('/edit-test-case')) {
-    const id = location.pathname.split('/').pop();
-    return <EditTestCase testCaseId={id} />;
-  }
-
-  if (location.pathname.startsWith('/details-test-case')) {
-    const id = location.pathname.split('/').pop();
-    return <DetailsTestCase testCaseId={id} />;
-  }
-
-  if (location.pathname.startsWith('/dashboard')) {
-    const id = location.pathname.split('/').pop();
-    return <Dashboard idTime={id}/>;
-  }
+  useEffect(() => {
+    const pathToIndex: PathToIndexMap = {
+      '/cenarios-de-teste': 0,
+      '/plano-de-teste': 1,
+      '/suite-de-teste': 2,
+      '/times-cadastrados': 3,
+      '/produtos-cadastrados': 4,
+      '/usuarios': 5
+    };
+  
+    if (location.pathname in pathToIndex) {
+      setDefaultTabIndex(pathToIndex[location.pathname]);
+    }
+  }, [location.pathname]); 
 
   const AuthenticatedTabs = () => (
-    <Tabs value={location.pathname}>
+    <Tabs value={defaultTabIndex}>
       <Tab label="Cenários de teste" component={Link} to="/cenarios-de-teste" />
       <Tab label="Plano de teste" component={Link} to="/plano-de-teste" />
       <Tab label="Suíte de teste" component={Link} to="/suite-de-teste" />
@@ -59,28 +58,25 @@ const App: React.FC = () => {
     </Tabs>
   );
 
-  const RouterContent: React.FC = () => {
-    return (
-      <Routes>
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/trocar-senha" element={<ChangePasswordForm />} />
-        <Route path="/dashboard" element={requireAuth(<Dashboard />)} />
-        <Route path="/criar-caso-de-teste" element={requireAuth(<CreateTestCase />)} />
-        <Route path="/edit-test-case/:id" element={requireAuth(<EditTestCase />)} />
-        <Route path="/details-test-case/:id" element={requireAuth(<DetailsTestCase />)} />
-        <Route path="/cenarios-de-teste" element={requireAuth(<TestCaseRegisteredTab />)} />
-        <Route path="/plano-de-teste" element={requireAuth(<TestPlanRegisteredTab />)} />
-        <Route path="/suite-de-teste" element={requireAuth(<TestSuiteRegisteredTab />)} />
-        <Route path="/times-cadastrados" element={requireAuth(<TeamRegisteredTab />)} />
-        <Route path="/produtos-cadastrados" element={requireAuth(<ProductRegisteredTab />)} />
-
-        {acessProfile === 'Administrador' && (
-          <Route path="/usuarios" element={requireAuth(<UserRegisteredTab />)} />
-        )}
-        <Route path="*" element={<Navigate to={!isLoggedIn ? '' : '/login'} />} />
-      </Routes>
-    );
-  };
+  const RouterContent: React.FC = () => (
+    <Routes>
+      <Route path="/login" element={<LoginForm />} />
+      <Route path="/trocar-senha" element={<ChangePasswordForm />} />
+      <Route path="/dashboard" element={requireAuth(<Dashboard />)} />
+      <Route path="/criar-caso-de-teste" element={requireAuth(<CreateTestCase />)} />
+      <Route path="/edit-test-case/:id" element={requireAuth(<EditTestCase />)} />
+      <Route path="/details-test-case/:id" element={requireAuth(<DetailsTestCase />)} />
+      <Route path="/cenarios-de-teste" element={requireAuth(<TestCaseRegisteredTab />)} />
+      <Route path="/plano-de-teste" element={requireAuth(<TestPlanRegisteredTab />)} />
+      <Route path="/suite-de-teste" element={requireAuth(<TestSuiteRegisteredTab />)} />
+      <Route path="/times-cadastrados" element={requireAuth(<TeamRegisteredTab />)} />
+      <Route path="/produtos-cadastrados" element={requireAuth(<ProductRegisteredTab />)} />
+      {acessProfile === 'Administrador' && (
+        <Route path="/usuarios" element={requireAuth(<UserRegisteredTab />)} />
+      )}
+      <Route path="*" element={<Navigate to={isLoggedIn ? '' : '/login'} />} />
+    </Routes>
+  );
 
   const requireAuth = (element: React.ReactNode) => {
     if (isLoggedIn) {
