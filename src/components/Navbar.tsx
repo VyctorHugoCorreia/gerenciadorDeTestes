@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <AppBar position="static" className='navbar'>
+  <AppBar position="static" className='navbar'>
       <Toolbar>
         <img src={logo} alt="Logo do PagBank" style={{ marginRight: 'auto' }} />
         {isLoggedIn ? (

@@ -8,7 +8,7 @@ import Navbar from './components/Navbar';
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#F2F2F2' }}>
+    <div style={{ margin: '0', padding: '0', minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F2F2F2' }}>
         <Navbar />
         <Header />
         <App />
@@ -17,3 +17,6 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+document.body.style.margin = '0';
+document.body.style.padding = '0';

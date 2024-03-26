@@ -143,4 +143,7 @@
     width: calc(33.33% - 20px); /* 33.33% of the container width minus margin */
     margin: 10px; /* Adjust as needed */
   }
-  
+  .column-selection{
+    margin-left: 10px;
+    margin-right: 10px;
+  }
