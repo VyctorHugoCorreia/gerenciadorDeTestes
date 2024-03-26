@@ -7,9 +7,10 @@
   
   .search-field {
     width: 90%;
- 
     height: 50px;
     margin-right: 10px;
+    margin-right: 10px !important;
+    margin-left: 10px !important;
   }
   
   .search-button {
@@ -17,5 +18,28 @@
     height: 50px;
     background-color: #1082BE !important;
     margin-left: 1% !important;
+    background-color: #1082BE !important;
+   
+    margin-right: 10px !important;
+  }
 
+  .dropdown-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    width: 100%; 
+  }
+  
+  .dropdown {
+    flex: 1; 
+    margin-right: 10px; 
+    max-width: 400px;
+    flex-basis: calc(33.33% - 10px); 
+    box-sizing: border-box; 
+    background-color: transparent;
+    margin-left: 10px !important;
+  }
+  
+  .dropdown select {
+    background-color: transparent;
   }

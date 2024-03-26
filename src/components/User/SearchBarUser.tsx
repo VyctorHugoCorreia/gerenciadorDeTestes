@@ -2,7 +2,7 @@ import React, { useEffect, useState, ChangeEvent, useRef } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import AcessProfileDropDown from '../Dropdown/AcessProfileDropDown';
-import '../../styles/SearchBarTeams.css';
+import '../../styles/SearchBar.css';
 
 export interface AcessProfile {
   id: string;
