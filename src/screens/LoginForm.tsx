@@ -30,8 +30,6 @@ const LoginForm: React.FC<LoginFormProps> = () => {
       setAuthentication(true);
       setAcessProfile(response.perfilDeAcesso)
       setUsername(response.nome)
-
-      console.log(response.perfilDeAcesso)
       navigate('/');
     } catch (err: any) {
       if (Array.isArray(err) && err.length > 0) {

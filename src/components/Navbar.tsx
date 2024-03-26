@@ -13,9 +13,9 @@ const Navbar: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(getAuthentication());
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  // Observa mudanças no estado de autenticação
   useEffect(() => {
     setIsLoggedIn(getAuthentication());
+    setAnchorEl(null)
   }, [getAuthentication()]);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {

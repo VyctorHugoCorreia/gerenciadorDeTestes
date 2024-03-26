@@ -28,7 +28,17 @@ const App: React.FC = () => {
   const acessProfile = getAcessProfile();
   const location = useLocation();
 
-  const [defaultTabIndex, setDefaultTabIndex] = useState(0);
+  const [defaultTabIndex, setDefaultTabIndex] = useState(() => {
+    const pathToIndex: PathToIndexMap = {
+      '/cenarios-de-teste': 0,
+      '/plano-de-teste': 1,
+      '/suite-de-teste': 2,
+      '/times-cadastrados': 3,
+      '/produtos-cadastrados': 4,
+      '/usuarios': 5
+    };
+    return pathToIndex[location.pathname] || 0;
+  });
 
   useEffect(() => {
     const pathToIndex: PathToIndexMap = {
@@ -40,10 +50,12 @@ const App: React.FC = () => {
       '/usuarios': 5
     };
   
-    if (location.pathname in pathToIndex) {
-      setDefaultTabIndex(pathToIndex[location.pathname]);
+    const newIndex = pathToIndex[location.pathname];
+  
+    if (newIndex !== undefined && defaultTabIndex !== newIndex) {
+      setDefaultTabIndex(newIndex);
     }
-  }, [location.pathname]); 
+  }, [location.pathname]);
 
   const AuthenticatedTabs = () => (
     <Tabs value={defaultTabIndex}>
@@ -74,7 +86,7 @@ const App: React.FC = () => {
       {acessProfile === 'Administrador' && (
         <Route path="/usuarios" element={requireAuth(<UserRegisteredTab />)} />
       )}
-      <Route path="*" element={<Navigate to={isLoggedIn ? '' : '/login'} />} />
+      <Route path="*" element={<Navigate to={isLoggedIn ? '/cenarios-de-teste' : '/login'} />} />
     </Routes>
   );
 

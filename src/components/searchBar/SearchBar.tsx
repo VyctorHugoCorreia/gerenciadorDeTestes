@@ -9,7 +9,7 @@ import ScenarioStatusDropDown from '../Dropdown/ScenarioStatusDropDown';
 import ScenarioTypeDropDown from '../Dropdown/ScenarioTypeDropDown';
 import PlataformTypeDropDown from '../Dropdown/PlataformTypeDropDown';
 import StatusAutomationTypeDropDown from '../Dropdown/StatusAutomationDropDown';
-import '../../styles/SearchBarTeams.css';
+import '../../styles/SearchBar.css';
 
 interface Team {
   idTime: number;
