@@ -9,11 +9,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 
 export interface Product {
-  idTproduto: number;
-  descProduto: string;
-  idTime: {
-    idTime: number;
-    nomeTime: string;
+  idProduct: number;
+  descProduct: string;
+  idTeam: {
+    idTeam: number;
+    nameTeam: string;
   };
 }
 
@@ -27,11 +27,11 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, fetchProducts }) 
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<{
-    id: number;
-    name: string;
-    idTime: {
-      idTime: number;
-      nomeTime: string;
+    idProduct: number;
+    descProduct: string;
+    idTeam: {
+      idTeam: number;
+      nameTeam: string;
     };
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
@@ -54,14 +54,14 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, fetchProducts }) 
   };
 
   const handleEditProduct = (product: Product) => {
-    const { idTproduto, descProduto, idTime } = product;
+    const { idProduct, descProduct, idTeam } = product;
 
     const formattedProduct = {
-      id: idTproduto,
-      name: descProduto,
-      idTime: {
-        idTime: idTime.idTime,
-        nomeTime: idTime.nomeTime,
+      idProduct: idProduct,
+      descProduct: descProduct,
+      idTeam: {
+        idTeam: idTeam.idTeam,
+        nameTeam: idTeam.nameTeam,
       },
     };
 
@@ -110,27 +110,27 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, fetchProducts }) 
             </thead>
             <tbody>
               {products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product) => (
-                <tr key={product.idTproduto}>
-                  <td>{product.idTime.nomeTime}</td>
-                  <td>{product.descProduto}</td>
+                <tr key={product.idProduct}>
+                  <td>{product.idTeam.nameTeam}</td>
+                  <td>{product.descProduct}</td>
                   <td className="action-buttons">
                     <div>
                       <IconButton
                         aria-label="Opções"
-                        aria-controls={`menu-options-${product.idTproduto}`}
+                        aria-controls={`menu-options-${product.idProduct}`}
                         aria-haspopup="true"
-                        onClick={(event) => handleClick(event, product.idTproduto)}
+                        onClick={(event) => handleClick(event, product.idProduct)}
                       >
                         <MoreVertIcon />
                       </IconButton>
                       <Menu
-                        id={`menu-options-${product.idTproduto}`}
-                        anchorEl={anchorElMap[product.idTproduto]}
-                        open={Boolean(anchorElMap[product.idTproduto])}
-                        onClose={() => handleClose(product.idTproduto)}
+                        id={`menu-options-${product.idProduct}`}
+                        anchorEl={anchorElMap[product.idProduct]}
+                        open={Boolean(anchorElMap[product.idProduct])}
+                        onClose={() => handleClose(product.idProduct)}
                       >
                         <MenuItem onClick={() => handleEditProduct(product)}>Editar</MenuItem>
-                        <MenuItem onClick={() => handleDeleteProduct(product.idTproduto)}>Excluir</MenuItem>
+                        <MenuItem onClick={() => handleDeleteProduct(product.idProduct)}>Excluir</MenuItem>
                       </Menu>
                     </div>
                   </td>

@@ -5,8 +5,8 @@ const BASE_URL = 'http://localhost:8080';
 
 interface SearchParams {
   descSuite?: string;
-  idTime?: number;
-  idTproduto?: number;
+  idTeam?: number;
+  idProduct?: number;
   idPlano?: number;
 }
 
@@ -19,12 +19,12 @@ class TestSuiteService {
     return this.request('post', '/api/suiteDeTeste', data);
   }
 
-  static async editTestSuite(idSuite: number, idTime: number, idTproduto: number, idPlano: number, descSuite: string): Promise<any> {
+  static async editTestSuite(idSuite: number, idTeam: number, idProduct: number, idPlano: number, descSuite: string): Promise<any> {
     const url = `/api/suiteDeTeste/${idSuite}`;
 
     const requestBody = {
-      idTime,
-      idTproduto,
+      idTeam,
+      idProduct,
       idPlano,
       descSuite,
     };
@@ -37,12 +37,12 @@ class TestSuiteService {
   }
 
   static async searchTestSuite(params: SearchParams = {}): Promise<any> {
-    const { descSuite, idTime, idTproduto, idPlano } = params;
+    const { descSuite, idTeam, idProduct, idPlano } = params;
     const url = '/api/suiteDeTeste';
 
     const requestParams: Record<string, any> = {
-      idTime,
-      idTproduto,
+      idTeam,
+      idProduct,
       idPlano
     };
 
@@ -62,7 +62,7 @@ class TestSuiteService {
   }
 
   static async getTestSuitesByTeam(searchValue?: string): Promise<any> {
-    return this.request('get', '/api/suiteDeTeste', undefined, { idTime: searchValue });
+    return this.request('get', '/api/suiteDeTeste', undefined, { idTeam: searchValue });
   }
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {

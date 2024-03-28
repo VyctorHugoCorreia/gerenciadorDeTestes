@@ -14,16 +14,16 @@ import CreateTestCaseBySuiteModal from '../TestSuite/CreateTestCaseBySuiteModal'
 export interface TestPlan {
   idPlano: number;
   descPlano: string;
-  idTime: {
-    idTime: number;
-    nomeTime: string;
+  idTeam: {
+    idTeam: number;
+    nameTeam: string;
   };
-  idTproduto: {
-    idTproduto: number;
-    descProduto: string;
-    idTime: {
-      idTime: number;
-      nomeTime: string;
+  idProduct: {
+    idProduct: number;
+    descProduct: string;
+    idTeam: {
+      idTeam: number;
+      nameTeam: string;
     };
   };
   quantidadeSuites: number;
@@ -48,13 +48,13 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
   const [selectedTestPlan, setSelectedTestPlan] = useState<{
     id: number;
     name: string;
-    idTime: {
-      idTime: number;
-      nomeTime: string;
+    idTeam: {
+      idTeam: number;
+      nameTeam: string;
     };
-    idTproduto: {
-      idTproduto: number;
-      descProduto: string;
+    idProduct: {
+      idProduct: number;
+      descProduct: string;
     };
     quantidadeSuites: number;
   } | null>(null);
@@ -107,18 +107,18 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
 
 
   const handleEditTestPlan = (testPlan: TestPlan) => {
-    const { idPlano, descPlano, idTime, idTproduto, quantidadeSuites } = testPlan;
+    const { idPlano, descPlano, idTeam, idProduct, quantidadeSuites } = testPlan;
 
     const formattedTestPlan = {
       id: idPlano,
       name: descPlano,
-      idTime: {
-        idTime: idTime.idTime,
-        nomeTime: idTime.nomeTime,
+      idTeam: {
+        idTeam: idTeam.idTeam,
+        nameTeam: idTeam.nameTeam,
       },
-      idTproduto: {
-        idTproduto: idTproduto.idTproduto,
-        descProduto: idTproduto.descProduto,
+      idProduct: {
+        idProduct: idProduct.idProduct,
+        descProduct: idProduct.descProduct,
       },
       quantidadeSuites: quantidadeSuites,
     };
@@ -155,8 +155,8 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
             <tbody>
               {testPlans.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((testPlan) => (
                 <tr key={testPlan.idPlano}>
-                  <td>{testPlan.idTime.nomeTime}</td>
-                  <td>{testPlan.idTproduto.descProduto}</td>
+                  <td>{testPlan.idTeam.nameTeam}</td>
+                  <td>{testPlan.idProduct.descProduct}</td>
                   <td>{testPlan.descPlano}</td>
                   <td>{testPlan.quantidadeSuites}</td>
                   <td className="action-buttons">

@@ -12,12 +12,12 @@ import StatusAutomationTypeDropDown from '../Dropdown/StatusAutomationDropDown';
 import '../../styles/SearchBar.css';
 
 interface Team {
-  idTime: number;
-  nomeTime: string;
+  idTeam: number;
+  nameTeam: string;
 }
 
 export interface Product {
-  idTproduto: number;
+  idProduct: number;
 }
 
 export interface TestPlan {
@@ -181,7 +181,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       <div className="dropdown-container">
         {showTeamsDropdown && (
           <div className='dropdown'>
-            <TeamsDropDown onSelectTeam={handleSelectTeam} selectedTeam={selectedTeam?.idTime || null} />
+            <TeamsDropDown onSelectTeam={handleSelectTeam} selectedTeam={selectedTeam?.idTeam || null} />
           </div>
         )}
         {showProductsDropdown && (
@@ -189,9 +189,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
             <ProductDropDown
               onSelectProduct={(selectedProductId) => {
                 setSelectedProductId(selectedProductId);
-                handleSelectProduct(selectedProductId !== null ? { idTproduto: selectedProductId } : null);
+                handleSelectProduct(selectedProductId !== null ? { idProduct: selectedProductId } : null);
               }}
-              selectedTeamId={selectedTeam?.idTime}
+              selectedTeamId={selectedTeam?.idTeam}
               disabled={!selectedTeam}
               isEditing={false}
               resetDropdown={!selectedTeam}

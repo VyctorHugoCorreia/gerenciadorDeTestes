@@ -17,8 +17,8 @@ import ScenarioTypeInfo from '../components/TestCase/ScenarioTypeInfo';
 import DynamicChip from '../components/DynamicChip';
 
 interface SelectedTeam {
-    idTime: number;
-    nomeTime: string;
+    idTeam: number;
+    nameTeam: string;
 }
 
 interface EditTestCaseProps {
@@ -56,7 +56,7 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = () => {
             setResetProductDropdown(true);
             setSelectedProductId(null);
         } else if (typeof team !== 'number') {
-            setSelectedTeam(team.idTime);
+            setSelectedTeam(team.idTeam);
         }
     };
 

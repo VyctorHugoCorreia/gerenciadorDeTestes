@@ -5,12 +5,12 @@ import TestCaseService from '../../services/TestCaseService';
 import SearchBar from '../searchBar/SearchBar';
 
 interface Team {
-  idTime: number;
-  nomeTime: string;
+  idTeam: number;
+  nameTeam: string;
 }
 
 export interface Product {
-  idTproduto: number;
+  idProduct: number;
 }
 
 export interface TestPlan {
@@ -80,8 +80,8 @@ const TestCaseRegisteredTab: React.FC = () => {
     try {
       const filteredTests = await TestCaseService.searchTestCase({
         tituloCenario: searchParams.searchValue,
-        idTime: searchParams.team?.idTime ?? undefined,
-        idTproduto: searchParams.product?.idTproduto ?? undefined,
+        idTeam: searchParams.team?.idTeam ?? undefined,
+        idProduct: searchParams.product?.idProduct ?? undefined,
         idPlano: searchParams.testPlan?.idPlano ?? undefined,
         idSuite: searchParams.testSuite?.idSuite ?? undefined,
         idStatus: searchParams.scenarioStatus?.idStatus ?? undefined,

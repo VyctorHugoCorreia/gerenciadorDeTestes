@@ -5,8 +5,8 @@ const BASE_URL = 'http://localhost:8080';
 
 interface SearchParams {
   tituloCenario?: string;
-  idTime?: number;
-  idTproduto?: number;
+  idTeam?: number;
+  idProduct?: number;
   idPlano?: number;
   idSuite?: number;
   idStatus?: number;
@@ -31,12 +31,12 @@ class TestCaseService {
   }
 
   static async searchTestCase(params: SearchParams = {}): Promise<any> {
-    const { tituloCenario, idTime, idTproduto, idPlano,idSuite, idStatus,idTpcenario,idPlataforma,idAutomatizado, idCenario,  } = params;
+    const { tituloCenario, idTeam, idProduct, idPlano,idSuite, idStatus,idTpcenario,idPlataforma,idAutomatizado, idCenario,  } = params;
     const url = '/api/cenarioDeTeste';
 
     const requestParams: Record<string, any> = {
-      idTime,
-      idTproduto,
+      idTeam,
+      idProduct,
       idPlano,
       idSuite,
       idStatus,

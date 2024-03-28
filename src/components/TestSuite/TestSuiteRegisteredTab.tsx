@@ -5,12 +5,12 @@ import TestSuiteTable, { testSuite } from './TestSuiteTable';
 import TestSuiteService from '../../services/TestSuiteService';
 
 interface Team {
-  idTime: number;
-  nomeTime: string;
+  idTeam: number;
+  nameTeam: string;
 }
 
 export interface Product {
-  idTproduto: number;
+  idProduct: number;
 }
 
 export interface TestPlan {
@@ -51,8 +51,8 @@ const TestSuiteRegisteredTab: React.FC = () => {
     try {
       const filteredTestsSuites = await TestSuiteService.searchTestSuite({
         descSuite: searchParams.searchValue,
-        idTime: searchParams.team?.idTime ?? undefined,
-        idTproduto: searchParams.product?.idTproduto ?? undefined,
+        idTeam: searchParams.team?.idTeam ?? undefined,
+        idProduct: searchParams.product?.idProduct ?? undefined,
         idPlano: searchParams.testPlan?.idPlano ?? undefined,
       });
 

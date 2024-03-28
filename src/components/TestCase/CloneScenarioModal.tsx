@@ -16,8 +16,8 @@ interface CloneScenarioModalProps {
 
 
 interface SelectedTeam {
-  idTime: number;
-  nomeTime: string;
+  idTeam: number;
+  nameTeam: string;
 }
 
 interface TestCase {
@@ -91,7 +91,7 @@ const CloneScenarioModal: React.FC<CloneScenarioModalProps> = ({
       setResetProductDropdown(true);
       setSelectedProductId(null);
     } else if (typeof team !== 'number') {
-      setSelectedTeam(team.idTime);
+      setSelectedTeam(team.idTeam);
     }
   };
 
@@ -112,7 +112,7 @@ const CloneScenarioModal: React.FC<CloneScenarioModalProps> = ({
   const handleCadastro = async () => {
     try {
       const data = {
-        idTime: selectedTeam || 0,
+        idTeam: selectedTeam || 0,
         idPlano: selectedTestPlan || 0,
         idSuite: selectedTestSuite || 0,
         idTproduto: selectedProductId || 0,

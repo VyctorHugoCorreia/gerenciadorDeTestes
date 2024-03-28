@@ -9,11 +9,11 @@ import Toast from '../Toast';
 
 
 export interface Product {
-  id: number;
-  name: string;
-  idTime: {
-    idTime: number;
-    nomeTime: string;
+  idProduct: number;
+  descProduct: string;
+  idTeam: {
+    idTeam: number;
+    nameTeam: string;
   };
 }
 
@@ -22,9 +22,9 @@ export interface ProductModalProps {
   onClose: () => void;
   fetchProducts: () => void;
   selectedProduct?: {
-    id: number;
-    name: string;
-    idTime: { idTime: number; nomeTime: string };
+    idProduct: number;
+    descProduct: string;
+    idTeam: { idTeam: number; nameTeam: string };
   } | null;
 }
 
@@ -38,8 +38,8 @@ const ProductModal: React.FC<ProductModalProps> = ({
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [productName, setProductName] = useState<string>('');
   const [selectedTeam, setSelectedTeam] = useState<{
-    idTime: number;
-    nomeTime: string;
+    idTeam: number;
+    nameTeam: string;
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
 
@@ -50,10 +50,10 @@ const ProductModal: React.FC<ProductModalProps> = ({
   useEffect(() => {
     if (open && selectedProduct) {
       setError('');
-      setProductName(selectedProduct.name || '');
-      setSelectedTeam(selectedProduct.idTime ? {
-        idTime: selectedProduct.idTime.idTime,
-        nomeTime: selectedProduct.idTime.nomeTime,
+      setProductName(selectedProduct.descProduct || '');
+      setSelectedTeam(selectedProduct.idTeam ? {
+        idTeam: selectedProduct.idTeam.idTeam,
+        nameTeam: selectedProduct.idTeam.nameTeam,
       } : null);
     } else {
       setError('');
@@ -67,13 +67,13 @@ const ProductModal: React.FC<ProductModalProps> = ({
     setError('');
   };
 
-  const handleSelectTeam = (team: { idTime: number; nomeTime: string } | string) => {
+  const handleSelectTeam = (team: { idTeam: number; nameTeam: string } | string) => {
     if (!selectedProduct) {
       if (typeof team === 'string') {
         setSelectedTeam(null);
       } else {
         setError('');
-        setSelectedTeam({ idTime: team.idTime, nomeTime: team.nomeTime });
+        setSelectedTeam({ idTeam: team.idTeam, nameTeam: team.nameTeam });
       }
     }
   };
@@ -81,7 +81,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
   const handleAddProduct = async () => {
     try {
       if (selectedTeam) {
-        await ProductService.addProduct(selectedTeam.idTime, productName);
+        await ProductService.addProduct(selectedTeam.idTeam, productName);
         setProductName('');
         setSelectedTeam(null);
         onClose();
@@ -98,7 +98,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
   const handleEditProduct = async () => {
     try {
       if (selectedTeam && selectedProduct) {
-        await ProductService.editProduct(selectedProduct.id, productName);
+        await ProductService.editProduct(selectedProduct.idProduct, productName);
         setProductName('');
         setSelectedTeam(null);
         onClose();
@@ -128,13 +128,13 @@ const ProductModal: React.FC<ProductModalProps> = ({
         </h2>
         <TeamsDropDown
           onSelectTeam={handleSelectTeam}
-          selectedTeam={selectedTeam?.idTime || null}
+          selectedTeam={selectedTeam?.idTeam || null}
           disabled={isEditing}
         />
 
         <TextField
           className="team-modal-input"
-          id="product-name"
+          id="product-descProduct"
           placeholder="Preencha o nome do produto"
           value={productName}
           onChange={handleInputChange}

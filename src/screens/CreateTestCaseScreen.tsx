@@ -19,8 +19,8 @@ import DynamicChip from '../components/DynamicChip';
 import FileUpload from '../components/FileUpload'; 
 
 interface SelectedTeam {
-  idTime: number;
-  nomeTime: string;
+  idTeam: number;
+  nameTeam: string;
 }
 
 const CreateTestCaseScreen: React.FC = () => {
@@ -51,7 +51,7 @@ const CreateTestCaseScreen: React.FC = () => {
       setResetProductDropdown(true);
       setSelectedProductId(null);
     } else if (typeof team !== 'number') {
-      setSelectedTeam(team.idTime);
+      setSelectedTeam(team.idTeam);
     }
   };
 
@@ -93,7 +93,7 @@ const CreateTestCaseScreen: React.FC = () => {
       const filteredTags = tags.filter((tag) => tag.trim() !== ''); 
 
       const data = {
-        idTime: selectedTeam || 0,
+        idTeam: selectedTeam || 0,
         idPlano: selectedTestPlan || 0,
         idSuite: selectedTestSuite || 0,
         idTproduto: selectedProductId || 0,

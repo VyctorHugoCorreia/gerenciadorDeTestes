@@ -14,13 +14,13 @@ import CreateTestCaseBySuiteModal from './CreateTestCaseBySuiteModal';
 export interface testSuite {
   idSuite: number;
   descSuite: string;
-  idTime: {
-    idTime: number;
-    nomeTime: string;
+  idTeam: {
+    idTeam: number;
+    nameTeam: string;
   };
-  idTproduto: {
-    idTproduto: number;
-    descProduto: string;
+  idProduct: {
+    idProduct: number;
+    descProduct: string;
   };
   idPlano: {
     idPlano: number;
@@ -45,13 +45,13 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
   const [selectedTestSuite, setSelectedTestSuite] = useState<{
     id: number;
     name: string;
-    idTime: {
-      idTime: number;
-      nomeTime: string;
+    idTeam: {
+      idTeam: number;
+      nameTeam: string;
     };
-    idTproduto: {
-      idTproduto: number;
-      descProduto: string;
+    idProduct: {
+      idProduct: number;
+      descProduct: string;
     }
     idPlano: {
       idPlano: number;
@@ -107,18 +107,18 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
   };
 
   const handleEditTestSuite = (testSuite: testSuite) => {
-    const { idSuite, descSuite, idTime, idTproduto, idPlano, quantidadeCenarios } = testSuite;
+    const { idSuite, descSuite, idTeam, idProduct, idPlano, quantidadeCenarios } = testSuite;
 
     const formattedTestSuite = {
       id: idSuite,
       name: descSuite,
-      idTime: {
-        idTime: idTime.idTime,
-        nomeTime: idTime.nomeTime,
+      idTeam: {
+        idTeam: idTeam.idTeam,
+        nameTeam: idTeam.nameTeam,
       },
-      idTproduto: {
-        idTproduto: idTproduto.idTproduto,
-        descProduto: idTproduto.descProduto,
+      idProduct: {
+        idProduct: idProduct.idProduct,
+        descProduct: idProduct.descProduct,
 
       },
       idPlano: {
@@ -161,8 +161,8 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
 
           {testSuites.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((testSuite) => (
             <tr key={testSuite.idSuite}>
-              <td>{testSuite.idTime.nomeTime}</td>
-              <td>{testSuite.idTproduto.descProduto}</td>
+              <td>{testSuite.idTeam.nameTeam}</td>
+              <td>{testSuite.idProduct.descProduct}</td>
               <td>{testSuite.idPlano.descPlano}</td>
               <td>{testSuite.descSuite}</td>
               <td>{testSuite.quantidadeCenarios}</td>

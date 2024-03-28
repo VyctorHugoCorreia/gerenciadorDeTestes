@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import ProductService from '../../services/ProductService';
 
 interface Product {
-  idTproduto: number;
-  descProduto: string;
-  idTime: {
-    idTime: number;
-    nomeTime: string;
+  idProduct: number;
+  descProduct: string;
+  idTeam: {
+    idTeam: number;
+    nameTeam: string;
   };
 }
 
@@ -59,10 +59,10 @@ const ProductDropDown: React.FC<ProductDropDownProps> = ({
   
   const handleProductChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedProductId = parseInt(event.target.value, 10);
-    const selectedProduct = products.find(product => product.idTproduto === selectedProductId);
+    const selectedProduct = products.find(product => product.idProduct === selectedProductId);
     if (selectedProduct) {
-      onSelectProduct(selectedProduct.idTproduto);
-      setSelectedValue(selectedProduct.idTproduto);
+      onSelectProduct(selectedProduct.idProduct);
+      setSelectedValue(selectedProduct.idProduct);
     } else {
       onSelectProduct(null);
       setSelectedValue("");
@@ -78,8 +78,8 @@ const ProductDropDown: React.FC<ProductDropDownProps> = ({
     >
       {!isEditing && <option value="">Selecione o produto</option>}
       {products.map((product) => (
-        <option key={product.idTproduto} value={product.idTproduto}>
-          {product.descProduto}
+        <option key={product.idProduct} value={product.idProduct}>
+          {product.descProduct}
         </option>
       ))}
     </select>

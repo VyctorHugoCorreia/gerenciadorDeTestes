@@ -5,8 +5,8 @@ const BASE_URL = 'http://localhost:8080';
 
 interface SearchParams {
   descPlano?: string;
-  idTime?: number;
-  idTproduto?: number;
+  idTeam?: number;
+  idProduct?: number;
 }
 
 class TestPlanService {
@@ -14,22 +14,22 @@ class TestPlanService {
     return this.request('get', '/api/planoDeTeste');
   }
 
-  static async addTestPlan(idTime: number, idTproduto: number, descPlano: string): Promise<any> {
+  static async addTestPlan(idTeam: number, idProduct: number, descPlano: string): Promise<any> {
     const data = {
-      idTime,
-      idTproduto,
+      idTeam,
+      idProduct,
       descPlano,
     };
 
     return this.request('post', '/api/planoDeTeste', data);
   }
 
-  static async editTestPlan(idPlano: number, idTime: number, idTproduto: number, descPlano: string): Promise<any> {
+  static async editTestPlan(idPlano: number, idTeam: number, idProduct: number, descPlano: string): Promise<any> {
     const url = `/api/planoDeTeste/${idPlano}`;
 
     const requestBody = {
-      idTime,
-      idTproduto,
+      idTeam,
+      idProduct,
       descPlano,
     };
 
@@ -41,7 +41,7 @@ class TestPlanService {
   }
 
   static async getTestPlansByProduct(searchValue?: string): Promise<any> {
-    return this.request('get', `/api/planoDeTeste`, undefined, { idTproduto: searchValue });
+    return this.request('get', `/api/planoDeTeste`, undefined, { idProduct: searchValue });
   }
 
   static async getTestPlansById(searchValue?: string): Promise<any> {
@@ -49,16 +49,16 @@ class TestPlanService {
   }
 
   static async getTestPlansByTeam(searchValue?: string): Promise<any> {
-    return this.request('get', `/api/planoDeTeste`, undefined, { idTime: searchValue });
+    return this.request('get', `/api/planoDeTeste`, undefined, { idTeam: searchValue });
   }
 
   static async searchTestPlan(params: SearchParams = {}): Promise<any> {
-    const { descPlano, idTime, idTproduto } = params;
+    const { descPlano, idTeam, idProduct } = params;
     const url = '/api/planoDeTeste';
 
     const requestParams: Record<string, any> = {
-      idTime,
-      idTproduto
+      idTeam,
+      idProduct
     };
 
     if (descPlano !== undefined && descPlano.trim() !== "") {
