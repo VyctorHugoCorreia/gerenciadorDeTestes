@@ -4,7 +4,7 @@ import TestPlanService from '../../services/TestPlanService';
 interface TestPlan {
   idTestPlan: number;
   descTestPlan: string;
-  idProduto: number;
+  idProduct: number;
 }
 
 interface TestPlanDropDownProps {

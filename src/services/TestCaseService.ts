@@ -4,58 +4,58 @@ import { getAuthToken } from '../authentication/token';
 const BASE_URL = 'http://localhost:8080';
 
 interface SearchParams {
-  tituloCenario?: string;
+  titleScenario?: string;
   idTeam?: number;
   idProduct?: number;
-  idPlano?: number;
-  idSuite?: number;
-  idStatus?: number;
-  idCenario?: number;
-  idTpcenario?:number;
-  idPlataforma?:number;
-  idAutomatizado?:number;
+  idTestPlan?: number;
+  idTestSuite?: number;
+  idScenarioStatus?: number;
+  idScenario?: number;
+  idScenarioType?:number;
+  idPlatformType?:number;
+  idAutomationStatus?:number;
 
 }
 
 class TestCaseService {
   static async addTestCase(data: any): Promise<any> {
-    return this.request('post', '/api/cenarioDeTeste', data);
+    return this.request('post', '/api/scenario', data);
   }
 
-  static async updateTestCase(idCenario: number, data: any): Promise<any> {
-    return this.request('put', `/api/cenarioDeTeste/${idCenario}`, data);
+  static async updateTestCase(idScenario: number, data: any): Promise<any> {
+    return this.request('put', `/api/scenario/${idScenario}`, data);
   }
 
   static async getAllTestCase(): Promise<any> {
-    return this.request('get', '/api/cenarioDeTeste');
+    return this.request('get', '/api/scenario');
   }
 
   static async searchTestCase(params: SearchParams = {}): Promise<any> {
-    const { tituloCenario, idTeam, idProduct, idPlano,idSuite, idStatus,idTpcenario,idPlataforma,idAutomatizado, idCenario,  } = params;
-    const url = '/api/cenarioDeTeste';
+    const { titleScenario, idTeam, idProduct, idTestPlan,idTestSuite, idScenarioStatus,idScenarioType,idPlatformType,idAutomationStatus, idScenario,  } = params;
+    const url = '/api/scenario';
 
     const requestParams: Record<string, any> = {
       idTeam,
       idProduct,
-      idPlano,
-      idSuite,
-      idStatus,
-      idTpcenario,
-      idPlataforma,
-      idAutomatizado,
-      idCenario
+      idTestPlan,
+      idTestSuite,
+      idScenarioStatus,
+      idScenarioType,
+      idPlatformType,
+      idAutomationStatus,
+      idScenario
      
     };
 
-    if (tituloCenario !== undefined && tituloCenario.trim() !== "") {
-      requestParams.tituloCenario = tituloCenario;
+    if (titleScenario !== undefined && titleScenario.trim() !== "") {
+      requestParams.titleScenario = titleScenario;
     }
 
     return this.request('get', url, undefined, requestParams);
   }
 
   static async deleteTestCase(testCaseId: number): Promise<void> {
-    return this.request('delete', `/api/cenarioDeTeste/${testCaseId}`);
+    return this.request('delete', `/api/scenario/${testCaseId}`);
   }
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {

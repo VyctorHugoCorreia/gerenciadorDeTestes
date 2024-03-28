@@ -14,7 +14,7 @@ export interface Product {
 }
 
 export interface TestPlan {
-  idPlano: number;
+  idTestPlan: number;
 }
 
 interface SearchParams {
@@ -50,10 +50,10 @@ const TestSuiteRegisteredTab: React.FC = () => {
   const handleSearch = async (searchParams: SearchParams) => {
     try {
       const filteredTestsSuites = await TestSuiteService.searchTestSuite({
-        descSuite: searchParams.searchValue,
+        descTestSuite: searchParams.searchValue,
         idTeam: searchParams.team?.idTeam ?? undefined,
         idProduct: searchParams.product?.idProduct ?? undefined,
-        idPlano: searchParams.testPlan?.idPlano ?? undefined,
+        idTestPlan: searchParams.testPlan?.idTestPlan ?? undefined,
       });
 
       setTestSuites(filteredTestsSuites);

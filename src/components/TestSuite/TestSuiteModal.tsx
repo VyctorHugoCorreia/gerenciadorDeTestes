@@ -19,14 +19,6 @@ export interface Product {
   };
 }
 
-export interface Feature {
-  id: number;
-  name: string;
-  idTeam: {
-    idTeam: number;
-    nameTeam: string;
-  };
-}
 
 export interface TestPlan {
   id: number;
@@ -39,11 +31,9 @@ export interface TestSuiteModalProps {
   onClose: () => void;
   fetchTestSuite: () => void;
   selectedTestSuite?: {
-    id: number;
-    name: string;
-    idTeam: { idTeam: number; nameTeam: string };
-    idProduct: { idProduct: number; descProduct: string }
-    idPlano: { idPlano: number; descPlano: string }
+    idTestSuite: number;
+    descTestSuite: string;
+    idTestPlan: { idTestPlan: number; descTestPlan: string; idProduct: { idProduct: number; descProduct: string;  idTeam: { idTeam: number; nameTeam: string };} }
   } | null;
 }
 
@@ -74,11 +64,11 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
   useEffect(() => {
     if (open && selectedTestSuite) {
       setError('');
-      setTestSuiteName(selectedTestSuite.name || '')
-      setSelectedTeam(selectedTestSuite.idTeam || null);
-      setSelectedTeamId(selectedTestSuite.idTeam?.idTeam || null);
-      setSelectedTestPlanId(selectedTestSuite.idPlano?.idPlano || null);
-      setSelectedProductId(selectedTestSuite.idProduct?.idProduct);
+      setTestSuiteName(selectedTestSuite.descTestSuite || '')
+      setSelectedTeam(selectedTestSuite.idTestPlan.idProduct.idTeam || null);
+      setSelectedTeamId(selectedTestSuite.idTestPlan.idProduct.idTeam.idTeam || null);
+      setSelectedTestPlanId(selectedTestSuite.idTestPlan?.idTestPlan || null);
+      setSelectedProductId(selectedTestSuite.idTestPlan?.idProduct.idProduct);
     } else {
       setError('');
       setTestSuiteName('');
@@ -129,7 +119,7 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
     const data = {
       idTeam: (selectedTeam && selectedTeam.idTeam) ?? 0,
       idProduct: selectedProductId,
-      idPlano: selectedTestPlanId,
+      idTestPlan: selectedTestPlanId,
       descSuite: TestSuiteName,
     };
     try {
@@ -156,7 +146,7 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
   const handleEditTestSuite = async () => {
     try {
       if (selectedTeam && selectedTestSuite) {
-        await TestSuiteService.editTestSuite(selectedTestSuite.id, selectedTestSuite.idTeam.idTeam, selectedTestSuite.idProduct.idProduct, selectedTestSuite.idPlano.idPlano, TestSuiteName);
+        await TestSuiteService.editTestSuite(selectedTestSuite.idTestSuite, selectedTestSuite.idTestPlan.idProduct.idTeam.idTeam, selectedTestSuite.idTestPlan.idProduct.idProduct, selectedTestSuite.idTestPlan.idTestPlan, TestSuiteName);
         setTestSuiteName('');
         setSelectedTeam(null);
         setSelectedTeamId(null);
@@ -200,7 +190,7 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
             disabled={isEditing}
             isEditing={isEditing}
             resetDropdown={resetProductDropdown}
-            selectedProductId={selectedTestSuite?.idProduct.idProduct || null}
+            selectedProductId={selectedTestSuite?.idTestPlan.idProduct.idProduct || null}
           />
 
           <TestPlanDropDown
@@ -209,7 +199,7 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
               setSelectedTestPlanId(selectedTestPlanId);
             }}
             isEditing={isEditing}
-            selectedTestPlanId={selectedTestSuite?.idPlano.idPlano || null}
+            selectedTestPlanId={selectedTestSuite?.idTestPlan.idTestPlan || null}
           />
 
           <TextField

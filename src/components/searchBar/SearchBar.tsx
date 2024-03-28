@@ -21,27 +21,27 @@ export interface Product {
 }
 
 export interface TestPlan {
-  idPlano: number;
+  idTestPlan: number;
 }
 
 export interface TestSuite {
-  idSuite: number;
+  idTestSuite: number;
 }
 
 export interface ScenarioStatus {
-  idStatus: number;
+  idScenarioStatus: number;
 }
 
 export interface ScenarioType {
-  idTpcenario: number;
+  idScenarioType: number;
 }
 
 export interface PlataformType {
-  idPlataforma: number;
+  idPlatformType: number;
 }
 
 export interface StatusAutomation {
-  idAutomatizado: number;
+  idAutomationStatus: number;
 }
 
 interface SearchParams {
@@ -203,21 +203,21 @@ const SearchBar: React.FC<SearchBarProps> = ({
           <div className='dropdown'>
             <TestPlanDropDown
               selectedProductId={selectedProductId}
-              onSelectTestPlan={(selectedTestPlan) => handleSelectTestPlan(selectedTestPlan !== null ? { idPlano: selectedTestPlan } : null)}
+              onSelectTestPlan={(selectedTestPlan) => handleSelectTestPlan(selectedTestPlan !== null ? { idTestPlan: selectedTestPlan } : null)}
               disabled={!selectedProductId}
               isEditing={false}
-              selectedTestPlanId={selectedTestPlan?.idPlano || null}
+              selectedTestPlanId={selectedTestPlan?.idTestPlan || null}
             />
           </div>
         )}
         {showTestSuitesDropdown && (
           <div className='dropdown'>
             <TestSuiteDropDown
-              selectedTestPlanId={selectedTestPlan?.idPlano || null}
-              onSelectTestSuite={(selectedTestSuite) => handleSelectTestSuite(selectedTestSuite !== null ? { idSuite: selectedTestSuite } : null)}
+              selectedTestPlanId={selectedTestPlan?.idTestPlan || null}
+              onSelectTestSuite={(selectedTestSuite) => handleSelectTestSuite(selectedTestSuite !== null ? { idTestSuite: selectedTestSuite } : null)}
               disabled={!selectedTestPlan}
               isEditing={false}
-              selectedTestSuiteId={selectedTestSuite?.idSuite || null}
+              selectedTestSuiteId={selectedTestSuite?.idTestSuite || null}
             />
           </div>
         )}
@@ -226,40 +226,40 @@ const SearchBar: React.FC<SearchBarProps> = ({
         {showScenarioStatusDropdown && (
           <div className='dropdown'>
             <ScenarioStatusDropDown
-              onSelectScenarioStatus={(selectedScenarioStatus) => handleSelectScenarioStatusType(selectedScenarioStatus !== null ? { idStatus: selectedScenarioStatus } : null)}
+              onSelectScenarioStatus={(selectedScenarioStatus) => handleSelectScenarioStatusType(selectedScenarioStatus !== null ? { idScenarioStatus: selectedScenarioStatus } : null)}
               disabled={false}
               isEditing={true}
-              selectedScenarioStatusId={selectedScenarioStatus?.idStatus || null}
+              selectedScenarioStatusId={selectedScenarioStatus?.idScenarioStatus || null}
             />
           </div>
         )}
         {showScenarioTypeDropdown && (
           <div className='dropdown'>
             <ScenarioTypeDropDown
-              onSelectScenarioType={(selectedScenarioType) => handleSelectScenarioType(selectedScenarioType !== null ? { idTpcenario: selectedScenarioType } : null)}
+              onSelectScenarioType={(selectedScenarioType) => handleSelectScenarioType(selectedScenarioType !== null ? { idScenarioType: selectedScenarioType } : null)}
               disabled={false}
               isEditing={false}
-              selectedScenarioTypeId={selectedScenarioType?.idTpcenario || null}
+              selectedScenarioTypeId={selectedScenarioType?.idScenarioType || null}
             />
           </div>
         )}
         {showPlataformTypeDropdown && (
           <div className='dropdown'>
             <PlataformTypeDropDown
-              onSelectPlataformType={(selectedPlataformType) => handleSelectPlataformType(selectedPlataformType !== null ? { idPlataforma: selectedPlataformType } : null)}
+              onSelectPlataformType={(selectedPlataformType) => handleSelectPlataformType(selectedPlataformType !== null ? { idPlatformType: selectedPlataformType } : null)}
               disabled={false}
               isEditing={false}
-              selectedPlataformTypeId={selectedPlataformType?.idPlataforma || null}
+              selectedPlataformTypeId={selectedPlataformType?.idPlatformType || null}
             />
           </div>
         )}
         {showStatusAutomationDropdown && (
           <div className="dropdown">
             <StatusAutomationTypeDropDown
-              onSelectStatusAutomationType={(selectedStatusAutomationType) => handleSelectStatusAutomationType(selectedStatusAutomationType !== null ? { idAutomatizado: selectedStatusAutomationType } : null)}
+              onSelectStatusAutomationType={(selectedStatusAutomationType) => handleSelectStatusAutomationType(selectedStatusAutomationType !== null ? { idAutomationStatus: selectedStatusAutomationType } : null)}
               disabled={false}
               isEditing={false}
-              selectedStatusAutomationTypeId={selectedStatusAutomationType?.idAutomatizado || null}
+              selectedStatusAutomationTypeId={selectedStatusAutomationType?.idAutomationStatus || null}
             />
           </div>
         )}

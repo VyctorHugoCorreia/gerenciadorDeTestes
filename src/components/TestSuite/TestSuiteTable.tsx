@@ -22,11 +22,11 @@ export interface testSuite {
     idProduct: number;
     descProduct: string;
   };
-  idPlano: {
-    idPlano: number;
-    descPlano: string;
+  idTestPlan: {
+    idTestPlan: number;
+    descTestPlan: string;
   };
-  quantidadeCenarios: number;
+  scenarioQuantity: number;
 }
 
 interface TestSuiteTableProps {
@@ -43,21 +43,21 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
   const [selectedCreateTestSuiteId, setSelectedCreateTestSuiteId] = useState<number | null>(null);
   const [isCreateTestCaseModalOpen, setIsCreateTestCaseModalOpen] = useState(false);
   const [selectedTestSuite, setSelectedTestSuite] = useState<{
-    id: number;
-    name: string;
-    idTeam: {
-      idTeam: number;
-      nameTeam: string;
+    idTestSuite: number;
+    descTestSuite: string;
+    idTestPlan: {
+      idTestPlan: number;
+      descTestPlan: string;
+      idProduct: {
+        idProduct: number;
+        descProduct: string;
+        idTeam: {
+          idTeam: number;
+          nameTeam: string;
+        };
+      }
     };
-    idProduct: {
-      idProduct: number;
-      descProduct: string;
-    }
-    idPlano: {
-      idPlano: number;
-      descPlano: string;
-    };
-    quantidadeCenarios: number;
+    scenarioQuantity: number;
 
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
@@ -107,25 +107,24 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
   };
 
   const handleEditTestSuite = (testSuite: testSuite) => {
-    const { idSuite, descSuite, idTeam, idProduct, idPlano, quantidadeCenarios } = testSuite;
+    const { idSuite, descSuite, idTeam, idProduct, idTestPlan, scenarioQuantity } = testSuite;
 
     const formattedTestSuite = {
-      id: idSuite,
-      name: descSuite,
-      idTeam: {
-        idTeam: idTeam.idTeam,
-        nameTeam: idTeam.nameTeam,
+      idTestSuite: idSuite,
+      descTestSuite: descSuite,
+      idTestPlan: {
+        idTestPlan: idTestPlan.idTestPlan,
+        descTestPlan: idTestPlan.descTestPlan,
+        idProduct: {
+          idProduct: idProduct.idProduct,
+          descProduct: idProduct.descProduct,
+          idTeam: {
+            idTeam: idTeam.idTeam,
+            nameTeam: idTeam.nameTeam,
+          }
+        },
       },
-      idProduct: {
-        idProduct: idProduct.idProduct,
-        descProduct: idProduct.descProduct,
-
-      },
-      idPlano: {
-        idPlano: idPlano.idPlano,
-        descPlano: idPlano.descPlano,
-      },
-      quantidadeCenarios: quantidadeCenarios
+      scenarioQuantity: scenarioQuantity
     };
 
     setSelectedTestSuite(formattedTestSuite);
@@ -139,7 +138,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
-    setPage(0); 
+    setPage(0);
   };
   return (
 
@@ -163,9 +162,9 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
             <tr key={testSuite.idSuite}>
               <td>{testSuite.idTeam.nameTeam}</td>
               <td>{testSuite.idProduct.descProduct}</td>
-              <td>{testSuite.idPlano.descPlano}</td>
+              <td>{testSuite.idTestPlan.descTestPlan}</td>
               <td>{testSuite.descSuite}</td>
-              <td>{testSuite.quantidadeCenarios}</td>
+              <td>{testSuite.scenarioQuantity}</td>
               <td className="action-buttons">
                 <div>
                   <IconButton
@@ -187,7 +186,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
                     <MenuItem onClick={() => handleDeleteTestSuite(testSuite.idSuite)}>Excluir</MenuItem>
                     <MenuItem onClick={() => handleCreateTestCase(testSuite.idSuite)}>Cadastrar cenário</MenuItem>
                     <MenuItem
-                      disabled={testSuite.quantidadeCenarios === 0}
+                      disabled={testSuite.scenarioQuantity === 0}
                       onClick={() => handleViewTestCase(testSuite.idSuite)}
                     >
                       Visualizar cenários
@@ -237,7 +236,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
         selectedTestSuiteId !== null && (
           <TestCaseBySuiteModal
             open={true}
-            idSuite={selectedTestSuiteId}
+            idTestSuite={selectedTestSuiteId}
             onClose={handleCloseModal}
             fetchTestSuites={fetchTestSuites}
           />
@@ -248,7 +247,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
         onClose={() => {
           setIsCreateTestCaseModalOpen(false);
         }}
-        testSuiteId={selectedCreateTestSuiteId}
+        idTestSuite={selectedCreateTestSuiteId}
         fetchTestSuites={fetchTestSuites}
       />
     </div >

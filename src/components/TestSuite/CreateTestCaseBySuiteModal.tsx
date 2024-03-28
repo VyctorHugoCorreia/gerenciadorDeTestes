@@ -17,11 +17,11 @@ import DynamicChip from '../DynamicChip';
 interface CreateTestCaseBySuiteModalProps {
     open: boolean;
     onClose?: () => void;
-    testSuiteId?: number | null;
+    idTestSuite?: number | null;
     fetchTestSuites: () => void;
 }
 
-const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({ open, onClose, testSuiteId, fetchTestSuites }) => {
+const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({ open, onClose, idTestSuite, fetchTestSuites }) => {
     const [buttonCreatedDisabled, setButtonCreatedDisabled] = useState(true);
     const [showToast, setShowToast] = useState(false);
     const [testSuite, setTestSuite] = useState<any | null>(null);
@@ -67,12 +67,12 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
     ]);
 
     useEffect(() => {
-        if (open && testSuiteId) {
+        if (open && idTestSuite) {
             fetchTestSuiteById();
             clearFields();
             scrollToTop();
         }
-    }, [open, testSuiteId]);
+    }, [open, idTestSuite]);
 
     const handleSelectScenarioType = (scenarioTypeId: number | null) => {
         setSelectedScenarioType(scenarioTypeId);
@@ -93,7 +93,7 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
 
     const fetchTestSuiteById = async () => {
         try {
-            const testSuiteData = await TestSuiteService.searchTestSuiteById(testSuiteId?.toString());
+            const testSuiteData = await TestSuiteService.searchTestSuiteById(idTestSuite?.toString());
             setTestSuite(testSuiteData);
         } catch (error) {
             console.error('Erro ao buscar casos de teste:', error);
@@ -119,20 +119,20 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
 
             if (testSuite && testSuite.length > 0) {
                 const data = {
-                    idTime: testSuite[0]?.idTime?.idTime || 0,
-                    idTproduto: testSuite[0]?.idTproduto?.idTproduto || 0,
-                    idPlano: testSuite[0]?.idPlano?.idPlano || 0,
-                    idSuite: testSuite[0]?.idSuite || 0,
-                    idTpcenario: selectedScenarioType || 0,
-                    idPlataforma: selectedPlataformType || 0,
-                    idStatus: selectedScenarioStatusType || 0,
-                    idAutomatizado: selectedStatusAutomationType || 0,
-                    tituloCenario: scenarioTitle,
-                    descCenario: scenarioDescription,
-                    linkCenario: scenarioLink,
-                    steps: filteredSteps.map((descricao, index) => ({
-                        passo: index + 1,
-                        descricao: descricao,
+                    idTeam: testSuite[0]?.idTestPlan?.idProduct.idTeam.idTeam || 0,
+                    idProduct: testSuite[0]?.idTestPlan.idProduct?.idProduct || 0,
+                    idTestPlan: testSuite[0]?.idTestPlan?.idTestPlan || 0,
+                    idTestSuite: testSuite[0]?.idTestSuite || 0,
+                    idScenarioType: selectedScenarioType || 0,
+                    idPlatformType: selectedPlataformType || 0,
+                    idScenarioStatus: selectedScenarioStatusType || 0,
+                    idAutomationStatus: selectedStatusAutomationType || 0,
+                    titleScenario: scenarioTitle,
+                    descScenario: scenarioDescription,
+                    linkScenario: scenarioLink,
+                    steps: filteredSteps.map((description, index) => ({
+                        step: index + 1,
+                        description: description,
                     })),
                     tags: filteredTags
                 };
@@ -143,7 +143,7 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
 
                 const dataHistory = {
 
-                    idCenario: response.idCenario,
+                    idScenario: response.idScenario,
                     statusBefore: selectedScenarioStatusType || 0,
                     statusAfter: selectedScenarioStatusType || 0
 
@@ -235,7 +235,7 @@ const CreateTestCaseBySuiteModal: React.FC<CreateTestCaseBySuiteModalProps> = ({
 
                     <div className='cardboard-style container' style={{ width: '915px', height: '100%' }}>
                         <div className="text-field-container">
-                            <span className='span-label'>Passo a passo:</span>
+                            <span className='span-label'>Passo a step:</span>
                             <DynamicList items={steps} setItems={setSteps} />
                         </div>
                     </div>

@@ -2,9 +2,9 @@ import React, { useEffect, useState, useCallback } from 'react';
 import TestSuiteService from '../../services/TestSuiteService';
 
 interface TestSuite {
-  idSuite: number;
-  descSuite: string;
-  idPlano: number;
+  idTestSuite: number;
+  descTestSuite: string;
+  idTestPlan: number;
 }
 
 interface TestSuiteDropDownProps {
@@ -54,10 +54,10 @@ const TestSuiteDropDown: React.FC<TestSuiteDropDownProps> = ({
 
   const handleTestSuiteChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedTestSuiteId = parseInt(event.target.value, 10);
-    const selectedTestSuite = testSuites.find(suite => suite.idSuite === selectedTestSuiteId);
+    const selectedTestSuite = testSuites.find(suite => suite.idTestSuite === selectedTestSuiteId);
     if (selectedTestSuite) {
-      onSelectTestSuite(selectedTestSuite.idSuite);
-      setSelectedValue(selectedTestSuite.idSuite);
+      onSelectTestSuite(selectedTestSuite.idTestSuite);
+      setSelectedValue(selectedTestSuite.idTestSuite);
     } else {
       onSelectTestSuite(null);
       setSelectedValue(null); 
@@ -73,8 +73,8 @@ const TestSuiteDropDown: React.FC<TestSuiteDropDownProps> = ({
     >
       {<option value="">Selecione a suíte de testes</option>}
       {testSuites.map((suite) => (
-        <option key={suite.idSuite} value={suite.idSuite}>
-          {suite.descSuite}
+        <option key={suite.idTestSuite} value={suite.idTestSuite}>
+          {suite.descTestSuite}
         </option>
       ))}
     </select>
