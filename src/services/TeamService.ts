@@ -5,39 +5,39 @@ const BASE_URL = 'http://localhost:8080';
 
 class TeamService {
 
-  static async addTeam(teamName: string): Promise<any> {
+  static async addTeam(nameTeam: string): Promise<any> {
     const data = {
-      nomeTime: teamName,
+      nameTeam: nameTeam,
     };
   
-    return this.request('post', '/api/time', data);
+    return this.request('post', '/api/team', data);
   }
   
   static async getAllTeams(): Promise<any> {
-    return this.request('get', '/api/time');
+    return this.request('get', '/api/team');
   }
 
-  static async deleteTeam(teamId: number): Promise<void> {
-    return this.request('delete', `/api/time/${teamId}`);
+  static async deleteTeam(idTeam: number): Promise<void> {
+    return this.request('delete', `/api/team/${idTeam}`);
   }
 
-  static async editTeam(teamId: number, newName: string): Promise<void> {
+  static async editTeam(idTeam: number, newName: string): Promise<void> {
     const data = {
-      nomeTime: newName,
+      nameTeam: newName,
     };
-    return this.request('put', `/api/time/${teamId}`, data);
+    return this.request('put', `/api/team/${idTeam}`, data);
   }
 
-  static async searchTeams(params: { nomeTime?: string } = {}): Promise<any> {
-    const { nomeTime } = params;
-    const url = '/api/time';
+  static async searchTeams(params: { nameTeam?: string } = {}): Promise<any> {
+    const { nameTeam } = params;
+    const url = '/api/team';
 
     const requestParams: Record<string, any> = {
-      nomeTime
+      nameTeam
     };
 
-    if (nomeTime !== undefined && nomeTime.trim() !== "") {
-      requestParams.nomeTime = nomeTime;
+    if (nameTeam !== undefined && nameTeam.trim() !== "") {
+      requestParams.nameTeam = nameTeam;
     }
 
     return this.request('get', url, undefined, requestParams);

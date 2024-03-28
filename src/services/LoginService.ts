@@ -4,30 +4,30 @@ const BASE_URL = 'http://localhost:8080';
 
 interface Login {
   login: string;
-  senha: string;
+  password: string;
 }
 
 interface User {
   login: string;
-  senha?: string;
+  password?: string;
   senhaAntiga?:string;
 }
 
 
 class LoginService {
-  static async postLogin(login: string, senha: string): Promise<any> {
+  static async postLogin(login: string, password: string): Promise<any> {
     const data: Login = {
       login: login,
-      senha: senha,
+      password: password,
     };
   
     return this.request('post', '/api/login', data);
   }
   
-  static async EditPassword(login:string, senha:string, senhaAntiga:string): Promise<any> {
+  static async EditPassword(login:string, password:string, senhaAntiga:string): Promise<any> {
     const data: User = {
       login,
-      senha,
+      password,
       senhaAntiga,
     };
 

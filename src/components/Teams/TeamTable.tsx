@@ -11,20 +11,20 @@ import { useNavigate } from 'react-router-dom';
 
 
 interface Time {
-  idTime: number;
-  nomeTime: string;
-  quantidadeCenarios: number;
+  idTeam: number;
+  nameTeam: string;
+  scenarioQuantity: number;
 }
 
 interface TimeTableProps {
-  times: Time[];
-  fetchTimes: () => void;
+  teams: Time[];
+  fetchTeams: () => void;
 }
 
-const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
+const TimeTable: React.FC<TimeTableProps> = ({ teams, fetchTeams }) => {
   const [error, setError] = useState<string>('');
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
-  const [selectedTeam, setSelectedTeam] = useState<{ id: number; name: string } | null>(null); 
+  const [selectedTeam, setSelectedTeam] = useState<{ idTeam: number; nameTeam: string } | null>(null); 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); 
   const [showToast, setShowToast] = useState(false); 
   const [page, setPage] = useState(0);
@@ -32,27 +32,27 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
   const [anchorElMap, setAnchorElMap] = useState<{ [key: number]: HTMLElement | null }>({});
   const navigate = useNavigate();
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>, testSuiteId: number) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>, idTestSuite: number) => {
     setAnchorElMap({
       ...anchorElMap,
-      [testSuiteId]: event.currentTarget,
+      [idTestSuite]: event.currentTarget,
     });
   };
   
-  const handleDashboard = (TeamId: number) => {
-    navigate(`/dashboard/${TeamId}`);
+  const handleDashboard = (idTeam: number) => {
+    navigate(`/dashboard/${idTeam}`);
 };
 
-  const handleClose = (testSuiteId: number) => {
+  const handleClose = (idTestSuite: number) => {
     setAnchorElMap({
       ...anchorElMap,
-      [testSuiteId]: null,
+      [idTestSuite]: null,
     });
   };
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (idTeam: number) => {
     try {
-      await TeamService.deleteTeam(id);
-      fetchTimes();
+      await TeamService.deleteTeam(idTeam);
+      fetchTeams();
       setShowToast(true); 
     } catch (error) {
       console.error(error);
@@ -65,8 +65,8 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
     setErrorPopupOpen(false);
   };
 
-  const handleEdit = (id: number, nomeTime: string) => {
-    setSelectedTeam({ id, name: nomeTime });
+  const handleEdit = (idTeam: number, nameTeam: string) => {
+    setSelectedTeam({ idTeam, nameTeam: nameTeam });
     setIsEditModalOpen(true); 
   };
 
@@ -81,7 +81,7 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
 
   return (
     <div>
-      {times.length === 0 ? (
+      {teams.length === 0 ? (
         <h3 className="no-records-message">Nenhum time foi encontrado</h3>
       ) : (
         <>
@@ -91,29 +91,29 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
               <th>Ações</th>
             </thead>
             <tbody>
-              {times.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((time) => (
-                <tr key={time.idTime}>
-                  <td>{time.nomeTime}</td>
+              {teams.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((team) => (
+                <tr key={team.idTeam}>
+                  <td>{team.nameTeam}</td>
                   <td className="action-buttons">
                   <div>
                   <IconButton
                     aria-label="Opções"
-                    aria-controls={`menu-options-${time.idTime}`}
+                    aria-controls={`menu-options-${team.idTeam}`}
                     aria-haspopup="true"
-                    onClick={(event) => handleClick(event, time.idTime)}
+                    onClick={(event) => handleClick(event, team.idTeam)}
                   >
                     <MoreVertIcon />
                   </IconButton>
                   <Menu
-                    id={`menu-options-${time.idTime}`}
-                    anchorEl={anchorElMap[time.idTime]}
-                    open={Boolean(anchorElMap[time.idTime])}
-                    onClose={() => handleClose(time.idTime)}
+                    id={`menu-options-${team.idTeam}`}
+                    anchorEl={anchorElMap[team.idTeam]}
+                    open={Boolean(anchorElMap[team.idTeam])}
+                    onClose={() => handleClose(team.idTeam)}
                   >
 
-                    <MenuItem onClick={() => handleEdit(time.idTime, time.nomeTime)}>Editar</MenuItem>
-                    <MenuItem onClick={() => handleDelete(time.idTime)}>Excluir</MenuItem>
-                    <MenuItem disabled={time.quantidadeCenarios === 0} onClick={() => handleDashboard(time.idTime)}>Detalhes dashboard</MenuItem>
+                    <MenuItem onClick={() => handleEdit(team.idTeam, team.nameTeam)}>Editar</MenuItem>
+                    <MenuItem onClick={() => handleDelete(team.idTeam)}>Excluir</MenuItem>
+                    <MenuItem disabled={team.scenarioQuantity === 0} onClick={() => handleDashboard(team.idTeam)}>Detalhes dashboard</MenuItem>
                   </Menu>
                 </div>
                   </td>
@@ -124,7 +124,7 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={times.length}
+            count={teams.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -150,8 +150,8 @@ const TimeTable: React.FC<TimeTableProps> = ({ times, fetchTimes }) => {
           setIsEditModalOpen(false);
           setSelectedTeam(null);
         }}
-        fetchTimes={fetchTimes}
-        selectedTeam={selectedTeam ?? { id: 0, name: '' }} 
+        fetchTeams={fetchTeams}
+        selectedTeam={selectedTeam ?? { idTeam: 0, nameTeam: '' }} 
       />
     </div>
   );

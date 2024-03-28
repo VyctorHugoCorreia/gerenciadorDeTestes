@@ -6,10 +6,10 @@ import TeamModal from './TeamModal';
 import '../../styles/AddButton.css'
 
 interface AddTeamButtonProps {
-  fetchTimes: () => void;
+  fetchTeams: () => void;
 }
 
-const AddTeamButton: React.FC<AddTeamButtonProps> = ({ fetchTimes }) => {
+const AddTeamButton: React.FC<AddTeamButtonProps> = ({ fetchTeams }) => {
   const [openModal, setOpenModal] = useState(false);
 
   const handleModalOpen = () => {
@@ -30,7 +30,7 @@ const AddTeamButton: React.FC<AddTeamButtonProps> = ({ fetchTimes }) => {
       >
         Adicionar um novo time
       </Button>
-      <TeamModal open={openModal} onClose={handleModalClose} fetchTimes={fetchTimes} />
+      <TeamModal open={openModal} onClose={handleModalClose} fetchTeams={fetchTeams} />
     </div>
   );
 };
