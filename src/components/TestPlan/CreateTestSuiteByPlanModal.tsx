@@ -60,9 +60,9 @@ const CreateTestSuiteByPlanModal: React.FC<CreateTestSuiteByPlanModalProps> = ({
 
             if (testPlan && testPlan.length > 0) {
                 const data = {
-                    idTime: testPlan[0]?.idTime.idTime || 0,
-                    idTproduto: testPlan[0]?.idTproduto.idTproduto || 0,
-                    idPlano: testPlanId,
+                    idTeam: testPlan[0]?.idProduct.idTeam.idTeam || 0,
+                    idProduct: testPlan[0]?.idProduct.idProduct || 0,
+                    idTestPlan: testPlanId,
                     descSuite: testSuiteTitle,
                 };
                 console.log("Dados:", data);

@@ -22,11 +22,10 @@ export interface TestPlanModalProps {
   onClose: () => void;
   fetchTestPlan: () => void;
   selectedTestPlan?: {
-    id: number;
-    name: string;
-    idTeam: { idTeam: number; nameTeam: string };
-    idProduct: { idProduct: number; descProduct: string }
-    quantidadeSuites: number;
+    idTestPlan: number;
+    descTestPlan: string;
+    idProduct: { idProduct: number; descProduct: string; idTeam: { idTeam: number; nameTeam: string } }
+    scenarioQuantity: number;
   } | null;
 }
 
@@ -53,10 +52,10 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
   useEffect(() => {
     if (open && selectedTestPlan) {
       setError('');
-      setIsButtonDisabled(!selectedTestPlan.name);
-      setTestPlanName(selectedTestPlan.name || '')
-      setSelectedTeam(selectedTestPlan.idTeam || null);
-      setSelectedTeamId(selectedTestPlan.idTeam?.idTeam || null);
+      setIsButtonDisabled(!selectedTestPlan.descTestPlan);
+      setTestPlanName(selectedTestPlan.descTestPlan || '')
+      setSelectedTeam((selectedTestPlan.idProduct.idTeam )|| null);
+      setSelectedTeamId(selectedTestPlan.idProduct.idTeam.idTeam || null);
       setSelectedProductId(selectedTestPlan.idProduct?.idProduct);
     } else {
       setError('');
@@ -69,8 +68,8 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
   }, [open, selectedTestPlan]);
 
   useEffect(() => {
-      setIsButtonDisabled(selectedTeam === null || selectedProductId === null || TestPlanName === '');
-  
+    setIsButtonDisabled(selectedTeam === null || selectedProductId === null || TestPlanName === '');
+
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,7 +125,7 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
   const handleEditTestPlan = async () => {
     try {
       if (selectedTeam && selectedTestPlan) {
-        await TestPlanService.editTestPlan(selectedTestPlan.id, selectedTestPlan.idTeam.idTeam, selectedTestPlan.idProduct.idProduct, TestPlanName);
+        await TestPlanService.editTestPlan(selectedTestPlan.idTestPlan, selectedTestPlan.idProduct.idTeam.idTeam, selectedTestPlan.idProduct.idProduct, TestPlanName);
         setTestPlanName('');
         setSelectedTeam(null);
         setSelectedTeamId(null);

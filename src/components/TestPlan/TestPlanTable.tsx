@@ -12,12 +12,8 @@ import TestSuiteByPlanModal from './TestSuiteByPlanModal';
 import CreateTestCaseBySuiteModal from '../TestSuite/CreateTestCaseBySuiteModal';
 
 export interface TestPlan {
-  idPlano: number;
-  descPlano: string;
-  idTeam: {
-    idTeam: number;
-    nameTeam: string;
-  };
+  idTestPlan: number;
+  descTestPlan: string;
   idProduct: {
     idProduct: number;
     descProduct: string;
@@ -26,7 +22,7 @@ export interface TestPlan {
       nameTeam: string;
     };
   };
-  quantidadeSuites: number;
+  scenarioQuantity: number;
 }
 
 interface TestPlanTableProps {
@@ -46,17 +42,17 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTestPlan, setSelectedTestPlan] = useState<{
-    id: number;
-    name: string;
-    idTeam: {
-      idTeam: number;
-      nameTeam: string;
-    };
+    idTestPlan: number;
+    descTestPlan: string;
     idProduct: {
       idProduct: number;
       descProduct: string;
+      idTeam: {
+        idTeam: number;
+        nameTeam: string;
+      };
     };
-    quantidadeSuites: number;
+    scenarioQuantity: number;
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
   const [page, setPage] = useState(0);
@@ -107,20 +103,20 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
 
 
   const handleEditTestPlan = (testPlan: TestPlan) => {
-    const { idPlano, descPlano, idTeam, idProduct, quantidadeSuites } = testPlan;
+    const { idTestPlan, descTestPlan, idProduct, scenarioQuantity } = testPlan;
 
     const formattedTestPlan = {
-      id: idPlano,
-      name: descPlano,
-      idTeam: {
-        idTeam: idTeam.idTeam,
-        nameTeam: idTeam.nameTeam,
-      },
+      idTestPlan: idTestPlan,
+      descTestPlan: descTestPlan,
       idProduct: {
         idProduct: idProduct.idProduct,
         descProduct: idProduct.descProduct,
+        idTeam: {
+          idTeam: idProduct.idTeam.idTeam,
+          nameTeam: idProduct.idTeam.nameTeam
+        }
       },
-      quantidadeSuites: quantidadeSuites,
+      scenarioQuantity: scenarioQuantity,
     };
 
     setSelectedTestPlan(formattedTestPlan);
@@ -154,33 +150,33 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
             </thead>
             <tbody>
               {testPlans.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((testPlan) => (
-                <tr key={testPlan.idPlano}>
-                  <td>{testPlan.idTeam.nameTeam}</td>
+                <tr key={testPlan.idTestPlan}>
+                  <td>{testPlan.idProduct.idTeam.nameTeam}</td>
                   <td>{testPlan.idProduct.descProduct}</td>
-                  <td>{testPlan.descPlano}</td>
-                  <td>{testPlan.quantidadeSuites}</td>
+                  <td>{testPlan.descTestPlan}</td>
+                  <td>{testPlan.scenarioQuantity}</td>
                   <td className="action-buttons">
                     <div>
                       <IconButton
                         aria-label="Opções"
-                        aria-controls={`menu-options-${testPlan.idPlano}`}
+                        aria-controls={`menu-options-${testPlan.idTestPlan}`}
                         aria-haspopup="true"
-                        onClick={(event) => handleClick(event, testPlan.idPlano)}
+                        onClick={(event) => handleClick(event, testPlan.idTestPlan)}
                       >
                         <MoreVertIcon />
                       </IconButton>
                       <Menu
-                        id={`menu-options-${testPlan.idPlano}`}
-                        anchorEl={anchorElMap[testPlan.idPlano]}
-                        open={Boolean(anchorElMap[testPlan.idPlano])}
-                        onClose={() => handleClose(testPlan.idPlano)}
+                        id={`menu-options-${testPlan.idTestPlan}`}
+                        anchorEl={anchorElMap[testPlan.idTestPlan]}
+                        open={Boolean(anchorElMap[testPlan.idTestPlan])}
+                        onClose={() => handleClose(testPlan.idTestPlan)}
                       >
                         <MenuItem onClick={() => handleEditTestPlan(testPlan)}>Editar</MenuItem>
-                        <MenuItem onClick={() => handleDeleteTestPlan(testPlan.idPlano)}>Excluir</MenuItem>
-                        <MenuItem onClick={() => handleCreateTestSuite(testPlan.idPlano)}>Cadastrar suite de testes</MenuItem>
+                        <MenuItem onClick={() => handleDeleteTestPlan(testPlan.idTestPlan)}>Excluir</MenuItem>
+                        <MenuItem onClick={() => handleCreateTestSuite(testPlan.idTestPlan)}>Cadastrar suite de testes</MenuItem>
                         <MenuItem
-                          disabled={testPlan.quantidadeSuites === 0}
-                          onClick={() => handleViewTestSuite(testPlan.idPlano)}
+                          disabled={testPlan.scenarioQuantity === 0}
+                          onClick={() => handleViewTestSuite(testPlan.idTestPlan)}
                         >
                           Visualizar suites de teste
                         </MenuItem>

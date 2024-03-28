@@ -4,65 +4,65 @@ import { getAuthToken } from '../authentication/token';
 const BASE_URL = 'http://localhost:8080';
 
 interface SearchParams {
-  descPlano?: string;
+  descTestPlan?: string;
   idTeam?: number;
   idProduct?: number;
 }
 
 class TestPlanService {
   static async getAllTestPlan(): Promise<any> {
-    return this.request('get', '/api/planoDeTeste');
+    return this.request('get', '/api/test-plan');
   }
 
-  static async addTestPlan(idTeam: number, idProduct: number, descPlano: string): Promise<any> {
+  static async addTestPlan(idTeam: number, idProduct: number, descTestPlan: string): Promise<any> {
     const data = {
       idTeam,
       idProduct,
-      descPlano,
+      descTestPlan,
     };
 
-    return this.request('post', '/api/planoDeTeste', data);
+    return this.request('post', '/api/test-plan', data);
   }
 
-  static async editTestPlan(idPlano: number, idTeam: number, idProduct: number, descPlano: string): Promise<any> {
-    const url = `/api/planoDeTeste/${idPlano}`;
+  static async editTestPlan(idTestPlan: number, idTeam: number, idProduct: number, descTestPlan: string): Promise<any> {
+    const url = `/api/test-plan/${idTestPlan}`;
 
     const requestBody = {
       idTeam,
       idProduct,
-      descPlano,
+      descTestPlan,
     };
 
     return this.request('put', url, requestBody);
   }
 
-  static async deleteTestPlan(idPlano: number): Promise<void> {
-    return this.request('delete', `/api/planoDeTeste/${idPlano}`);
+  static async deleteTestPlan(idTestPlan: number): Promise<void> {
+    return this.request('delete', `/api/test-plan/${idTestPlan}`);
   }
 
   static async getTestPlansByProduct(searchValue?: string): Promise<any> {
-    return this.request('get', `/api/planoDeTeste`, undefined, { idProduct: searchValue });
+    return this.request('get', `/api/test-plan`, undefined, { idProduct: searchValue });
   }
 
   static async getTestPlansById(searchValue?: string): Promise<any> {
-    return this.request('get', `/api/planoDeTeste`, undefined, { idPlano: searchValue });
+    return this.request('get', `/api/test-plan`, undefined, { idTestPlan: searchValue });
   }
 
   static async getTestPlansByTeam(searchValue?: string): Promise<any> {
-    return this.request('get', `/api/planoDeTeste`, undefined, { idTeam: searchValue });
+    return this.request('get', `/api/test-plan`, undefined, { idTeam: searchValue });
   }
 
   static async searchTestPlan(params: SearchParams = {}): Promise<any> {
-    const { descPlano, idTeam, idProduct } = params;
-    const url = '/api/planoDeTeste';
+    const { descTestPlan, idTeam, idProduct } = params;
+    const url = '/api/test-plan';
 
     const requestParams: Record<string, any> = {
       idTeam,
       idProduct
     };
 
-    if (descPlano !== undefined && descPlano.trim() !== "") {
-      requestParams.descPlano = descPlano;
+    if (descTestPlan !== undefined && descTestPlan.trim() !== "") {
+      requestParams.descTestPlan = descTestPlan;
     }
 
     return this.request('get', url, undefined, requestParams);

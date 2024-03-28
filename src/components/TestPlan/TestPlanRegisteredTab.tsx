@@ -47,7 +47,7 @@ const TestPlanRegisteredTab: React.FC = () => {
   const handleSearch = async (searchParams: SearchParams) => {
     try {
       const filteredTestsPlans = await TestPlanService.searchTestPlan({
-        descPlano: searchParams.searchValue,
+        descTestPlan: searchParams.searchValue,
         idTeam: searchParams.team?.idTeam ?? undefined,
         idProduct: searchParams.product?.idProduct ?? undefined,
       });
