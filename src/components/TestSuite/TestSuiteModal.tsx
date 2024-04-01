@@ -120,7 +120,7 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({
       idTeam: (selectedTeam && selectedTeam.idTeam) ?? 0,
       idProduct: selectedProductId,
       idTestPlan: selectedTestPlanId,
-      descSuite: TestSuiteName,
+      descTestSuite: TestSuiteName,
     };
     try {
 

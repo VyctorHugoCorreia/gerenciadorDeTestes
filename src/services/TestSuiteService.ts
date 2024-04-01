@@ -19,8 +19,8 @@ class TestSuiteService {
     return this.request('post', '/api/test-suite', data);
   }
 
-  static async editTestSuite(idSuite: number, idTeam: number, idProduct: number, idTestPlan: number, descTestSuite: string): Promise<any> {
-    const url = `/api/test-suite/${idSuite}`;
+  static async editTestSuite(idTestSuite: number, idTeam: number, idProduct: number, idTestPlan: number, descTestSuite: string): Promise<any> {
+    const url = `/api/test-suite/${idTestSuite}`;
 
     const requestBody = {
       idTeam,
@@ -32,8 +32,8 @@ class TestSuiteService {
     return this.request('put', url, requestBody);
   }
 
-  static async deleteTestSuite(idSuite: number): Promise<void> {
-    return this.request('delete', `/api/test-suite/${idSuite}`);
+  static async deleteTestSuite(idTestSuite: number): Promise<void> {
+    return this.request('delete', `/api/test-suite/${idTestSuite}`);
   }
 
   static async searchTestSuite(params: SearchParams = {}): Promise<any> {
@@ -54,7 +54,7 @@ class TestSuiteService {
   }
 
   static async searchTestSuiteById(searchValue?: string): Promise<any> {
-    return this.request('get', '/api/test-suite', undefined, { idSuite: searchValue });
+    return this.request('get', '/api/test-suite', undefined, { idTestSuite: searchValue });
   }
 
   static async getTestSuitesByPlan(searchValue?: number): Promise<any> {

@@ -95,7 +95,7 @@ const CreateTestCaseScreen: React.FC = () => {
       const data = {
         idTeam: selectedTeam || 0,
         idTestPlan: selectedTestPlan || 0,
-        idTestSute: selectedTestSuite || 0,
+        idTestSuite: selectedTestSuite || 0,
         idProduct: selectedProductId || 0,
         idScenarioType: selectedScenarioType || 0,
         idPlatformType: selectedPlataformType || 0,

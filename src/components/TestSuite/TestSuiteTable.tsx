@@ -12,19 +12,19 @@ import TestCaseBySuiteModal from './TestCaseBySuiteModal';
 import CreateTestCaseBySuiteModal from './CreateTestCaseBySuiteModal';
 
 export interface testSuite {
-  idSuite: number;
-  descSuite: string;
-  idTeam: {
-    idTeam: number;
-    nameTeam: string;
-  };
-  idProduct: {
-    idProduct: number;
-    descProduct: string;
-  };
+  idTestSuite: number;
+  descTestSuite: string;
   idTestPlan: {
     idTestPlan: number;
     descTestPlan: string;
+    idProduct: {
+      idProduct: number;
+      descProduct: string;
+      idTeam: {
+        idTeam: number;
+        nameTeam: string;
+      };
+    }
   };
   scenarioQuantity: number;
 }
@@ -107,20 +107,20 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
   };
 
   const handleEditTestSuite = (testSuite: testSuite) => {
-    const { idSuite, descSuite, idTeam, idProduct, idTestPlan, scenarioQuantity } = testSuite;
+    const { idTestSuite, descTestSuite, idTestPlan, scenarioQuantity } = testSuite;
 
     const formattedTestSuite = {
-      idTestSuite: idSuite,
-      descTestSuite: descSuite,
+      idTestSuite: idTestSuite,
+      descTestSuite: descTestSuite,
       idTestPlan: {
         idTestPlan: idTestPlan.idTestPlan,
         descTestPlan: idTestPlan.descTestPlan,
         idProduct: {
-          idProduct: idProduct.idProduct,
-          descProduct: idProduct.descProduct,
+          idProduct: idTestPlan.idProduct.idProduct,
+          descProduct: idTestPlan.idProduct.descProduct,
           idTeam: {
-            idTeam: idTeam.idTeam,
-            nameTeam: idTeam.nameTeam,
+            idTeam: idTestPlan.idProduct.idTeam.idTeam,
+            nameTeam: idTestPlan.idProduct.idTeam.nameTeam,
           }
         },
       },
@@ -159,35 +159,35 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
         <tbody>
 
           {testSuites.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((testSuite) => (
-            <tr key={testSuite.idSuite}>
-              <td>{testSuite.idTeam.nameTeam}</td>
-              <td>{testSuite.idProduct.descProduct}</td>
+            <tr key={testSuite.idTestSuite}>
+              <td>{testSuite.idTestPlan.idProduct.idTeam.nameTeam}</td>
+              <td>{testSuite.idTestPlan.idProduct.descProduct}</td>
               <td>{testSuite.idTestPlan.descTestPlan}</td>
-              <td>{testSuite.descSuite}</td>
+              <td>{testSuite.descTestSuite}</td>
               <td>{testSuite.scenarioQuantity}</td>
               <td className="action-buttons">
                 <div>
                   <IconButton
                     aria-label="Opções"
-                    aria-controls={`menu-options-${testSuite.idSuite}`}
+                    aria-controls={`menu-options-${testSuite.idTestSuite}`}
                     aria-haspopup="true"
-                    onClick={(event) => handleClick(event, testSuite.idSuite)}
+                    onClick={(event) => handleClick(event, testSuite.idTestSuite)}
                   >
                     <MoreVertIcon />
                   </IconButton>
                   <Menu
-                    id={`menu-options-${testSuite.idSuite}`}
-                    anchorEl={anchorElMap[testSuite.idSuite]}
-                    open={Boolean(anchorElMap[testSuite.idSuite])}
-                    onClose={() => handleClose(testSuite.idSuite)}
+                    id={`menu-options-${testSuite.idTestSuite}`}
+                    anchorEl={anchorElMap[testSuite.idTestSuite]}
+                    open={Boolean(anchorElMap[testSuite.idTestSuite])}
+                    onClose={() => handleClose(testSuite.idTestSuite)}
                   >
 
                     <MenuItem onClick={() => handleEditTestSuite(testSuite)}>Editar</MenuItem>
-                    <MenuItem onClick={() => handleDeleteTestSuite(testSuite.idSuite)}>Excluir</MenuItem>
-                    <MenuItem onClick={() => handleCreateTestCase(testSuite.idSuite)}>Cadastrar cenário</MenuItem>
+                    <MenuItem onClick={() => handleDeleteTestSuite(testSuite.idTestSuite)}>Excluir</MenuItem>
+                    <MenuItem onClick={() => handleCreateTestCase(testSuite.idTestSuite)}>Cadastrar cenário</MenuItem>
                     <MenuItem
                       disabled={testSuite.scenarioQuantity === 0}
-                      onClick={() => handleViewTestCase(testSuite.idSuite)}
+                      onClick={() => handleViewTestCase(testSuite.idTestSuite)}
                     >
                       Visualizar cenários
                     </MenuItem>
