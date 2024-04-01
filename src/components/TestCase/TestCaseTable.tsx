@@ -18,8 +18,14 @@ interface TestCase {
   titleScenario: string;
   descScenario: string;
   linkScenario: string;
-  descScenarioStatus: string;
-  descAutomationStatus: string;
+  idScenarioStatus:{
+    idScenarioStatus: number;
+    descScenarioStatus: string;
+  }
+  idAutomationStatus:{
+    idAutomationStatus: number;
+    descAutomationStatus: string;
+  }
   idTestSuite: {
     idTestSuite: number;
     descTestSuite: string;
@@ -161,8 +167,8 @@ const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases
                           {columnName === 'Plano de teste' && testCase.idTestSuite.idTestPlan.descTestPlan}
                           {columnName === 'Suite de teste' && testCase.idTestSuite.descTestSuite}
                           {columnName === 'Cenário' && testCase.titleScenario}
-                          {columnName === 'Status do cenário' && testCase.descScenarioStatus}
-                          {columnName === 'Automatizado?' && testCase.descAutomationStatus}
+                          {columnName === 'Status do cenário' && testCase.idScenarioStatus.descScenarioStatus}
+                          {columnName === 'Automatizado?' && testCase.idAutomationStatus.descAutomationStatus}
                           {columnName === 'Ações' && (
                             <OptionMenuTestCaseTable
                               idScenario={testCase.idScenario.toString()}

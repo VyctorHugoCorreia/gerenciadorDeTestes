@@ -10,8 +10,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 interface HistoryStatus {
   idHistory: number;
-  statusBefore: { descStatus: string };
-  statusAfter: { descStatus: string };
+  statusBefore: { descScenarioStatus: string };
+  statusAfter: { descScenarioStatus: string };
   dateUpdate: string;
 }
 
@@ -90,8 +90,8 @@ const HistoryStatusTestCaseTable: React.FC<HistoryStatusTestCaseTableProps> = ({
                 <tbody>
                   {historyStatuScenario.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((history) => (
                     <tr key={history.idHistory}>
-                      <td>{history.statusBefore.descStatus}</td>
-                      <td>{history.statusAfter.descStatus}</td>
+                      <td>{history.statusBefore.descScenarioStatus}</td>
+                      <td>{history.statusAfter.descScenarioStatus}</td>
                       <td>{formatDate(history.dateUpdate)}</td>
                     </tr>
                   ))}

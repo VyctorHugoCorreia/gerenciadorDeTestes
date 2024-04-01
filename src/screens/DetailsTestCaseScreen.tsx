@@ -123,16 +123,16 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
             <div className='cardboard-style-adicional container'>
                 <div>
                     <span className='span-label'>Time:</span>
-                    <h4>{testCase ? testCase.idTeam.nameTeam : 'Loading...'}</h4>
+                    <h4>{testCase ? testCase.idTestSuite.idTestPlan.idProduct.idTeam.nameTeam : 'Loading...'}</h4>
                 </div>
                 <div>
                     <span className='span-label'>Produto:</span>
-                    <h4>{testCase ? testCase.idProduct.descProduct : 'Loading...'}</h4>
+                    <h4>{testCase ? testCase.idTestSuite.idTestPlan.idProduct.descProduct : 'Loading...'}</h4>
                 </div>
 
                 <div>
                     <span className='span-label'>Plano de teste:</span>
-                    <h4>{testCase ? testCase.idTestPlan.descTestPlan : 'Loading...'}</h4>
+                    <h4>{testCase ? testCase.idTestSuite.idTestPlan.descTestPlan : 'Loading...'}</h4>
                 </div>
 
                 <div>
@@ -147,7 +147,7 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
 
                 <div>
                     <span className='span-label'>Plataforma:</span>
-                    <h4>{testCase ? testCase.idPlataforma.descPlataforma : 'Loading...'}</h4>
+                    <h4>{testCase ? testCase.idPlatformType.descPlatformType : 'Loading...'}</h4>
                 </div>
 
                 <div>

@@ -102,9 +102,9 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = () => {
                 if (testCaseDetails.length > 0) {
                     const firstTestCase = testCaseDetails[0];
 
-                    setSelectedTeam(firstTestCase.idTeam?.idTeam || null);
-                    setSelectedProductId(firstTestCase.idProduct?.idProduct || null);
-                    setSelectedTestPlan(firstTestCase.idTestPlan?.idTestPlan || null);
+                    setSelectedTeam(firstTestCase.idTestSuite.idTestPlan.idProduct.idTeam?.idTeam || null);
+                    setSelectedProductId(firstTestCase.idTestSuite.idTestPlan.idProduct?.idProduct || null);
+                    setSelectedTestPlan(firstTestCase.idTestSuite.idTestPlan?.idTestPlan || null);
                     setSelectedTestSuite(firstTestCase.idTestSuite?.idTestSuite || null);
                     setSelectedScenarioType(firstTestCase.idScenarioType?.idScenarioType || null);
                     setSelectedPlataformType(firstTestCase.idPlatformType?.idPlatformType || null);
