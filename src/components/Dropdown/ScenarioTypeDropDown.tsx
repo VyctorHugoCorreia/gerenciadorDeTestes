@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import ScenarioTypeService from "../../services/ScenarioTypeService";
 
 interface ScenarioType {
-  idTpcenario: number;
-  descTpcenario: string;
+  idScenarioType: number;
+  descScenarioType: string;
 }
 
 interface ScenarioTypeDropDownProps {
@@ -57,8 +57,8 @@ const ScenarioTypeDropDown: React.FC<ScenarioTypeDropDownProps> = ({
     >
       {!isEditing && <option value="">Selecione o tipo de cenário</option>}
       {scenarioTypes.map((scenarioType) => (
-        <option key={scenarioType.idTpcenario} value={scenarioType.idTpcenario}>
-          {scenarioType.descTpcenario}
+        <option key={scenarioType.idScenarioType} value={scenarioType.idScenarioType}>
+          {scenarioType.descScenarioType}
         </option>
       ))}
     </select>
