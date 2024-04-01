@@ -17,7 +17,7 @@ interface DashboardProps {
 
 
 const Dashboard: React.FC<DashboardProps> = () => {
-  const { idTime } = useParams<{ idTime: string }>(); 
+  const { idTeam } = useParams<{ idTeam: string }>(); 
 
   const navigate = useNavigate();
   const [products, setProducts] = useState<any[]>([]);
@@ -30,7 +30,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (idTime == "dashboard") {
+        if (idTeam == "dashboard") {
           const productsData = await ProductService.getAllProducts();
           setProducts(productsData);
 
@@ -50,22 +50,22 @@ const Dashboard: React.FC<DashboardProps> = () => {
           setScenarioStatusAutomation(ScenarioStatusAutomationData)
         }
         else {
-          const productsData = await ProductService.getProductsByTeam(idTime);
+          const productsData = await ProductService.getProductsByTeam(idTeam);
           setProducts(productsData);
 
-          const testPlanData = await TestPlanService.getTestPlansByTeam(idTime);
+          const testPlanData = await TestPlanService.getTestPlansByTeam(idTeam);
           setTestPlan(testPlanData)
 
-          const testSuiteData = await TestSuiteService.getTestSuitesByTeam(idTime);
+          const testSuiteData = await TestSuiteService.getTestSuitesByTeam(idTeam);
           setTestSuite(testSuiteData)
 
-          const ScenarioTypeData = await ScenarioTypeService.getScenarioTypeByTeam(idTime);
+          const ScenarioTypeData = await ScenarioTypeService.getScenarioTypeByTeam(idTeam);
           setScenarioType(ScenarioTypeData)
 
-          const ScenarioStatusData = await ScenarioStatusService.getStatusTypesByTeam(idTime);
+          const ScenarioStatusData = await ScenarioStatusService.getStatusTypesByTeam(idTeam);
           setScenarioStatus(ScenarioStatusData)
 
-          const ScenarioStatusAutomationData = await StatusAutomationService.getStatusTypesByTeam(idTime);
+          const ScenarioStatusAutomationData = await StatusAutomationService.getStatusTypesByTeam(idTeam);
           setScenarioStatusAutomation(ScenarioStatusAutomationData)
         }
 
@@ -77,34 +77,34 @@ const Dashboard: React.FC<DashboardProps> = () => {
     fetchData();
   }, []);
 
-  const totalCenarios = products.reduce((acc, product) => acc + product.quantidadeCenarios, 0);
+  const ScenarioTotal = products.reduce((acc, product) => acc + product.scenarioQuantity, 0);
 
   const metricsDataProducts: Record<string, number> = products.reduce((acc, product) => {
-    acc[product.descProduto] = product.quantidadeCenarios;
+    acc[product.descProduct] = product.scenarioQuantity;
     return acc;
   }, {});
 
 
   const metricsDataTestPlan: Record<string, number> = testPlan.reduce((acc, testPlan) => {
-    acc[testPlan.descPlano] = testPlan.quantidadeCenarios;
+    acc[testPlan.descTestPlan] = testPlan.scenarioQuantity;
     return acc;
   }, {});
 
   const metricsDataTestSuite: Record<string, number> = testSuite.reduce((acc, testSuite) => {
-    acc[testSuite.descSuite] = testSuite.quantidadeCenarios;
+    acc[testSuite.descTestSuite] = testSuite.scenarioQuantity;
     return acc;
   }, {});
 
   const metricsDataScenarioType: Record<string, number> = ScenarioType.reduce((acc, ScenarioType) => {
-    acc[ScenarioType.descTpcenario] = ScenarioType.quantidadeCenarios;
+    acc[ScenarioType.descScenarioType] = ScenarioType.scenarioQuantity;
     return acc;
   }, {});
   const metricsDataScenarioStatus: Record<string, number> = ScenarioStatus.reduce((acc, ScenarioStatus) => {
-    acc[ScenarioStatus.descStatus] = ScenarioStatus.quantidadeCenarios;
+    acc[ScenarioStatus.descScenarioStatus] = ScenarioStatus.scenarioQuantity;
     return acc;
   }, {});
   const metricsDataScenarioStatusAutomation: Record<string, number> = ScenarioStatusAutomation.reduce((acc, ScenarioStatusAutomation) => {
-    acc[ScenarioStatusAutomation.descAutomatizado] = ScenarioStatusAutomation.quantidadeCenarios;
+    acc[ScenarioStatusAutomation.descAutomationStatus] = ScenarioStatusAutomation.scenarioQuantity;
     return acc;
   }, {});
 
@@ -118,7 +118,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
         <div className="summary-table-container cardboard-style">
           <div>
             <h2>Visão resumida:</h2>
-            <h3>Total de cenários de testes: <span> {totalCenarios}</span></h3>
+            <h3>Total de cenários de testes: <span> {ScenarioTotal}</span></h3>
 
             <div style={{ display: 'flex' }}>
 
@@ -137,12 +137,12 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 <tbody>
                   {ScenarioStatus.map((status, index) => (
                     <tr key={`status-execution-row-${index}`}>
-                      <td>{status.descStatus}</td>
-                      <td>{status.quantidadeCenarios}</td>
+                      <td>{status.descScenarioStatus}</td>
+                      <td>{status.scenarioQuantity}</td>
                       {ScenarioStatusAutomation[index] ? (
                         <>
-                          <td>{ScenarioStatusAutomation[index].descAutomatizado}</td>
-                          <td>{ScenarioStatusAutomation[index].quantidadeCenarios}</td>
+                          <td>{ScenarioStatusAutomation[index].descAutomationStatus}</td>
+                          <td>{ScenarioStatusAutomation[index].scenarioQuantity}</td>
                         </>
                       ) : (
                         <>

@@ -12,7 +12,7 @@ interface MetricProps {
 }
 
 const Metric: React.FC<MetricProps> = ({ title, metrics }) => {
-  const [totalCenarios, setTotalCenarios] = useState<number>(0);
+  const [ScenarioTotal, setScenarioTotal] = useState<number>(0);
   const [accordionOpen, setAccordionOpen] = useState<boolean>(false);
 
   const handleAccordionChange = useCallback((event: React.ChangeEvent<{}>, expanded: boolean) => {
@@ -21,7 +21,7 @@ const Metric: React.FC<MetricProps> = ({ title, metrics }) => {
 
   useEffect(() => {
     const total = Object.values(metrics).reduce((acc, val) => acc + val, 0);
-    setTotalCenarios(total);
+    setScenarioTotal(total);
   }, [metrics]);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const Metric: React.FC<MetricProps> = ({ title, metrics }) => {
             plugins: {
               title: {
                 display: true,
-                text: `Total de cenários: ${totalCenarios}`,
+                text: `Total de cenários: ${ScenarioTotal}`,
               },
             },
           },
@@ -64,7 +64,7 @@ const Metric: React.FC<MetricProps> = ({ title, metrics }) => {
         };
       }
     }
-  }, [title, metrics, totalCenarios, accordionOpen]);
+  }, [title, metrics, ScenarioTotal, accordionOpen]);
 
   return (
     <Accordion
