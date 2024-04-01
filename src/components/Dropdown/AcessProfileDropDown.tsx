@@ -4,11 +4,11 @@ import '../../styles/AddModal.css';
 
 interface acessProfile {
   id: string;
-  nome: string;
+  name: string;
 }
 
 interface AcessProfileDropDownProps {
-  onSelectAcessProfile: (perfilDeAcesso: { id: string; nome: string } | string) => void;
+  onSelectAcessProfile: (perfilDeAcesso: { id: string; name: string } | string) => void;
   selectedAcessProfile?: string | null;
   disabled?: boolean; 
 }
@@ -47,7 +47,7 @@ const AcessProfileDropDown: React.FC<AcessProfileDropDownProps> = ({
   const onSelectAcessProfileSelected = (selectedAcessProfileId: string) => {
     const acessProfileInfo = acessProfiles.find((acessProfile) => acessProfile.id === selectedAcessProfileId);
     if (acessProfileInfo) {
-      onSelectAcessProfile({ id: acessProfileInfo.id, nome: acessProfileInfo.nome });
+      onSelectAcessProfile({ id: acessProfileInfo.id, name: acessProfileInfo.name });
     } else {
       onSelectAcessProfile('');
     }
@@ -69,7 +69,7 @@ const AcessProfileDropDown: React.FC<AcessProfileDropDownProps> = ({
       <option value="">Selecione um perfil de acesso</option>
       {acessProfiles.map((acessProfile) => (
         <option key={acessProfile.id} value={acessProfile.id}>
-          {acessProfile.nome}
+          {acessProfile.name}
         </option>
       ))}
     </select>

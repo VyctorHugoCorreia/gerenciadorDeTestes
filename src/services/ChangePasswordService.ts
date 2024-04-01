@@ -6,21 +6,21 @@ const BASE_URL = 'http://localhost:8080';
 
 interface User {
   login: string;
-  senha?: string;
-  senhaAntiga?:string;
+  password?: string;
+  oldPassword?:string;
 }
 
 
 class ChangePasswordService {
 
-  static async EditPassword(login:string, senha:string, senhaAntiga:string): Promise<any> {
+  static async EditPassword(login:string, password:string, oldPassword:string): Promise<any> {
     const data: User = {
       login,
-      senha,
-      senhaAntiga,
+      password,
+      oldPassword,
     };
 
-    return this.request('put', `/api/trocar-senha`, data);
+    return this.request('put', `/api/change-password`, data);
   }
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {

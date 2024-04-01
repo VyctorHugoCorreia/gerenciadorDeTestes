@@ -5,11 +5,11 @@ const BASE_URL = 'http://localhost:8080';
 
 class ScenarioTypeService {
   static async getScenarioTypes(): Promise<any> {
-    return this.request('get', '/api/tipoCenario');
+    return this.request('get', '/api/scenario-type');
   }
 
   static async getScenarioTypeByTeam(searchValue?: string): Promise<any> {
-    return this.request('get', '/api/tipoCenario', undefined, { idTime: searchValue });
+    return this.request('get', '/api/scenario-type', undefined, { idTime: searchValue });
   }
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {

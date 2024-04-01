@@ -94,19 +94,19 @@ const CreateTestCaseScreen: React.FC = () => {
 
       const data = {
         idTeam: selectedTeam || 0,
-        idPlano: selectedTestPlan || 0,
-        idSuite: selectedTestSuite || 0,
-        idTproduto: selectedProductId || 0,
-        idTpcenario: selectedScenarioType || 0,
-        idPlataforma: selectedPlataformType || 0,
-        idStatus: selectedScenarioStatusType || 0,
-        idAutomatizado: selectedStatusAutomationType || 0,
-        tituloCenario: scenarioTitle,
-        descCenario: scenarioDescription,
-        linkCenario: scenarioLink,
-        steps: filteredSteps.map((descricao, index) => ({
-          passo: index + 1,
-          descricao: descricao,
+        idTestPlan: selectedTestPlan || 0,
+        idTestSute: selectedTestSuite || 0,
+        idProduct: selectedProductId || 0,
+        idScenarioType: selectedScenarioType || 0,
+        idPlatformType: selectedPlataformType || 0,
+        idScenarioStatus: selectedScenarioStatusType || 0,
+        idAutomationStatus: selectedStatusAutomationType || 0,
+        titleScenario: scenarioTitle,
+        descScenario: scenarioDescription,
+        linkScenario: scenarioLink,
+        steps: filteredSteps.map((description, index) => ({
+          step: index + 1,
+          description: description,
         })),
         tags: filteredTags
       };
@@ -118,7 +118,7 @@ const CreateTestCaseScreen: React.FC = () => {
 
       const dataHistory = {
 
-        idCenario: response.idCenario,
+        idScenario: response.idScenario,
         statusBefore: selectedScenarioStatusType || 0,
         statusAfter: selectedScenarioStatusType || 0
 
@@ -310,7 +310,7 @@ const CreateTestCaseScreen: React.FC = () => {
 
       <div className='cardboard-style container'>
         <div className="text-field-container ">
-          <span className='span-label'>Passo a passo:</span>
+          <span className='span-label'>Passo a step:</span>
           <DynamicList items={steps} setItems={setSteps} />
         </div>
 

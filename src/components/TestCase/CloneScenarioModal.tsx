@@ -11,7 +11,7 @@ import Toast from '../Toast';
 interface CloneScenarioModalProps {
   open: boolean;
   onClose: () => void;
-  idCenario: number;
+  idScenario: number;
 }
 
 
@@ -21,21 +21,21 @@ interface SelectedTeam {
 }
 
 interface TestCase {
-  idTpcenario: number;
-  idPlataforma: number;
-  idStatus: number;
-  idAutomatizado: number;
-  tituloCenario: string;
-  descCenario: string;
-  linkCenario: string;
-  steps?: { passo: number; descricao: string }[];
+  idScenarioType: number;
+  idPlatformType: number;
+  idScenarioStatus: number;
+  idAutomationStatus: number;
+  titleScenario: string;
+  descScenario: string;
+  linkScenario: string;
+  steps?: { step: number; description: string }[];
   tags?: string[];
 }
 
 const CloneScenarioModal: React.FC<CloneScenarioModalProps> = ({
   open,
   onClose,
-  idCenario,
+  idScenario,
 }) => {
   const [selectedTeam, setSelectedTeam] = useState<number | null>(null);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
@@ -53,7 +53,7 @@ const CloneScenarioModal: React.FC<CloneScenarioModalProps> = ({
   const [scenarioTitle, setScenarioTitle] = useState<string>('');
   const [scenarioDescription, setscenarioDescription] = useState<string>('');
   const [scenarioLink, setscenarioLink] = useState<string>('');
-  const [steps, setSteps] = useState<{ passo: number; descricao: string }[]>([]);
+  const [steps, setSteps] = useState<{ step: number; description: string }[]>([]);
   const [tags, setTags] = useState<string[]>([]);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -62,16 +62,16 @@ const CloneScenarioModal: React.FC<CloneScenarioModalProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const testCaseResult = await TestCaseService.searchTestCase({ idCenario });
+        const testCaseResult = await TestCaseService.searchTestCase({ idScenario });
 
-        setSelectedScenarioType(testCaseResult[0].idTpcenario.idTpcenario);
-        setSelectedPlataformType(testCaseResult[0].idPlataforma.idPlataforma);
-        setSelectedScenarioStatusType(testCaseResult[0].idStatus.idStatus);
-        setSelectedStatusAutomationType(testCaseResult[0].idAutomatizado.idAutomatizado);
+        setSelectedScenarioType(testCaseResult[0].idScenarioType.idScenarioType);
+        setSelectedPlataformType(testCaseResult[0].idPlatformType.idPlatformType);
+        setSelectedScenarioStatusType(testCaseResult[0].idScenarioStatus.idScenarioStatus);
+        setSelectedStatusAutomationType(testCaseResult[0].idAutomationStatus.idAutomationStatus);
         setSelectedScenarioStatusType(3)
-        setScenarioTitle(testCaseResult[0].tituloCenario);
-        setscenarioDescription(testCaseResult[0].descCenario);
-        setscenarioLink(testCaseResult[0].linkCenario);
+        setScenarioTitle(testCaseResult[0].titleScenario);
+        setscenarioDescription(testCaseResult[0].descScenario);
+        setscenarioLink(testCaseResult[0].linkScenario);
         setSteps(testCaseResult[0].steps || []);
         setTags(testCaseResult[0].tags || []);
       } catch (error) {
@@ -82,7 +82,7 @@ const CloneScenarioModal: React.FC<CloneScenarioModalProps> = ({
     if (open) {
       fetchData();
     }
-  }, [idCenario, open]);
+  }, [idScenario, open]);
 
 
   const handleSelectTeam = (team: number | SelectedTeam | null | string) => {
@@ -113,19 +113,19 @@ const CloneScenarioModal: React.FC<CloneScenarioModalProps> = ({
     try {
       const data = {
         idTeam: selectedTeam || 0,
-        idPlano: selectedTestPlan || 0,
-        idSuite: selectedTestSuite || 0,
-        idTproduto: selectedProductId || 0,
-        idTpcenario: selectedScenarioType || 0,
-        idPlataforma: selectedPlataformType || 0,
-        idStatus: selectedScenarioStatusType || 0,
-        idAutomatizado: selectedStatusAutomationType || 0,
-        tituloCenario: scenarioTitle,
-        descCenario: scenarioDescription,
-        linkCenario: scenarioLink,
+        idTestPlan: selectedTestPlan || 0,
+        idTestSuite: selectedTestSuite || 0,
+        idProduct: selectedProductId || 0,
+        idScenarioType: selectedScenarioType || 0,
+        idPlatformType: selectedPlataformType || 0,
+        idScenarioStatus: selectedScenarioStatusType || 0,
+        idAutomationStatus: selectedStatusAutomationType || 0,
+        titleScenario: scenarioTitle,
+        descScenario: scenarioDescription,
+        linkScenario: scenarioLink,
         steps: steps.map((step, index) => ({
-          passo: index + 1,
-          descricao: step.descricao,
+          step: index + 1,
+          description: step.description,
         })),
         tags,
       };
@@ -135,7 +135,7 @@ const CloneScenarioModal: React.FC<CloneScenarioModalProps> = ({
       const response = await TestCaseService.addTestCase(data);
 
       const dataHistory = {
-        idCenario: response.idCenario,
+        idScenario: response.idScenario,
         statusBefore:  selectedScenarioStatusType || 0,
         statusAfter:   selectedScenarioStatusType || 0,
       };

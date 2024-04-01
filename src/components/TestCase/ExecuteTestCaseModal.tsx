@@ -14,10 +14,10 @@ interface ExecuteTestCaseModalProps {
   onClose: () => void;
   fetchTestCases?: () => void;
   selectedScenario?: { id: number; name: string };
-  idCenario: number;
+  idScenario: number;
 }
 
-const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClose, selectedScenario, idCenario, fetchTestCases }) => {
+const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClose, selectedScenario, idScenario, fetchTestCases }) => {
   const [error, setError] = useState<string>('');
   const [selectedScenarioStatusId, setSelectedScenarioStatusId] = useState<number | null>(null);
   const [testCase, setTestCase] = useState<any>(null);
@@ -29,8 +29,8 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
   useEffect(() => {
     const fetchScenarioStatus = async () => {
       try {
-        if (open && idCenario) {
-          const testCaseDetails = await TestCaseService.searchTestCase({idCenario});
+        if (open && idScenario) {
+          const testCaseDetails = await TestCaseService.searchTestCase({idScenario});
           if (testCaseDetails.length > 0) {
             setSelectedScenarioStatusId(testCaseDetails[0]?.idStatus?.idStatus || null);
             setTestCase(testCaseDetails[0]);
@@ -44,7 +44,7 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
     if (open) {
       fetchScenarioStatus();
     }
-  }, [idCenario, open]);
+  }, [idScenario, open]);
 
   useEffect(() => {
     if (testCase && testCase.steps) {
@@ -63,7 +63,7 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
     try {
       const filteredSteps = steps.filter(step => step.descricao.trim() !== ''); 
 
-      const testCaseDetails = await TestCaseService.searchTestCase({ idCenario });
+      const testCaseDetails = await TestCaseService.searchTestCase({ idScenario });
       const statusScenario = testCaseDetails[0]?.idStatus?.idStatus;
 
 
@@ -87,12 +87,12 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
         tags: testCase.tags,
       };
 
-      if (idCenario != null) {
-        const response = await TestCaseService.updateTestCase(idCenario, data);
+      if (idScenario != null) {
+        const response = await TestCaseService.updateTestCase(idScenario, data);
 
         const dataHistory = {
 
-          idCenario: response.idCenario,
+          idScenario: response.idScenario,
           statusBefore: statusScenario || 0,
           statusAfter: selectedScenarioStatusId || 0
 

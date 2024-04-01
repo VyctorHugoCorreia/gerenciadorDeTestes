@@ -139,26 +139,26 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, idTestSuit
                                         <div>
                                             <IconButton
                                                 aria-label="Opções"
-                                                aria-controls={`menu-options-${testCase.idCenario}`}
+                                                aria-controls={`menu-options-${testCase.idScenario}`}
                                                 aria-haspopup="true"
-                                                onClick={(event) => handleClick(event, testCase.idCenario)}
+                                                onClick={(event) => handleClick(event, testCase.idScenario)}
                                             >
                                                 <MoreVertIcon />
                                             </IconButton>
                                             <Menu
-                                                id={`menu-options-${testCase.idCenario}`}
-                                                anchorEl={anchorElMap[testCase.idCenario]}
-                                                open={Boolean(anchorElMap[testCase.idCenario])}
-                                                onClose={() => handleClose(testCase.idCenario)}
+                                                id={`menu-options-${testCase.idScenario}`}
+                                                anchorEl={anchorElMap[testCase.idScenario]}
+                                                open={Boolean(anchorElMap[testCase.idScenario])}
+                                                onClose={() => handleClose(testCase.idScenario)}
                                             >
-                                                <MenuItem onClick={() => handleEditTestCase(testCase.idCenario)}>Editar</MenuItem>
+                                                <MenuItem onClick={() => handleEditTestCase(testCase.idScenario)}>Editar</MenuItem>
                                                 <MenuItem onClick={() => handleExecuteTestCase()}>Executar cenário</MenuItem>
-                                                <MenuItem disabled={loading} onClick={() => handleDeleteTestCase(testCase.idCenario)}>{loading ? 'Excluindo...' : 'Excluir'}</MenuItem>
-                                                <MenuItem onClick={() => handleDetailsTestCase(testCase.idCenario)}>Detalhes</MenuItem>
+                                                <MenuItem disabled={loading} onClick={() => handleDeleteTestCase(testCase.idScenario)}>{loading ? 'Excluindo...' : 'Excluir'}</MenuItem>
+                                                <MenuItem onClick={() => handleDetailsTestCase(testCase.idScenario)}>Detalhes</MenuItem>
                                                 <ExecuteTestCaseModal
                                                     open={showExecuteModal}
                                                     onClose={handleCloseModal}
-                                                    idCenario={Number(testCase.idCenario)}
+                                                    idScenario={Number(testCase.idScenario)}
                                                 />
                                             </Menu>
                                         </div>

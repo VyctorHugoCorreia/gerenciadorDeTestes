@@ -7,11 +7,11 @@ import ExecuteTestCaseModal from './ExecuteTestCaseModal'
 import CloneScenarioModal from './CloneScenarioModal';
 
 interface OpcoesMenuProps {
-  idCenario: string;
+  idScenario: string;
   fetchTestCases: () => void;
 }
 
-const OpcoesMenu: React.FC<OpcoesMenuProps> = ({ idCenario, fetchTestCases }) => {
+const OpcoesMenu: React.FC<OpcoesMenuProps> = ({ idScenario, fetchTestCases }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
   const [error, setError] = useState<string>('');
@@ -85,23 +85,23 @@ const OpcoesMenu: React.FC<OpcoesMenuProps> = ({ idCenario, fetchTestCases }) =>
         onClose={handleClose}
       >
            <MenuItem onClick={handleExecute}>Executar</MenuItem>
-        <MenuItem onClick={() => handleDetails(Number(idCenario))}>Detalhes</MenuItem>
+        <MenuItem onClick={() => handleDetails(Number(idScenario))}>Detalhes</MenuItem>
         <MenuItem onClick={handleClone}>Clonar Cenário</MenuItem>
-        <MenuItem onClick={() => handleEdit(Number(idCenario))}>Editar</MenuItem>
-        <MenuItem onClick={() => handleDelete(Number(idCenario))}>Excluir</MenuItem>
+        <MenuItem onClick={() => handleEdit(Number(idScenario))}>Editar</MenuItem>
+        <MenuItem onClick={() => handleDelete(Number(idScenario))}>Excluir</MenuItem>
       </Menu>
 
       <ExecuteTestCaseModal
         open={showExecuteModal}
         onClose={handleCloseModal}
-        idCenario ={Number(idCenario)}
+        idScenario ={Number(idScenario)}
         fetchTestCases={fetchTestCases}
       />
 
 <CloneScenarioModal
         open={showCloneModal}
         onClose={handleCloneModalClose}
-        idCenario ={Number(idCenario)}
+        idScenario ={Number(idScenario)}
       />
     </div>
   );

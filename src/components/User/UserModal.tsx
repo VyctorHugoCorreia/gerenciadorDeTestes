@@ -10,10 +10,10 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export interface User {
   id: string;
-  nome: string;
+  name: string;
   login: string;
-  senha: string;
-  perfilDeAcesso: string;
+  password: string;
+  accessProfile: string;
 
 }
 
@@ -23,9 +23,9 @@ export interface UserModalProps {
   fetchUser: () => void;
   selectedUser?: {
     id: string;
-    nome: string;
+    name: string;
     login: string;
-    perfilDeAcesso: { id: string; nome: string };
+    accessProfile: { id: string; name: string };
   } | null;
 }
 
@@ -50,7 +50,7 @@ const UserModal: React.FC<UserModalProps> = ({
   const [editPassword, setEditPassword] = useState<boolean>(false);
   const [selectedAcessProfile, setSelectedAccessProfile] = useState<{
     id: string;
-    nome: string;
+    name: string;
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
   const isEditing = !!selectedUser;
@@ -89,7 +89,7 @@ const UserModal: React.FC<UserModalProps> = ({
 
   useEffect(() => {
     if (password != '' && oldPassword != '' && oldPassword == password)
-      setErrorPassword("Não é possível cadastrar a senha atual como a nova senha para o usuário.")
+      setErrorPassword("Não é possível cadastrar a password atual como a nova password para o usuário.")
     else {
       setErrorPassword("")
 
@@ -99,12 +99,12 @@ const UserModal: React.FC<UserModalProps> = ({
   useEffect(() => {
     if (open && selectedUser) {
       setError('');
-      setUsername(selectedUser.nome || '');
+      setUsername(selectedUser.name || '');
       setLogin(selectedUser.login || '');
 
-      setSelectedAccessProfile(selectedUser.perfilDeAcesso.id ? {
-        id: selectedUser.perfilDeAcesso.id,
-        nome: selectedUser.perfilDeAcesso.nome,
+      setSelectedAccessProfile(selectedUser.accessProfile.id ? {
+        id: selectedUser.accessProfile.id,
+        name: selectedUser.accessProfile.name,
       } : null);
     } else {
       setError('');
@@ -147,12 +147,12 @@ const UserModal: React.FC<UserModalProps> = ({
   };
 
 
-  const handleSelectAccessProfile = (accessProfile: { id: string; nome: string } | string) => {
+  const handleSelectAccessProfile = (accessProfile: { id: string; name: string } | string) => {
     if (!selectedUser) {
-      setSelectedAccessProfile(typeof accessProfile === 'string' ? null : { id: accessProfile.id, nome: accessProfile.nome });
+      setSelectedAccessProfile(typeof accessProfile === 'string' ? null : { id: accessProfile.id, name: accessProfile.name });
       setError('');
     } else {
-      setSelectedAccessProfile(typeof accessProfile === 'string' ? selectedAcessProfile : { id: accessProfile.id, nome: accessProfile.nome });
+      setSelectedAccessProfile(typeof accessProfile === 'string' ? selectedAcessProfile : { id: accessProfile.id, name: accessProfile.name });
       setError('');
     }
   };
@@ -174,7 +174,7 @@ const UserModal: React.FC<UserModalProps> = ({
 
   const handleAddUser = async () => {
     try {
-      await UserService.addUser(username, login, password, selectedAcessProfile?.nome ?? '');
+      await UserService.addUser(username, login, password, selectedAcessProfile?.name ?? '');
       setUsername('');
       setUsername('');
       setLogin('');
@@ -193,7 +193,7 @@ const UserModal: React.FC<UserModalProps> = ({
   const handleEditUser = async () => {
     try {
       if (selectedAcessProfile && selectedUser) {
-        await UserService.EditUser(selectedUser.id, username, login, password, oldPassword, selectedAcessProfile?.nome ?? '');
+        await UserService.EditUser(selectedUser.id, username, login, password, oldPassword, selectedAcessProfile?.name ?? '');
         setUsername('');
         setUsername('');
         setLogin('');
@@ -235,7 +235,7 @@ const UserModal: React.FC<UserModalProps> = ({
             className="team-modal-input"
             id="username"
             label="Nome do usuário"
-            placeholder="Preencha o nome do usuário"
+            placeholder="Preencha o name do usuário"
             value={username}
             onChange={handleInputChangeUsername}
           />
@@ -256,7 +256,7 @@ const UserModal: React.FC<UserModalProps> = ({
                 className="team-modal-input"
                 id="old-password"
                 label="Senha atual do usuário"
-                placeholder="Preencha a senha atual do usuário"
+                placeholder="Preencha a password atual do usuário"
                 type={showOldPassword ? 'text' : 'password'}
                 value={oldPassword}
                 onChange={handleInputChangeOldPassword}
@@ -279,8 +279,8 @@ const UserModal: React.FC<UserModalProps> = ({
                 helperText={errorPassword}
                 className="team-modal-input"
                 id="password"
-                label="Nova senha do usuário"
-                placeholder="Preencha a nova senha do usuário"
+                label="Nova password do usuário"
+                placeholder="Preencha a nova password do usuário"
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={handleInputChangePassword}
@@ -302,8 +302,8 @@ const UserModal: React.FC<UserModalProps> = ({
                 error={errorConfirmPassword !== ''}
                 className="team-modal-input"
                 id="confirm-password"
-                label="Confirmar nova senha do usuário"
-                placeholder="Confirme a nova senha do usuário"
+                label="Confirmar nova password do usuário"
+                placeholder="Confirme a nova password do usuário"
                 type={showConfirmPassword ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={handleInputChangeConfirmPassword}
@@ -333,7 +333,7 @@ const UserModal: React.FC<UserModalProps> = ({
                 className="team-modal-input"
                 id="password"
                 label="Senha do usuário"
-                placeholder="Preencha a senha do usuário"
+                placeholder="Preencha a password do usuário"
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={handleInputChangePassword}
@@ -355,8 +355,8 @@ const UserModal: React.FC<UserModalProps> = ({
                 error={errorConfirmPassword !== ''}
                 className="team-modal-input"
                 id="confirm-password"
-                label="Confirmar senha do usuário"
-                placeholder="Confirme a senha do usuário"
+                label="Confirmar password do usuário"
+                placeholder="Confirme a password do usuário"
                 type={showConfirmPassword ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={handleInputChangeConfirmPassword}

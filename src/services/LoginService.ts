@@ -10,7 +10,7 @@ interface Login {
 interface User {
   login: string;
   password?: string;
-  senhaAntiga?:string;
+  oldPassword?:string;
 }
 
 
@@ -24,16 +24,6 @@ class LoginService {
     return this.request('post', '/api/login', data);
   }
   
-  static async EditPassword(login:string, password:string, senhaAntiga:string): Promise<any> {
-    const data: User = {
-      login,
-      password,
-      senhaAntiga,
-    };
-
-    return this.request('put', `/api/login/trocar-senha`, data);
-  }
-
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {
     try {
       const config: Record<string, any> = {

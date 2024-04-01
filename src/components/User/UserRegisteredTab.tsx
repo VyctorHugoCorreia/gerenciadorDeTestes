@@ -6,7 +6,7 @@ import UserService from '../../services/UserService';
 
 interface PerfilDeAcesso {
   id: string;
-  nome: string;
+  name: string;
 }
 
 interface SearchParams {
@@ -48,9 +48,9 @@ const ProductRegisteredTab: React.FC = () => {
   const handleSearch = async (searchParams: SearchParams) => {
     try {
       const filteredUsers = await UserService.searchUsers({
-        nome: searchParams.searchValueName,
+        name: searchParams.searchValueName,
         login: searchParams.searchValueLogin,
-        perfilDeAcesso: searchParams.selectedAcessProfile?.nome ?? undefined,
+        accessProfile: searchParams.selectedAcessProfile?.name ?? undefined,
       });
 
       setUsers(filteredUsers);
