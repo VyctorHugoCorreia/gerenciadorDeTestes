@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from '@mui/material';
 import { AccountCircle } from '@mui/icons-material';
-import { getAuthentication, setAuthentication } from '../authentication/authentication'; 
-import { getUsername } from '../authentication/token'; 
+import { getAuthentication, setAuthentication } from '../authentication/authentication';
+import { getUsername } from '../authentication/token';
 
 import logo from '../images/logo-pagbank.svg';
 import '../styles/Navbar.css';
@@ -33,9 +33,12 @@ const Navbar: React.FC = () => {
   };
 
   return (
-  <AppBar position="static" className='navbar'>
+    <AppBar position="static" className='navbar'>
       <Toolbar>
-        <img src={logo} alt="Logo do PagBank" style={{ marginRight: 'auto' }} />
+        <a style={{ marginRight: 'auto' }} href="/cenarios-de-teste">
+          <img src={logo} alt="Logo do PagBank" style={{ marginRight: 'auto' }} />
+        </a>
+
         {isLoggedIn ? (
           <div className="user-info">
             <IconButton
@@ -52,7 +55,7 @@ const Navbar: React.FC = () => {
               id="menu-appbar"
               anchorEl={anchorEl}
               anchorOrigin={{
-                vertical: 'bottom',  
+                vertical: 'bottom',
                 horizontal: 'right',
               }}
               keepMounted
