@@ -14,10 +14,10 @@ interface ExecuteTestCaseModalProps {
   onClose: () => void;
   fetchTestCases?: () => void;
   selectedScenario?: { id: number; name: string };
-  idCenario: number;
+  idScenario: number;
 }
 
-const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClose, selectedScenario, idCenario, fetchTestCases }) => {
+const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClose, selectedScenario, idScenario, fetchTestCases }) => {
   const [error, setError] = useState<string>('');
   const [selectedScenarioStatusId, setSelectedScenarioStatusId] = useState<number | null>(null);
   const [testCase, setTestCase] = useState<any>(null);
@@ -29,10 +29,10 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
   useEffect(() => {
     const fetchScenarioStatus = async () => {
       try {
-        if (open && idCenario) {
-          const testCaseDetails = await TestCaseService.searchTestCase({idCenario});
+        if (open && idScenario) {
+          const testCaseDetails = await TestCaseService.searchTestCase({idScenario});
           if (testCaseDetails.length > 0) {
-            setSelectedScenarioStatusId(testCaseDetails[0]?.idStatus?.idStatus || null);
+            setSelectedScenarioStatusId(testCaseDetails[0]?.idScenarioStatus?.idScenarioStatus || null);
             setTestCase(testCaseDetails[0]);
           }
         }
@@ -44,7 +44,7 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
     if (open) {
       fetchScenarioStatus();
     }
-  }, [idCenario, open]);
+  }, [idScenario, open]);
 
   useEffect(() => {
     if (testCase && testCase.steps) {
@@ -61,38 +61,38 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
 
   const handleExecute = async () => {
     try {
-      const filteredSteps = steps.filter(step => step.descricao.trim() !== ''); 
+      const filteredSteps = steps.filter(step => step.description.trim() !== ''); 
 
-      const testCaseDetails = await TestCaseService.searchTestCase({ idCenario });
-      const statusScenario = testCaseDetails[0]?.idStatus?.idStatus;
+      const testCaseDetails = await TestCaseService.searchTestCase({ idScenario });
+      const statusScenario = testCaseDetails[0]?.idScenarioStatus?.idScenarioStatus;
 
 
       const data = {
-        idTime: testCase.idTime.idTime || 0,
-        idPlano: testCase.idPlano.idPlano || 0,
-        idSuite: testCase.idSuite.idSuite || 0,
-        idTproduto: testCase.idTproduto.idTproduto || 0,
-        idTpcenario: testCase.idTpcenario.idTpcenario || 0,
-        idPlataforma: testCase.idPlataforma.idPlataforma || 0,
-        idStatus: selectedScenarioStatusId || 0,
-        idAutomatizado: testCase.idAutomatizado.idAutomatizado || 0,
-        tituloCenario: testCase.tituloCenario,
-        descCenario: testCase.descCenario,
-        linkCenario: testCase.linkCenario,
+        idTeam: testCase.idTestSuite.idTestPlan.idProduct.idTeam.idTeam || 0,
+        idTestPlan: testCase.idTestSuite.idTestPlan.idTestPlan || 0,
+        idTestSuite: testCase.idTestSuite.idTestSuite || 0,
+        idProduct: testCase.idTestSuite.idTestPlan.idProduct.idProduct || 0,
+        idScenarioType: testCase.idScenarioType.idScenarioType || 0,
+        idPlatformType: testCase.idPlatformType.idPlatformType || 0,
+        idScenarioStatus: selectedScenarioStatusId || 0,
+        idAutomationStatus: testCase.idAutomationStatus.idAutomationStatus || 0,
+        titleScenario: testCase.titleScenario,
+        descScenario: testCase.descScenario,
+        linkScenario: testCase.linkScenario,
         steps: filteredSteps.map((step, index) => ({
-          passo: index + 1,
-          descricao: step.descricao,
+          step: index + 1,
+          description: step.description,
           status: step.status === 'A' ? 'A' : 'P',
         })),
         tags: testCase.tags,
       };
 
-      if (idCenario != null) {
-        const response = await TestCaseService.updateTestCase(idCenario, data);
+      if (idScenario != null) {
+        const response = await TestCaseService.updateTestCase(idScenario, data);
 
         const dataHistory = {
 
-          idCenario: response.idCenario,
+          idScenario: response.idScenario,
           statusBefore: statusScenario || 0,
           statusAfter: selectedScenarioStatusId || 0
 
@@ -146,8 +146,8 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
               <tbody>
                 {steps.map((step: any, index: number) => (
                   <tr key={index}>
-                    <td>{step.passo}</td>
-                    <td>{step.descricao}</td>
+                    <td>{step.step}</td>
+                    <td>{step.description}</td>
                     <td>
                       <input
                         type="checkbox"

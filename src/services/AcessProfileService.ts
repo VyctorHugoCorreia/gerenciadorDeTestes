@@ -6,27 +6,27 @@ const BASE_URL = 'http://localhost:8080';
 
 interface SearchParams {
   id?: string;
-  nome?: string;
+  name?: string;
 }
 
 class UserService {
  
 
   static async getAllAcessProfile(): Promise<any> {
-    return this.request('get', '/api/perfilDeAcesso');
+    return this.request('get', '/api/access-profile');
   }
 
 
   static async searchAcessProfile(params: SearchParams = {}): Promise<any> {
-    const { id,nome} = params;
-    const url = '/api/perfilDeAcesso';
+    const { id,name} = params;
+    const url = '/api/access-profile';
 
     const requestParams: Record<string, any> = {
       
     };
 
-    if (nome !== undefined && nome.trim() !== "") {
-      requestParams.nome = nome;
+    if (name !== undefined && name.trim() !== "") {
+      requestParams.name = name;
     }
     if (id !== undefined && id.trim() !== "") {
       requestParams.login = id;

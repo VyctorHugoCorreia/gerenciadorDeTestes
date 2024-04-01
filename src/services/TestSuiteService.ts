@@ -4,65 +4,65 @@ import { getAuthToken } from '../authentication/token';
 const BASE_URL = 'http://localhost:8080';
 
 interface SearchParams {
-  descSuite?: string;
-  idTime?: number;
-  idTproduto?: number;
-  idPlano?: number;
+  descTestSuite?: string;
+  idTeam?: number;
+  idProduct?: number;
+  idTestPlan?: number;
 }
 
 class TestSuiteService {
   static async getAllTestSuite(): Promise<any> {
-    return this.request('get', '/api/suiteDeTeste');
+    return this.request('get', '/api/test-suite');
   }
 
   static async addTestSuite(data: any): Promise<any> {
-    return this.request('post', '/api/suiteDeTeste', data);
+    return this.request('post', '/api/test-suite', data);
   }
 
-  static async editTestSuite(idSuite: number, idTime: number, idTproduto: number, idPlano: number, descSuite: string): Promise<any> {
-    const url = `/api/suiteDeTeste/${idSuite}`;
+  static async editTestSuite(idTestSuite: number, idTeam: number, idProduct: number, idTestPlan: number, descTestSuite: string): Promise<any> {
+    const url = `/api/test-suite/${idTestSuite}`;
 
     const requestBody = {
-      idTime,
-      idTproduto,
-      idPlano,
-      descSuite,
+      idTeam,
+      idProduct,
+      idTestPlan,
+      descTestSuite,
     };
 
     return this.request('put', url, requestBody);
   }
 
-  static async deleteTestSuite(idSuite: number): Promise<void> {
-    return this.request('delete', `/api/suiteDeTeste/${idSuite}`);
+  static async deleteTestSuite(idTestSuite: number): Promise<void> {
+    return this.request('delete', `/api/test-suite/${idTestSuite}`);
   }
 
   static async searchTestSuite(params: SearchParams = {}): Promise<any> {
-    const { descSuite, idTime, idTproduto, idPlano } = params;
-    const url = '/api/suiteDeTeste';
+    const { descTestSuite, idTeam, idProduct, idTestPlan } = params;
+    const url = '/api/test-suite';
 
     const requestParams: Record<string, any> = {
-      idTime,
-      idTproduto,
-      idPlano
+      idTeam,
+      idProduct,
+      idTestPlan
     };
 
-    if (descSuite !== undefined && descSuite.trim() !== "") {
-      requestParams.descSuite = descSuite;
+    if (descTestSuite !== undefined && descTestSuite.trim() !== "") {
+      requestParams.descTestSuite = descTestSuite;
     }
 
     return this.request('get', url, undefined, requestParams);
   }
 
   static async searchTestSuiteById(searchValue?: string): Promise<any> {
-    return this.request('get', '/api/suiteDeTeste', undefined, { idSuite: searchValue });
+    return this.request('get', '/api/test-suite', undefined, { idTestSuite: searchValue });
   }
 
   static async getTestSuitesByPlan(searchValue?: number): Promise<any> {
-    return this.request('get', '/api/suiteDeTeste', undefined, { idPlano: searchValue });
+    return this.request('get', '/api/test-suite', undefined, { idTestPlan: searchValue });
   }
 
   static async getTestSuitesByTeam(searchValue?: string): Promise<any> {
-    return this.request('get', '/api/suiteDeTeste', undefined, { idTime: searchValue });
+    return this.request('get', '/api/test-suite', undefined, { idTeam: searchValue });
   }
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {

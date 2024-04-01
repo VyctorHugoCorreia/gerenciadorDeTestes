@@ -11,12 +11,12 @@ import TeamService from '../../services/TeamService';
 interface TeamModalProps {
   open: boolean;
   onClose: () => void;
-  fetchTimes: () => void; 
-  selectedTeam?: { id: number; name: string }; 
+  fetchTeams: () => void; 
+  selectedTeam?: { idTeam: number; nameTeam: string }; 
 }
 
-const TeamModal: React.FC<TeamModalProps> = ({ open, onClose, fetchTimes, selectedTeam }) => {
-  const [teamName, setTeamName] = useState(selectedTeam?.name || '');
+const TeamModal: React.FC<TeamModalProps> = ({ open, onClose, fetchTeams, selectedTeam }) => {
+  const [nameTeam, setNameTeam] = useState(selectedTeam?.nameTeam || '');
   const [error, setError] = useState<string>('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [showToast, setShowToast] = useState(false); 
@@ -24,15 +24,15 @@ const TeamModal: React.FC<TeamModalProps> = ({ open, onClose, fetchTimes, select
   useEffect(() => {
  
     if (open) {
-      setTeamName(selectedTeam?.name || '');
+      setNameTeam(selectedTeam?.nameTeam || '');
       setError('');
-      setIsButtonDisabled(selectedTeam?.name === undefined );
-      console.log(selectedTeam?.name)
+      setIsButtonDisabled(selectedTeam?.nameTeam === undefined );
+      console.log(selectedTeam?.nameTeam)
     }
   }, [open, selectedTeam]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTeamName(event.target.value);
+    setNameTeam(event.target.value);
     setError(''); 
     setIsButtonDisabled(event.target.value === '');
   };
@@ -40,14 +40,14 @@ const TeamModal: React.FC<TeamModalProps> = ({ open, onClose, fetchTimes, select
   const handleTeamAction = async () => {
     try {
       if (selectedTeam) {
-        await TeamService.editTeam(selectedTeam.id, teamName);
+        await TeamService.editTeam(selectedTeam.idTeam, nameTeam);
         setShowToast(true)
       } else {
-        await TeamService.addTeam(teamName);
+        await TeamService.addTeam(nameTeam);
         setShowToast(true)
       }
       onClose(); 
-      fetchTimes();
+      fetchTeams();
     } catch (err) {
       setError(`${err}`);
     }
@@ -68,7 +68,7 @@ const TeamModal: React.FC<TeamModalProps> = ({ open, onClose, fetchTimes, select
             id="team-name"
             label="Preencha o nome do time"
             variant="outlined"
-            value={teamName}
+            value={nameTeam}
             onChange={handleInputChange}
           />
           {error && <p style={{ color: 'red' }}>{error}</p>}

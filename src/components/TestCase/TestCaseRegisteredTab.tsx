@@ -5,37 +5,37 @@ import TestCaseService from '../../services/TestCaseService';
 import SearchBar from '../searchBar/SearchBar';
 
 interface Team {
-  idTime: number;
-  nomeTime: string;
+  idTeam: number;
+  nameTeam: string;
 }
 
 export interface Product {
-  idTproduto: number;
+  idProduct: number;
 }
 
 export interface TestPlan {
-  idPlano: number;
+  idTestPlan: number;
 }
 
 export interface TestSuite {
-  idSuite: number;
+  idTestSuite: number;
 }
 
 
 export interface ScenarioStatus {
-  idStatus: number;
+  idScenarioStatus: number;
 }
 
 export interface ScenarioType {
-  idTpcenario: number;
+  idScenarioType: number;
 }
 
 export interface PlataformType {
-  idPlataforma: number;
+  idPlatformType: number;
 }
 
 export interface StatusAutomation {
-  idAutomatizado: number;
+  idAutomationStatus: number;
 }
 
 interface SearchParams {
@@ -79,18 +79,18 @@ const TestCaseRegisteredTab: React.FC = () => {
   const handleSearch = async (searchParams: SearchParams) => {
     try {
       const filteredTests = await TestCaseService.searchTestCase({
-        tituloCenario: searchParams.searchValue,
-        idTime: searchParams.team?.idTime ?? undefined,
-        idTproduto: searchParams.product?.idTproduto ?? undefined,
-        idPlano: searchParams.testPlan?.idPlano ?? undefined,
-        idSuite: searchParams.testSuite?.idSuite ?? undefined,
-        idStatus: searchParams.scenarioStatus?.idStatus ?? undefined,
-        idTpcenario: searchParams.scenarioType?.idTpcenario ?? undefined,
-        idPlataforma: searchParams.plataformType?.idPlataforma ?? undefined,
-        idAutomatizado: searchParams.statusAutomation?.idAutomatizado ?? undefined
+        titleScenario: searchParams.searchValue,
+        idTeam: searchParams.team?.idTeam ?? undefined,
+        idProduct: searchParams.product?.idProduct ?? undefined,
+        idTestPlan: searchParams.testPlan?.idTestPlan ?? undefined,
+        idTestSuite: searchParams.testSuite?.idTestSuite ?? undefined,
+        idScenarioStatus: searchParams.scenarioStatus?.idScenarioStatus ?? undefined,
+        idScenarioType: searchParams.scenarioType?.idScenarioType ?? undefined,
+        idPlatformType: searchParams.plataformType?.idPlatformType ?? undefined,
+        idAutomationStatus: searchParams.statusAutomation?.idAutomationStatus ?? undefined
       });
 
-      console.log(searchParams.scenarioStatus?.idStatus)
+      console.log(searchParams.scenarioStatus?.idScenarioStatus)
       setTestCases(filteredTests);
       setSearchParams(searchParams);
     } catch (error) {

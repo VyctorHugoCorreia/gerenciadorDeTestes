@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import StatusAutomationTypeService from "../../services/StatusAutomationService";
 
 interface StatusAutomationType {
-  idAutomatizado: number;
-  descAutomatizado: string;
+  idAutomationStatus: number;
+  descAutomationStatus: string;
 }
 
 interface StatusAutomationTypeDropDownProps {
@@ -55,8 +55,8 @@ const StatusAutomationTypeDropDown: React.FC<StatusAutomationTypeDropDownProps> 
     >
       {!isEditing && <option value="">Selecione o status da automação de teste</option>}
       {statusAutomationTypes.map((statusAutomationTypes) => (
-        <option key={statusAutomationTypes.idAutomatizado} value={statusAutomationTypes.idAutomatizado}>
-          {statusAutomationTypes.descAutomatizado}
+        <option key={statusAutomationTypes.idAutomationStatus} value={statusAutomationTypes.idAutomationStatus}>
+          {statusAutomationTypes.descAutomationStatus}
         </option>
       ))}
     </select>

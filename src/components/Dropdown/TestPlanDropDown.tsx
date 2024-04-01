@@ -2,9 +2,9 @@ import React, { useEffect, useState, useCallback } from 'react';
 import TestPlanService from '../../services/TestPlanService';
 
 interface TestPlan {
-  idPlano: number;
-  descPlano: string;
-  idProduto: number;
+  idTestPlan: number;
+  descTestPlan: string;
+  idProduct: number;
 }
 
 interface TestPlanDropDownProps {
@@ -54,10 +54,10 @@ const TestPlanDropDown: React.FC<TestPlanDropDownProps> = ({
 
   const handleTestPlanChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedTestPlanId = parseInt(event.target.value, 10);
-    const selectedTestPlan = testPlans.find(plan => plan.idPlano === selectedTestPlanId);
+    const selectedTestPlan = testPlans.find(plan => plan.idTestPlan === selectedTestPlanId);
     if (selectedTestPlan) {
-      onSelectTestPlan(selectedTestPlan.idPlano);
-      setSelectedValue(selectedTestPlan.idPlano);
+      onSelectTestPlan(selectedTestPlan.idTestPlan);
+      setSelectedValue(selectedTestPlan.idTestPlan);
     } else {
       onSelectTestPlan(null);
       setSelectedValue(null); 
@@ -74,8 +74,8 @@ const TestPlanDropDown: React.FC<TestPlanDropDownProps> = ({
     >
       {<option value="">Selecione o plano de testes</option>}
       {testPlans.map((plan) => (
-        <option key={plan.idPlano} value={plan.idPlano}>
-          {plan.descPlano}
+        <option key={plan.idTestPlan} value={plan.idTestPlan}>
+          {plan.descTestPlan}
         </option>
       ))}
     </select>

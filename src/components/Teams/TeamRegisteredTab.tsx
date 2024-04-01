@@ -16,23 +16,23 @@ const TeamRegisteredTab: React.FC = () => {
       searchValue: '',
     }
   );
-  const fetchTimes = async () => {
+  const fetchTeams = async () => {
     try {
-      const timesData = await TeamService.getAllTeams();
-      setTeams(timesData);
+      const teamsData = await TeamService.getAllTeams();
+      setTeams(teamsData);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchTimes();
+    fetchTeams();
   }, []);
 
   const handleSearch = async (searchParams: SearchParams) => {
     try {
       const filteredTeams = await TeamService.searchTeams({
-        nomeTime: searchParams.searchValue
+        nameTeam: searchParams.searchValue
       });
 
       setTeams(filteredTeams);
@@ -44,12 +44,12 @@ const TeamRegisteredTab: React.FC = () => {
 
   return (
     <div>
-      <AddTeamButton fetchTimes={fetchTimes} />
+      <AddTeamButton fetchTeams={fetchTeams} />
       <SearchBar
       placeholder="Buscar time" 
       onSearch={handleSearch}
        />
-      <TeamTable times={teams} fetchTimes={fetchTimes} />
+      <TeamTable teams={teams} fetchTeams={fetchTeams} />
     </div>
   );
 };

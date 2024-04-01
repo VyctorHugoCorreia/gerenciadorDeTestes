@@ -6,7 +6,7 @@ import '../../styles/SearchBar.css';
 
 export interface AcessProfile {
   id: string;
-  nome: string;
+  name: string;
 }
 
 interface SearchParams {

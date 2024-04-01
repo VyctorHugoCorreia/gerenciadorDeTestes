@@ -5,7 +5,7 @@ const BASE_URL = 'http://localhost:8080';
 
 class PlataformTypeService {
   static async getPlataformTypes(): Promise<any> {
-    return this.request('get', '/api/tipoPlataforma');
+    return this.request('get', '/api/platform-type');
   }
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {

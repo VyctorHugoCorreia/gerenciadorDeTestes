@@ -4,36 +4,26 @@ const BASE_URL = 'http://localhost:8080';
 
 interface Login {
   login: string;
-  senha: string;
+  password: string;
 }
 
 interface User {
   login: string;
-  senha?: string;
-  senhaAntiga?:string;
+  password?: string;
+  oldPassword?:string;
 }
 
 
 class LoginService {
-  static async postLogin(login: string, senha: string): Promise<any> {
+  static async postLogin(login: string, password: string): Promise<any> {
     const data: Login = {
       login: login,
-      senha: senha,
+      password: password,
     };
   
     return this.request('post', '/api/login', data);
   }
   
-  static async EditPassword(login:string, senha:string, senhaAntiga:string): Promise<any> {
-    const data: User = {
-      login,
-      senha,
-      senhaAntiga,
-    };
-
-    return this.request('put', `/api/login/trocar-senha`, data);
-  }
-
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {
     try {
       const config: Record<string, any> = {

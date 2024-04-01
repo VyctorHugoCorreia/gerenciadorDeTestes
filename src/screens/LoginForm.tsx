@@ -28,8 +28,8 @@ const LoginForm: React.FC<LoginFormProps> = () => {
       const { token } = response;
       setAuthToken(token);
       setAuthentication(true);
-      setAcessProfile(response.perfilDeAcesso)
-      setUsername(response.nome)
+      setAcessProfile(response.accessProfile)
+      setUsername(response.name)
       navigate('/');
     } catch (err: any) {
       if (Array.isArray(err) && err.length > 0) {

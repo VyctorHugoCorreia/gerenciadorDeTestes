@@ -14,33 +14,33 @@ const TransparentTableContainer = styled(TableContainer)({
 });
 
 interface TestCase {
-  idCenario: number;
-  tituloCenario: string;
-  descCenario: string;
-  linkCenario: string;
-  idTime: {
-    idTime: number;
-    nomeTime: string;
-  };
-  idPlano: {
-    idPlano: number;
-    descPlano: string;
-  };
-  idSuite: {
-    idSuite: number;
-    descSuite: string;
-  };
-  idTproduto: {
-    idTproduto: number;
-    descProduto: string;
-  };
-  idStatus: {
-    idStatus: number;
-    descStatus: string;
-  };
-  idAutomatizado: {
-    idAutomatizado: number;
-    descAutomatizado: string;
+  idScenario: number;
+  titleScenario: string;
+  descScenario: string;
+  linkScenario: string;
+  idScenarioStatus:{
+    idScenarioStatus: number;
+    descScenarioStatus: string;
+  }
+  idAutomationStatus:{
+    idAutomationStatus: number;
+    descAutomationStatus: string;
+  }
+  idTestSuite: {
+    idTestSuite: number;
+    descTestSuite: string;
+    idTestPlan: {
+      idTestPlan: number;
+      descTestPlan: string;
+      idProduct: {
+        idProduct: number;
+        descProduct: string;
+        idTeam: {
+          idTeam: number;
+          nameTeam: string;
+        };
+      };
+    };
   };
 }
 
@@ -158,20 +158,20 @@ const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases
               </thead>
               <tbody >
                 {testCases.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((testCase) => (
-                  <tr key={testCase.idCenario}>
+                  <tr key={testCase.idScenario}>
                     {Object.keys(selectedColumns).map((columnName) => (
                       selectedColumns[columnName as ColumnNames] && (
                         <td key={columnName} className="action-buttons">
-                          {columnName === 'Nome do time' && testCase.idTime.nomeTime}
-                          {columnName === 'Produto' && testCase.idTproduto.descProduto}
-                          {columnName === 'Plano de teste' && testCase.idPlano.descPlano}
-                          {columnName === 'Suite de teste' && testCase.idSuite.descSuite}
-                          {columnName === 'Cenário' && testCase.tituloCenario}
-                          {columnName === 'Status do cenário' && testCase.idStatus.descStatus}
-                          {columnName === 'Automatizado?' && testCase.idAutomatizado.descAutomatizado}
+                          {columnName === 'Nome do time' && testCase.idTestSuite.idTestPlan.idProduct.idTeam.nameTeam}
+                          {columnName === 'Produto' && testCase.idTestSuite.idTestPlan.idProduct.descProduct}
+                          {columnName === 'Plano de teste' && testCase.idTestSuite.idTestPlan.descTestPlan}
+                          {columnName === 'Suite de teste' && testCase.idTestSuite.descTestSuite}
+                          {columnName === 'Cenário' && testCase.titleScenario}
+                          {columnName === 'Status do cenário' && testCase.idScenarioStatus.descScenarioStatus}
+                          {columnName === 'Automatizado?' && testCase.idAutomationStatus.descAutomationStatus}
                           {columnName === 'Ações' && (
                             <OptionMenuTestCaseTable
-                              idCenario={testCase.idCenario.toString()}
+                              idScenario={testCase.idScenario.toString()}
                               fetchTestCases={fetchTestCases}
                             />
                           )}

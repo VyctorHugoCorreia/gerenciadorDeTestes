@@ -3,12 +3,12 @@ import TeamService from '../../services/TeamService';
 import '../../styles/AddModal.css';
 
 interface Team {
-  idTime: number;
-  nomeTime: string;
+  idTeam: number;
+  nameTeam: string;
 }
 
 interface TeamsDropDownProps {
-  onSelectTeam: (team: { idTime: number; nomeTime: string } | string) => void;
+  onSelectTeam: (team: { idTeam: number; nameTeam: string } | string) => void;
   selectedTeam?: number | null;
   disabled?: boolean; 
 }
@@ -42,9 +42,9 @@ const TeamsDropDown: React.FC<TeamsDropDownProps> = ({
   };
 
   const onSelectTeamSelected = (selectedTeamId: number) => {
-    const teamInfo = teams.find((team) => team.idTime === selectedTeamId);
+    const teamInfo = teams.find((team) => team.idTeam === selectedTeamId);
     if (teamInfo) {
-      onSelectTeam({ idTime: teamInfo.idTime, nomeTime: teamInfo.nomeTime });
+      onSelectTeam({ idTeam: teamInfo.idTeam, nameTeam: teamInfo.nameTeam });
     } else {
       onSelectTeam('');
     }
@@ -65,8 +65,8 @@ const TeamsDropDown: React.FC<TeamsDropDownProps> = ({
     >
       <option value="">Selecione o time</option>
       {teams.map((team) => (
-        <option key={team.idTime} value={team.idTime}>
-          {team.nomeTime}
+        <option key={team.idTeam} value={team.idTeam}>
+          {team.nameTeam}
         </option>
       ))}
     </select>

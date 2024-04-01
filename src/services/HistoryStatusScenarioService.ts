@@ -5,11 +5,11 @@ const BASE_URL = 'http://localhost:8080';
 
 class historyStatusScenarioService {
   static async addHistoryStatusScenario(data: any): Promise<any> {
-    return this.request('post', '/api/historyStatusScenario', data);
+    return this.request('post', '/api/history-status-scenario', data);
   }
 
   static async searchHistoryByTestCaseId(searchValue?: string): Promise<any> {
-    return this.request('get', '/api/historyStatusScenario', undefined, { idCenario: searchValue });
+    return this.request('get', '/api/history-status-scenario', undefined, { idCenario: searchValue });
   }
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {

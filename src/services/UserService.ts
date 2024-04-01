@@ -4,70 +4,70 @@ import { getAuthToken } from '../authentication/token';
 const BASE_URL = 'http://localhost:8080';
 
 interface User {
-  nome: string;
+  name: string;
   login: string;
-  senha?: string;
-  senhaAntiga?:string;
-  perfilDeAcesso: string;
+  password?: string;
+  oldPassword?:string;
+  accessProfile: string;
 }
 
 
 interface SearchParams {
-  nome?: string;
+  name?: string;
   login?: string;
-  perfilDeAcesso?: string;
+  accessProfile?: string;
 }
 
 class UserService {
  
 
   static async getAllUsers(): Promise<any> {
-    return this.request('get', '/api/usuarios');
+    return this.request('get', '/api/user');
   }
 
-  static async addUser( nome: string, login:string, senha:string, perfilDeAcesso: string): Promise<any> {
+  static async addUser( name: string, login:string, password:string, accessProfile: string): Promise<any> {
     const data: User = {
-      nome,
+      name,
       login,
-      senha,
-      perfilDeAcesso
+      password,
+      accessProfile
     };
 
-    return this.request('post', '/api/usuarios', data);
+    return this.request('post', '/api/user', data);
   }
 
   static async ActiveOrInactiveUser( id:string, status:string): Promise<any> {
-    return this.request('delete', `/api/usuarios/${id}?status=${status}`,);
+    return this.request('delete', `/api/user/${id}?status=${status}`,);
   }
-  static async EditUser( id:string, nome: string, login:string, senha:string, senhaAntiga:string, perfilDeAcesso: string): Promise<any> {
+  static async EditUser( id:string, name: string, login:string, password:string, oldPassword:string, accessProfile: string): Promise<any> {
     const data: User = {
-      nome,
+      name,
       login,
-      senha,
-      senhaAntiga,
-      perfilDeAcesso
+      password,
+      oldPassword,
+      accessProfile
     };
 
-    return this.request('put', `/api/usuarios/${id}`, data);
+    return this.request('put', `/api/user/${id}`, data);
   }
 
 
   static async searchUsers(params: SearchParams = {}): Promise<any> {
-    const { nome,login,perfilDeAcesso} = params;
-    const url = '/api/usuarios';
+    const { name,login,accessProfile} = params;
+    const url = '/api/user';
 
     const requestParams: Record<string, any> = {
       
     };
 
-    if (nome !== undefined && nome.trim() !== "") {
-      requestParams.nome = nome;
+    if (name !== undefined && name.trim() !== "") {
+      requestParams.name = name;
     }
     if (login !== undefined && login.trim() !== "") {
       requestParams.login = login;
     }
-    if (perfilDeAcesso !== undefined && perfilDeAcesso.trim() !== "") {
-      requestParams.perfilDeAcesso = perfilDeAcesso;
+    if (accessProfile !== undefined && accessProfile.trim() !== "") {
+      requestParams.accessProfile = accessProfile;
     }
 
     return this.request('get', url, undefined, requestParams);

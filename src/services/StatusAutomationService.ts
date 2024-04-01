@@ -5,11 +5,11 @@ const BASE_URL = 'http://localhost:8080';
 
 class StatusAutomationService {
   static async getStatusTypes(): Promise<any> {
-    return this.request('get', '/api/statusAutomatizado');
+    return this.request('get', '/api/automation-status');
   }
 
   static async getStatusTypesByTeam(searchValue?: string): Promise<any> {
-    return this.request('get', '/api/statusAutomatizado', undefined, { idTime: searchValue });
+    return this.request('get', '/api/automation-status', undefined, { idTime: searchValue });
   }
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {

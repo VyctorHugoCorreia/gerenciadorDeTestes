@@ -10,16 +10,16 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 interface HistoryStatus {
   idHistory: number;
-  statusBefore: { descStatus: string };
-  statusAfter: { descStatus: string };
+  statusBefore: { descScenarioStatus: string };
+  statusAfter: { descScenarioStatus: string };
   dateUpdate: string;
 }
 
 interface HistoryStatusTestCaseTableProps {
-  idCenario: string;
+  idScenario: string;
 }
 
-const HistoryStatusTestCaseTable: React.FC<HistoryStatusTestCaseTableProps> = ({ idCenario }) => {
+const HistoryStatusTestCaseTable: React.FC<HistoryStatusTestCaseTableProps> = ({ idScenario }) => {
   const [historyStatuScenario, setHistoryStatuScenario] = useState<Array<HistoryStatus>>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -52,7 +52,7 @@ const HistoryStatusTestCaseTable: React.FC<HistoryStatusTestCaseTableProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const historyData = await HistoryStatusScenarioService.searchHistoryByTestCaseId(idCenario);
+        const historyData = await HistoryStatusScenarioService.searchHistoryByTestCaseId(idScenario);
 
         const sortedHistory = historyData.sort((a: HistoryStatus, b: HistoryStatus) => {
           return new Date(b.dateUpdate).getTime() - new Date(a.dateUpdate).getTime();
@@ -65,7 +65,7 @@ const HistoryStatusTestCaseTable: React.FC<HistoryStatusTestCaseTableProps> = ({
     };
 
     fetchData();
-  }, [idCenario]);
+  }, [idScenario]);
 
 
   return (
@@ -90,8 +90,8 @@ const HistoryStatusTestCaseTable: React.FC<HistoryStatusTestCaseTableProps> = ({
                 <tbody>
                   {historyStatuScenario.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((history) => (
                     <tr key={history.idHistory}>
-                      <td>{history.statusBefore.descStatus}</td>
-                      <td>{history.statusAfter.descStatus}</td>
+                      <td>{history.statusBefore.descScenarioStatus}</td>
+                      <td>{history.statusAfter.descScenarioStatus}</td>
                       <td>{formatDate(history.dateUpdate)}</td>
                     </tr>
                   ))}

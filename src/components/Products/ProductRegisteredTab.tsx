@@ -5,8 +5,8 @@ import ProductTable, { Product } from './ProductTable';
 import ProductService from '../../services/ProductService';
 
 interface Team {
-  idTime: number;
-  nomeTime: string;
+  idTeam: number;
+  nameTeam: string;
 }
 
 interface SearchParams {
@@ -49,8 +49,8 @@ const ProductRegisteredTab: React.FC = () => {
   const handleSearch = async (searchParams: SearchParams) => {
     try {
       const filteredProducts = await ProductService.searchProducts({
-        descProduto: searchParams.searchValue,
-        idTime: searchParams.team?.idTime ?? undefined,
+        descProduct: searchParams.searchValue,
+        idTeam: searchParams.team?.idTeam ?? undefined,
       });
 
       setProducts(filteredProducts);

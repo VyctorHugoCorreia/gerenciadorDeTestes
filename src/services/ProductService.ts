@@ -4,43 +4,43 @@ import { getAuthToken } from '../authentication/token';
 const BASE_URL = 'http://localhost:8080';
 
 interface Product {
-  idTime: number;
-  descProduto: string;
+  idTeam: number;
+  descProduct: string;
 }
 
 interface SearchParams {
-  descProduto?: string;
-  idTime?: number;
+  descProduct?: string;
+  idTeam?: number;
 }
 
 class ProductService {
-  static async addProduct(idTime: number, descProduto: string): Promise<any> {
+  static async addProduct(idTeam: number, descProduct: string): Promise<any> {
     const data: Product = {
-      idTime,
-      descProduto,
+      idTeam,
+      descProduct,
     };
 
-    return this.request('post', '/api/produto', data);
+    return this.request('post', '/api/product', data);
   }
 
   static async getAllProducts(): Promise<any> {
-    return this.request('get', '/api/produto');
+    return this.request('get', '/api/product');
   }
 
-  static async deleteProduct(productId: number): Promise<void> {
-    return this.request('delete', `/api/produto/${productId}`);
+  static async deleteProduct(idProduct: number): Promise<void> {
+    return this.request('delete', `/api/product/${idProduct}`);
   }
 
   static async searchProducts(params: SearchParams = {}): Promise<any> {
-    const { descProduto, idTime} = params;
-    const url = '/api/produto';
+    const { descProduct, idTeam} = params;
+    const url = '/api/product';
 
     const requestParams: Record<string, any> = {
-      idTime
+      idTeam
     };
 
-    if (descProduto !== undefined && descProduto.trim() !== "") {
-      requestParams.descProduto = descProduto;
+    if (descProduct !== undefined && descProduct.trim() !== "") {
+      requestParams.descProduct = descProduct;
     }
 
     return this.request('get', url, undefined, requestParams);
@@ -48,11 +48,11 @@ class ProductService {
 
 
   static async getProductsByTeam(searchValue?: string): Promise<any> {
-    return this.request('get', '/api/produto', undefined, { idTime: searchValue });
+    return this.request('get', '/api/product', undefined, { idTeam: searchValue });
   }
 
-  static async editProduct(productId: number,  descProduto: string): Promise<any> {
-    return this.request('put', `/api/produto/${productId}`, { descProduto });
+  static async editProduct(idProduct: number,  descProduct: string): Promise<any> {
+    return this.request('put', `/api/product/${idProduct}`, { descProduct });
   }
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {

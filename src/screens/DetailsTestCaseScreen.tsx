@@ -7,8 +7,8 @@ import HistoryStatusTestCaseTable from '../components/TestCase/HistoryStatusTest
 
 
 interface SelectedTeam {
-    idTime: number;
-    nomeTime: string;
+    idTeam: number;
+    nameTeam: string;
 }
 
 interface DetailsTestCaseProps {
@@ -20,14 +20,14 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
     const { testCaseId } = useParams<{ testCaseId: string }>(); 
 
     const navigate = useNavigate();
-    const idCenario = testCaseId ? parseInt(testCaseId, 10) : undefined;
+    const idScenario = testCaseId ? parseInt(testCaseId, 10) : undefined;
     const [testCase, setTestCase] = useState<any>(null);
 
 
     useEffect(() => {
         const fetchTestCase = async () => {
             try {
-                const testCaseDetails = await TestCaseService.searchTestCase({ idCenario });
+                const testCaseDetails = await TestCaseService.searchTestCase({ idScenario });
                 console.log(testCaseDetails)
                 if (testCaseDetails.length > 0) {
                     setTestCase(testCaseDetails[0]);
@@ -38,7 +38,7 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
         };
 
         fetchTestCase();
-    }, [idCenario]);
+    }, [idScenario]);
 
 
     const handleVoltar = () => {
@@ -51,13 +51,13 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
             <div className='cardboard-style container'>
                 <div>
                     <span className='span-label'>Status da execução:</span>
-                    <h4>{testCase ? testCase.idStatus.descStatus : 'Loading...'}</h4>
+                    <h4>{testCase ? testCase.idScenarioStatus.descScenarioStatus : 'Loading...'}</h4>
                 </div>
 
-                {testCase && testCase.linkCenario !== '' && (
+                {testCase && testCase.linkScenario !== '' && (
                     <div>
                         <span className='span-label'>Link do card a ser validado:</span>
-                        <h4>{testCase.linkCenario}</h4>
+                        <h4>{testCase.linkScenario}</h4>
                     </div>
                 )}
 
@@ -67,13 +67,13 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
             <div className='cardboard-style'>
                 <div>
                     <span className='span-label'>Titulo:</span>
-                    <h4>{testCase ? testCase.tituloCenario : 'Loading...'}</h4>
+                    <h4>{testCase ? testCase.titleScenario : 'Loading...'}</h4>
                 </div>
 
-                {testCase && testCase.descCenario !== '' && (
+                {testCase && testCase.descScenario !== '' && (
                     <div>
                         <span className='span-label'>Descrição de cenário:</span>
-                        <h4>{testCase.descCenario}</h4>
+                        <h4>{testCase.descScenario}</h4>
                     </div>
                 )}
 
@@ -84,7 +84,7 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
 
 
                     <div className="table-responsive">
-                        <h3>Passos a passo</h3>
+                        <h3>Passos a step</h3>
                         <table className="table-container">
                             <thead>
                                 <tr>
@@ -95,10 +95,10 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
                             </thead>
                             <tbody>
                                 {testCase && testCase.steps ? (
-                                    testCase.steps.map((step: { passo: number; descricao: string; status: string; }, index: number) => (
+                                    testCase.steps.map((step: { step: number; description: string; status: string; }, index: number) => (
                                         <tr key={index}>
-                                            <td>{step.passo}</td>
-                                            <td>{step.descricao}</td>
+                                            <td>{step.step}</td>
+                                            <td>{step.description}</td>
                                             <td>
                                                 <input
                                                     type="checkbox"
@@ -123,36 +123,36 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
             <div className='cardboard-style-adicional container'>
                 <div>
                     <span className='span-label'>Time:</span>
-                    <h4>{testCase ? testCase.idTime.nomeTime : 'Loading...'}</h4>
+                    <h4>{testCase ? testCase.idTestSuite.idTestPlan.idProduct.idTeam.nameTeam : 'Loading...'}</h4>
                 </div>
                 <div>
                     <span className='span-label'>Produto:</span>
-                    <h4>{testCase ? testCase.idTproduto.descProduto : 'Loading...'}</h4>
+                    <h4>{testCase ? testCase.idTestSuite.idTestPlan.idProduct.descProduct : 'Loading...'}</h4>
                 </div>
 
                 <div>
                     <span className='span-label'>Plano de teste:</span>
-                    <h4>{testCase ? testCase.idPlano.descPlano : 'Loading...'}</h4>
+                    <h4>{testCase ? testCase.idTestSuite.idTestPlan.descTestPlan : 'Loading...'}</h4>
                 </div>
 
                 <div>
                     <span className='span-label'>Suite de testes:</span>
-                    <h4>{testCase ? testCase.idSuite.descSuite : 'Loading...'}</h4>
+                    <h4>{testCase ? testCase.idTestSuite.descTestSuite : 'Loading...'}</h4>
                 </div>
 
                 <div>
                     <span className='span-label'>Tipo de cenário:</span>
-                    <h4>{testCase ? testCase.idTpcenario.descTpcenario : 'Loading...'}</h4>
+                    <h4>{testCase ? testCase.idScenarioType.descScenarioType : 'Loading...'}</h4>
                 </div>
 
                 <div>
                     <span className='span-label'>Plataforma:</span>
-                    <h4>{testCase ? testCase.idPlataforma.descPlataforma : 'Loading...'}</h4>
+                    <h4>{testCase ? testCase.idPlatformType.descPlatformType : 'Loading...'}</h4>
                 </div>
 
                 <div>
                     <span className='span-label'>Status da automação:</span>
-                    <h4>{testCase ? testCase.idAutomatizado.descAutomatizado : 'Loading...'}</h4>
+                    <h4>{testCase ? testCase.idAutomationStatus.descAutomationStatus : 'Loading...'}</h4>
                 </div>
                     <div>
                         <span className='span-label'>Tags:</span>
@@ -163,7 +163,7 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
             <div className='cardboard-style container'>
                 <div>
                     <span className='span-label'>Histórico de execução:</span>
-                    <HistoryStatusTestCaseTable idCenario={testCaseId ? testCaseId : ""} />
+                    <HistoryStatusTestCaseTable idScenario={testCaseId ? testCaseId : ""} />
                 </div>
 
             </div>

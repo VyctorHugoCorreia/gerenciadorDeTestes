@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PlataformTypeService from "../../services/PlataformTypeService";
 
 interface PlataformType {
-  idPlataforma: number;
-  descPlataforma: string;
+  idPlatformType: number;
+  descPlatformType: string;
 }
 
 interface PlataformTypeDropDownProps {
@@ -55,8 +55,8 @@ const PlataformTypeDropDown: React.FC<PlataformTypeDropDownProps> = ({
     >
       {!isEditing && <option value="">Selecione a plataforma</option>}
       {plataformTypes.map((plataformTypes) => (
-        <option key={plataformTypes.idPlataforma} value={plataformTypes.idPlataforma}>
-          {plataformTypes.descPlataforma}
+        <option key={plataformTypes.idPlatformType} value={plataformTypes.idPlatformType}>
+          {plataformTypes.descPlatformType}
         </option>
       ))}
     </select>

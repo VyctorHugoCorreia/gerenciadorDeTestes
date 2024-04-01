@@ -21,11 +21,11 @@ import { styled } from '@mui/system';
 interface TestCaseModalProps {
     open: boolean;
     onClose?: () => void;
-    idSuite: number;
+    idTestSuite: number;
     fetchTestSuites: () => void;
 }
 
-const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, idSuite, fetchTestSuites }) => {
+const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, idTestSuite, fetchTestSuites }) => {
     const [testCases, setTestCases] = useState<any[]>([]);
     const [anchorElMap, setAnchorElMap] = useState<{ [key: number]: HTMLElement | null }>({});
     const [showToast, setShowToast] = useState(false);
@@ -56,23 +56,23 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, idSuite, f
         fetchTestCase();
     };
 
-    const handleClick = (event: MouseEvent<HTMLButtonElement>, idSuite: number) => {
+    const handleClick = (event: MouseEvent<HTMLButtonElement>, idTestSuite: number) => {
         setAnchorElMap({
             ...anchorElMap,
-            [idSuite]: event.currentTarget,
+            [idTestSuite]: event.currentTarget,
         });
     };
 
-    const handleClose = (idSuite: number) => {
+    const handleClose = (idTestSuite: number) => {
         setAnchorElMap({
             ...anchorElMap,
-            [idSuite]: null,
+            [idTestSuite]: null,
         });
     };
 
     const fetchTestCase = async () => {
         try {
-            const testCaseData = await TestCaseService.searchTestCase({ idSuite });
+            const testCaseData = await TestCaseService.searchTestCase({ idTestSuite });
             setTestCases(testCaseData);
             setTotalItems(testCaseData.length);
         } catch (error) {
@@ -139,26 +139,26 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, idSuite, f
                                         <div>
                                             <IconButton
                                                 aria-label="Opções"
-                                                aria-controls={`menu-options-${testCase.idCenario}`}
+                                                aria-controls={`menu-options-${testCase.idScenario}`}
                                                 aria-haspopup="true"
-                                                onClick={(event) => handleClick(event, testCase.idCenario)}
+                                                onClick={(event) => handleClick(event, testCase.idScenario)}
                                             >
                                                 <MoreVertIcon />
                                             </IconButton>
                                             <Menu
-                                                id={`menu-options-${testCase.idCenario}`}
-                                                anchorEl={anchorElMap[testCase.idCenario]}
-                                                open={Boolean(anchorElMap[testCase.idCenario])}
-                                                onClose={() => handleClose(testCase.idCenario)}
+                                                id={`menu-options-${testCase.idScenario}`}
+                                                anchorEl={anchorElMap[testCase.idScenario]}
+                                                open={Boolean(anchorElMap[testCase.idScenario])}
+                                                onClose={() => handleClose(testCase.idScenario)}
                                             >
-                                                <MenuItem onClick={() => handleEditTestCase(testCase.idCenario)}>Editar</MenuItem>
+                                                <MenuItem onClick={() => handleEditTestCase(testCase.idScenario)}>Editar</MenuItem>
                                                 <MenuItem onClick={() => handleExecuteTestCase()}>Executar cenário</MenuItem>
-                                                <MenuItem disabled={loading} onClick={() => handleDeleteTestCase(testCase.idCenario)}>{loading ? 'Excluindo...' : 'Excluir'}</MenuItem>
-                                                <MenuItem onClick={() => handleDetailsTestCase(testCase.idCenario)}>Detalhes</MenuItem>
+                                                <MenuItem disabled={loading} onClick={() => handleDeleteTestCase(testCase.idScenario)}>{loading ? 'Excluindo...' : 'Excluir'}</MenuItem>
+                                                <MenuItem onClick={() => handleDetailsTestCase(testCase.idScenario)}>Detalhes</MenuItem>
                                                 <ExecuteTestCaseModal
                                                     open={showExecuteModal}
                                                     onClose={handleCloseModal}
-                                                    idCenario={Number(testCase.idCenario)}
+                                                    idScenario={Number(testCase.idScenario)}
                                                 />
                                             </Menu>
                                         </div>

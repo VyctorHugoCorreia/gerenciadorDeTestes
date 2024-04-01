@@ -17,8 +17,8 @@ import ScenarioTypeInfo from '../components/TestCase/ScenarioTypeInfo';
 import DynamicChip from '../components/DynamicChip';
 
 interface SelectedTeam {
-    idTime: number;
-    nomeTime: string;
+    idTeam: number;
+    nameTeam: string;
 }
 
 interface EditTestCaseProps {
@@ -47,7 +47,7 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = () => {
     const navigate = useNavigate();
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
-    const idCenario = testCaseId ? parseInt(testCaseId, 10) : undefined; 
+    const idScenario = testCaseId ? parseInt(testCaseId, 10) : undefined; 
 
 
     const handleSelectTeam = (team: number | SelectedTeam | null | string) => {
@@ -56,7 +56,7 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = () => {
             setResetProductDropdown(true);
             setSelectedProductId(null);
         } else if (typeof team !== 'number') {
-            setSelectedTeam(team.idTime);
+            setSelectedTeam(team.idTeam);
         }
     };
 
@@ -97,23 +97,23 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = () => {
     useEffect(() => {
         const fetchTestCase = async () => {
             try {
-                const testCaseDetails = await TestCaseService.searchTestCase({ idCenario });
+                const testCaseDetails = await TestCaseService.searchTestCase({ idScenario });
                 console.log(testCaseDetails)
                 if (testCaseDetails.length > 0) {
                     const firstTestCase = testCaseDetails[0];
 
-                    setSelectedTeam(firstTestCase.idTime?.idTime || null);
-                    setSelectedProductId(firstTestCase.idTproduto?.idTproduto || null);
-                    setSelectedTestPlan(firstTestCase.idPlano?.idPlano || null);
-                    setSelectedTestSuite(firstTestCase.idSuite?.idSuite || null);
-                    setSelectedScenarioType(firstTestCase.idTpcenario?.idTpcenario || null);
-                    setSelectedPlataformType(firstTestCase.idPlataforma?.idPlataforma || null);
-                    setSelectedStatusAutomationType(firstTestCase.idAutomatizado?.idAutomatizado || null);
-                    setSelectedScenarioStatusType(firstTestCase.idStatus?.idStatus || null);
-                    setScenarioTitle(firstTestCase.tituloCenario || '');
-                    setscenarioDescription(firstTestCase.descCenario || '');
-                    setscenarioLink(firstTestCase.linkCenario || '');
-                    setSteps(firstTestCase.steps && firstTestCase.steps.length > 0 ? firstTestCase.steps.map((step: { descricao: string }) => step.descricao) : ['']);
+                    setSelectedTeam(firstTestCase.idTestSuite.idTestPlan.idProduct.idTeam?.idTeam || null);
+                    setSelectedProductId(firstTestCase.idTestSuite.idTestPlan.idProduct?.idProduct || null);
+                    setSelectedTestPlan(firstTestCase.idTestSuite.idTestPlan?.idTestPlan || null);
+                    setSelectedTestSuite(firstTestCase.idTestSuite?.idTestSuite || null);
+                    setSelectedScenarioType(firstTestCase.idScenarioType?.idScenarioType || null);
+                    setSelectedPlataformType(firstTestCase.idPlatformType?.idPlatformType || null);
+                    setSelectedStatusAutomationType(firstTestCase.idAutomationStatus?.idAutomationStatus || null);
+                    setSelectedScenarioStatusType(firstTestCase.idScenarioStatus?.idScenarioStatus || null);
+                    setScenarioTitle(firstTestCase.titleScenario || '');
+                    setscenarioDescription(firstTestCase.descScenario || '');
+                    setscenarioLink(firstTestCase.linkScenario || '');
+                    setSteps(firstTestCase.steps && firstTestCase.steps.length > 0 ? firstTestCase.steps.map((step: { description: string }) => step.description) : ['']);
                     setTags(firstTestCase.tags && firstTestCase.tags.length > 0 ? firstTestCase.tags : ['']);
                 }
             } catch (error) {
@@ -122,7 +122,7 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = () => {
         };
 
         fetchTestCase();
-    }, [idCenario]);
+    }, [idScenario]);
 
 
     const handleEdit = async () => {
@@ -131,28 +131,28 @@ const EditTestCaseScreen: React.FC<EditTestCaseProps> = () => {
             const filteredTags = tags.filter((tag) => tag.trim() !== '');
 
             const data = {
-                idTime: selectedTeam || 0,
-                idPlano: selectedTestPlan || 0,
-                idSuite: selectedTestSuite || 0,
-                idTproduto: selectedProductId || 0,
-                idTpcenario: selectedScenarioType || 0,
-                idPlataforma: selectedPlataformType || 0,
-                idStatus: selectedScenarioStatusType || 0,
-                idAutomatizado: selectedStatusAutomationType || 0,
-                tituloCenario: scenarioTitle,
-                descCenario: scenarioDescription,
-                linkCenario: scenarioLink,
-                steps: filteredSteps.map((descricao, index) => ({
+                idTeam: selectedTeam || 0,
+                idTestPlan: selectedTestPlan || 0,
+                idTestSuite: selectedTestSuite || 0,
+                idProduct: selectedProductId || 0,
+                idScenarioType: selectedScenarioType || 0,
+                idPlatformType: selectedPlataformType || 0,
+                idScenarioStatus: selectedScenarioStatusType || 0,
+                idAutomationStatus: selectedStatusAutomationType || 0,
+                titleScenario: scenarioTitle,
+                descScenario: scenarioDescription,
+                linkScenario: scenarioLink,
+                steps: filteredSteps.map((description, index) => ({
                     passo: index + 1,
-                    descricao: descricao,
+                    description: description,
                 })),
                 tags: filteredTags,
             };
 
             setJsonResult(JSON.stringify(data, null, 2));
 
-            if (idCenario != null) {
-                await TestCaseService.updateTestCase(idCenario, data);
+            if (idScenario != null) {
+                await TestCaseService.updateTestCase(idScenario, data);
                 setToastMessage('Caso de teste editado com sucesso!');
                 setShowToast(true);
 

@@ -3,8 +3,8 @@ import ScenarioStatusService from "../../services/ScenarioStatusService";
 import '../../styles/TestCase.css';
 
 interface ScenarioStatus {
-  idStatus: number;
-  descStatus: string;
+  idScenarioStatus: number;
+  descScenarioStatus: string;
 }
 
 interface ScenarioStatusDropDownProps {
@@ -66,8 +66,8 @@ const ScenarioStatusDropDown: React.FC<ScenarioStatusDropDownProps> = ({
     >
       <option value="">Selecione o status</option>
       {scenarioStatus.map((scenarioStatus) => (
-        <option key={scenarioStatus.idStatus} value={scenarioStatus.idStatus}>
-          {scenarioStatus.descStatus}
+        <option key={scenarioStatus.idScenarioStatus} value={scenarioStatus.idScenarioStatus}>
+          {scenarioStatus.descScenarioStatus}
         </option>
       ))}
     </select>

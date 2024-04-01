@@ -5,12 +5,12 @@ import TestPlanTable, { TestPlan } from './TestPlanTable';
 import TestPlanService from '../../services/TestPlanService';
 
 interface Team {
-  idTime: number;
-  nomeTime: string;
+  idTeam: number;
+  nameTeam: string;
 }
 
 export interface Product {
-  idTproduto: number;
+  idProduct: number;
 }
 
 
@@ -47,9 +47,9 @@ const TestPlanRegisteredTab: React.FC = () => {
   const handleSearch = async (searchParams: SearchParams) => {
     try {
       const filteredTestsPlans = await TestPlanService.searchTestPlan({
-        descPlano: searchParams.searchValue,
-        idTime: searchParams.team?.idTime ?? undefined,
-        idTproduto: searchParams.product?.idTproduto ?? undefined,
+        descTestPlan: searchParams.searchValue,
+        idTeam: searchParams.team?.idTeam ?? undefined,
+        idProduct: searchParams.product?.idProduct ?? undefined,
       });
 
 

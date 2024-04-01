@@ -11,11 +11,11 @@ import { getUsername } from '../../authentication/token';
 
 export interface User {
   id: string;
-  nome: string;
+  name: string;
   login: string;
-  perfilDeAcesso: {
+  accessProfile: {
     id: string;
-    nome: string;
+    name: string;
   };
   status: string;
 }
@@ -31,11 +31,11 @@ const ProductTable: React.FC<ProductTableProps> = ({ users, fetchUsers }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<{
     id: string;
-    nome: string;
+    name: string;
     login:string;
-    perfilDeAcesso: {
+    accessProfile: {
       id: string;
-      nome: string;
+      name: string;
     };
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
@@ -71,15 +71,15 @@ const ProductTable: React.FC<ProductTableProps> = ({ users, fetchUsers }) => {
   };
 
   const handleEditUser = (user: User) => {
-    const { id, nome, login, perfilDeAcesso } = user;
+    const { id, name, login, accessProfile } = user;
 
     const formattedUser = {
       id: id,
-      nome: nome,
+      name: name,
       login: login,
-      perfilDeAcesso: {
-        id: perfilDeAcesso.id,
-        nome: perfilDeAcesso.nome,
+      accessProfile: {
+        id: accessProfile.id,
+        name: accessProfile.name,
       },
     };
 
@@ -119,12 +119,12 @@ const ProductTable: React.FC<ProductTableProps> = ({ users, fetchUsers }) => {
             <tbody>
               {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((users) => (
                 <tr key={users.id}>
-                  <td>{users.nome}</td>
+                  <td>{users.name}</td>
                   <td>{users.login}</td>
-                  <td>{users.perfilDeAcesso.nome}</td>
+                  <td>{users.accessProfile.name}</td>
                   <td>{users.status === 'ACTIVE' ? 'Ativo' : 'Inativo'}</td>
                   
-                  {users.nome !== getUsername() ? (
+                  {users.name !== getUsername() ? (
                     <td className="action-buttons">
                       <div>
                         <IconButton
