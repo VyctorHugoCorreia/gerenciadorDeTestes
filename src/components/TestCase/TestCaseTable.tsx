@@ -18,29 +18,23 @@ interface TestCase {
   titleScenario: string;
   descScenario: string;
   linkScenario: string;
-  idTeam: {
-    idTeam: number;
-    nameTeam: string;
-  };
-  idTestPlan: {
-    idTestPlan: number;
-    descTestPlan: string;
-  };
+  descScenarioStatus: string;
+  descAutomationStatus: string;
   idTestSuite: {
     idTestSuite: number;
     descTestSuite: string;
-  };
-  idProduct: {
-    idProduct: number;
-    descProduct: string;
-  };
-  idScenarioStatus: {
-    idScenarioStatus: number;
-    descScenarioStatus: string;
-  };
-  idAutomationStatus: {
-    idAutomationStatus: number;
-    descAutomationStatus: string;
+    idTestPlan: {
+      idTestPlan: number;
+      descTestPlan: string;
+      idProduct: {
+        idProduct: number;
+        descProduct: string;
+        idTeam: {
+          idTeam: number;
+          nameTeam: string;
+        };
+      };
+    };
   };
 }
 
@@ -162,13 +156,13 @@ const TestCaseTable: React.FC<TestCaseTableProps> = ({ testCases, fetchTestCases
                     {Object.keys(selectedColumns).map((columnName) => (
                       selectedColumns[columnName as ColumnNames] && (
                         <td key={columnName} className="action-buttons">
-                          {columnName === 'Nome do time' && testCase.idTeam.nameTeam}
-                          {columnName === 'Produto' && testCase.idProduct.descProduct}
-                          {columnName === 'Plano de teste' && testCase.idTestPlan.descTestPlan}
+                          {columnName === 'Nome do time' && testCase.idTestSuite.idTestPlan.idProduct.idTeam.nameTeam}
+                          {columnName === 'Produto' && testCase.idTestSuite.idTestPlan.idProduct.descProduct}
+                          {columnName === 'Plano de teste' && testCase.idTestSuite.idTestPlan.descTestPlan}
                           {columnName === 'Suite de teste' && testCase.idTestSuite.descTestSuite}
                           {columnName === 'Cenário' && testCase.titleScenario}
-                          {columnName === 'Status do cenário' && testCase.idScenarioStatus.descScenarioStatus}
-                          {columnName === 'Automatizado?' && testCase.idAutomationStatus.descAutomationStatus}
+                          {columnName === 'Status do cenário' && testCase.descScenarioStatus}
+                          {columnName === 'Automatizado?' && testCase.descAutomationStatus}
                           {columnName === 'Ações' && (
                             <OptionMenuTestCaseTable
                               idScenario={testCase.idScenario.toString()}
