@@ -132,9 +132,9 @@ const TestCaseModal: React.FC<TestCaseModalProps> = ({ open, onClose, idTestSuit
                         <TableBody>
                             {testCases.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((testCase, index) => (
                                 <TableRow key={index}>
-                                    <TableCell>{testCase.tituloCenario}</TableCell>
-                                    <TableCell>{testCase.idStatus.descStatus}</TableCell>
-                                    <TableCell>{testCase.idAutomatizado.descAutomatizado}</TableCell>
+                                    <TableCell>{testCase.titleScenario}</TableCell>
+                                    <TableCell>{testCase.idScenarioStatus.descScenarioStatus}</TableCell>
+                                    <TableCell>{testCase.idAutomationStatus.descAutomationStatus}</TableCell>
                                     <TableCell className="action-buttons">
                                         <div>
                                             <IconButton

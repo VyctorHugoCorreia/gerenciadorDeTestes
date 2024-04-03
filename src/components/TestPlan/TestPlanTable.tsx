@@ -23,6 +23,7 @@ export interface TestPlan {
     };
   };
   scenarioQuantity: number;
+  testSuiteQuantity: number;
 }
 
 interface TestPlanTableProps {
@@ -103,7 +104,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
 
 
   const handleEditTestPlan = (testPlan: TestPlan) => {
-    const { idTestPlan, descTestPlan, idProduct, scenarioQuantity } = testPlan;
+    const { idTestPlan, descTestPlan, idProduct, scenarioQuantity, testSuiteQuantity } = testPlan;
 
     const formattedTestPlan = {
       idTestPlan: idTestPlan,
@@ -117,6 +118,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
         }
       },
       scenarioQuantity: scenarioQuantity,
+      testSuiteQuantity: testSuiteQuantity
     };
 
     setSelectedTestPlan(formattedTestPlan);
@@ -154,7 +156,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
                   <td>{testPlan.idProduct.idTeam.nameTeam}</td>
                   <td>{testPlan.idProduct.descProduct}</td>
                   <td>{testPlan.descTestPlan}</td>
-                  <td>{testPlan.scenarioQuantity}</td>
+                  <td>{testPlan.testSuiteQuantity}</td>
                   <td className="action-buttons">
                     <div>
                       <IconButton
@@ -175,7 +177,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
                         <MenuItem onClick={() => handleDeleteTestPlan(testPlan.idTestPlan)}>Excluir</MenuItem>
                         <MenuItem onClick={() => handleCreateTestSuite(testPlan.idTestPlan)}>Cadastrar suite de testes</MenuItem>
                         <MenuItem
-                          disabled={testPlan.scenarioQuantity === 0}
+                          disabled={testPlan.testSuiteQuantity === 0}
                           onClick={() => handleViewTestSuite(testPlan.idTestPlan)}
                         >
                           Visualizar suites de teste

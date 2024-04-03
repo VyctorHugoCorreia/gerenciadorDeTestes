@@ -63,7 +63,7 @@ const CreateTestSuiteByPlanModal: React.FC<CreateTestSuiteByPlanModalProps> = ({
                     idTeam: testPlan[0]?.idProduct.idTeam.idTeam || 0,
                     idProduct: testPlan[0]?.idProduct.idProduct || 0,
                     idTestPlan: testPlanId,
-                    descSuite: testSuiteTitle,
+                    descTestSuite: testSuiteTitle,
                 };
                 console.log("Dados:", data);
 

@@ -133,34 +133,34 @@ const TestSuiteModal: React.FC<TestSuiteModalProps> = ({ open, onClose, testPlan
                         <TableBody>
                             {testSuite.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((testSuite, index) => (
                                 <TableRow key={index}>
-                                    <TableCell>{testSuite.descSuite}</TableCell>
-                                    <TableCell>{testSuite.quantidadeCenarios}</TableCell>
+                                    <TableCell>{testSuite.descTestSuite}</TableCell>
+                                    <TableCell>{testSuite.scenarioQuantity}</TableCell>
                                     <TableCell className="action-buttons">
                                         <div>
                                             <IconButton
                                                 aria-label="Opções"
-                                                aria-controls={`menu-options-${testSuite.idSuite}`}
+                                                aria-controls={`menu-options-${testSuite.idTestSuite}`}
                                                 aria-haspopup="true"
-                                                onClick={(event) => handleClick(event, testSuite.idSuite)}
+                                                onClick={(event) => handleClick(event, testSuite.idTestSuite)}
                                             >
                                                 <MoreVertIcon />
                                             </IconButton>
                                             <Menu
-                                                id={`menu-options-${testSuite.idSuite}`}
-                                                anchorEl={anchorElMap[testSuite.idSuite]}
-                                                open={Boolean(anchorElMap[testSuite.idSuite])}
-                                                onClose={() => handleClose(testSuite.idSuite)}
+                                                id={`menu-options-${testSuite.idTestSuite}`}
+                                                anchorEl={anchorElMap[testSuite.idTestSuite]}
+                                                open={Boolean(anchorElMap[testSuite.idTestSuite])}
+                                                onClose={() => handleClose(testSuite.idTestSuite)}
                                             >
 
-                                                <MenuItem disabled={loading} onClick={() => handleDeleteTestSuite(testSuite.idSuite)}>{loading ? 'Excluindo...' : 'Excluir'}</MenuItem>
+                                                <MenuItem disabled={loading} onClick={() => handleDeleteTestSuite(testSuite.idTestSuite)}>{loading ? 'Excluindo...' : 'Excluir'}</MenuItem>
 
                                                 <MenuItem
-                                                    disabled={testSuite.quantidadeCenarios === 0}
-                                                    onClick={() => handleViewTestCase(testSuite.idSuite)}
+                                                    disabled={testSuite.scenarioQuantity === 0}
+                                                    onClick={() => handleViewTestCase(testSuite.idTestSuite)}
                                                 >
                                                     Visualizar cenários
                                                 </MenuItem>
-                                                <MenuItem onClick={() => handleCreateTestCase(testSuite.idSuite)}>Cadastrar cenário</MenuItem>
+                                                <MenuItem onClick={() => handleCreateTestCase(testSuite.idTestSuite)}>Cadastrar cenário</MenuItem>
                                             </Menu>
                                         </div>
                                     </TableCell>
