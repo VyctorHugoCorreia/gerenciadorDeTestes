@@ -5,7 +5,6 @@ import '../styles/Table.css';
 import TestCaseService from '../services/TestCaseService';
 import HistoryStatusTestCaseTable from '../components/TestCase/HistoryStatusTestCaseTable';
 
-
 interface SelectedTeam {
     idTeam: number;
     nameTeam: string;
@@ -44,7 +43,6 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
     const handleVoltar = () => {
         navigate('/cenarios-de-teste');
     };
-
 
     return (
         <div className='text-style'>

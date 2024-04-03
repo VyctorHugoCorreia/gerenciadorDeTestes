@@ -10,6 +10,8 @@ import Toast from '../Toast';
 import TablePagination from '@mui/material/TablePagination';
 import TestCaseBySuiteModal from './TestCaseBySuiteModal';
 import CreateTestCaseBySuiteModal from './CreateTestCaseBySuiteModal';
+import TestCaseService from '../../services/TestCaseService';
+import { generateFeatureFile } from '../GenerateFeatureFile';
 
 export interface testSuite {
   idTestSuite: number;
@@ -61,24 +63,25 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
 
   } | null>(null);
   const [showToast, setShowToast] = useState(false);
+  const [testCases, setTestCases] = useState<any[]>([]);
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>, testSuiteId: number) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>, idTestSuite: number) => {
     setAnchorElMap({
       ...anchorElMap,
-      [testSuiteId]: event.currentTarget,
+      [idTestSuite]: event.currentTarget,
     });
   };
 
-  const handleClose = (testSuiteId: number) => {
+  const handleClose = (idTestSuite: number) => {
     setAnchorElMap({
       ...anchorElMap,
-      [testSuiteId]: null,
+      [idTestSuite]: null,
     });
   };
 
-  const handleDeleteTestSuite = async (testSuiteId: number) => {
+  const handleDeleteTestSuite = async (idTestSuite: number) => {
     try {
-      await TestSuiteService.deleteTestSuite(testSuiteId);
+      await TestSuiteService.deleteTestSuite(idTestSuite);
       fetchTestSuites();
       setShowToast(true)
     } catch (err) {
@@ -88,13 +91,26 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
     }
   };
 
-  const handleCreateTestCase = async (testSuiteId: number) => {
+  const handleGenerateFeatureTestCase = async (idTestSuite: number) => {
+    try {
+        const testCaseData = await TestCaseService.searchTestCase({ idTestSuite });
+        
+        if (testCaseData && testCaseData.length > 0) {
+            generateFeatureFile(testCaseData);
+        } else {
+            console.warn('Nenhum caso de teste encontrado para este conjunto de teste.');
+        }
+    } catch (error) {
+        console.error('Erro ao buscar casos de teste:', error);
+    }
+};
+  const handleCreateTestCase = async (idTestSuite: number) => {
     setIsCreateTestCaseModalOpen(true)
-    setSelectedCreateTestSuiteId(testSuiteId);
+    setSelectedCreateTestSuiteId(idTestSuite);
   };
 
-  const handleViewTestCase = async (testSuiteId: number) => {
-    setSelectedTestSuiteId(testSuiteId);
+  const handleViewTestCase = async (idTestSuite: number) => {
+    setSelectedTestSuiteId(idTestSuite);
 
   };
 
@@ -185,6 +201,7 @@ const TestSuiteTable: React.FC<TestSuiteTableProps> = ({ testSuites, fetchTestSu
                     <MenuItem onClick={() => handleEditTestSuite(testSuite)}>Editar</MenuItem>
                     <MenuItem onClick={() => handleDeleteTestSuite(testSuite.idTestSuite)}>Excluir</MenuItem>
                     <MenuItem onClick={() => handleCreateTestCase(testSuite.idTestSuite)}>Cadastrar cenário</MenuItem>
+                    <MenuItem onClick={() => handleGenerateFeatureTestCase(testSuite.idTestSuite)}>Gerar gherkin em java</MenuItem>
                     <MenuItem
                       disabled={testSuite.scenarioQuantity === 0}
                       onClick={() => handleViewTestCase(testSuite.idTestSuite)}
