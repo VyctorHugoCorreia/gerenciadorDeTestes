@@ -61,12 +61,6 @@ const LoginForm: React.FC<LoginFormProps> = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className='form-group-login'>
-          <span>
-            <Link to="/trocar-senha">Alterar senha</Link>
-          </span>
-
-        </div>
         {error && <p className='error-message'>{error}</p>}
         <Button
           className='button-login'

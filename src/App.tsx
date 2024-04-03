@@ -12,11 +12,8 @@ import TestPlanRegisteredTab from './components/TestPlan/TestPlanRegisteredTab';
 import TestSuiteRegisteredTab from './components/TestSuite/TestSuiteRegisteredTab';
 import TeamRegisteredTab from './components/Teams/TeamRegisteredTab';
 import ProductRegisteredTab from './components/Products/ProductRegisteredTab';
-import UserRegisteredTab from './components/User/UserRegisteredTab';
-
 import { getAuthentication } from './authentication/authentication';
 import { getAcessProfile } from './authentication/token';
-import ChangePasswordForm from './screens/ChangePasswordForm';
 
 type PathToIndexMap = {
   [key: string]: number;
@@ -71,9 +68,6 @@ const App: React.FC = () => {
         <Tab label="Suíte de teste" component={Link} to="/suite-de-teste" />
         <Tab label="Times cadastrados" component={Link} to="/times-cadastrados" />
         <Tab label="Produtos cadastrados" component={Link} to="/produtos-cadastrados" />
-        {acessProfile === 'Administrador' && (
-          <Tab label="Administração de usuários" component={Link} to="/usuarios" />
-        )}
       </Tabs>
     );
   };
@@ -81,7 +75,6 @@ const App: React.FC = () => {
   const RouterContent: React.FC = () => (
     <Routes>
       <Route path="/login" element={<LoginForm />} />
-      <Route path="/trocar-senha" element={<ChangePasswordForm />} />
       <Route path="/dashboard/:idTime" element={requireAuth(<Dashboard />)} />
       <Route path="/criar-caso-de-teste" element={requireAuth(<CreateTestCase />)} />
       <Route path="/edit-test-case/:testCaseId" element={requireAuth(<EditTestCase />)} />
@@ -91,9 +84,6 @@ const App: React.FC = () => {
       <Route path="/suite-de-teste" element={requireAuth(<TestSuiteRegisteredTab />)} />
       <Route path="/times-cadastrados" element={requireAuth(<TeamRegisteredTab />)} />
       <Route path="/produtos-cadastrados" element={requireAuth(<ProductRegisteredTab />)} />
-      {acessProfile === 'Administrador' && (
-        <Route path="/usuarios" element={requireAuth(<UserRegisteredTab />)} />
-      )}
       <Route path="*" element={<Navigate to={isLoggedIn ? '/cenarios-de-teste' : '/login'} />} />
     </Routes>
   );
