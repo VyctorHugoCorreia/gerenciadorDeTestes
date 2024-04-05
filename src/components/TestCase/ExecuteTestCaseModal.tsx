@@ -7,7 +7,7 @@ import '../../styles/Table.css';
 import Toast from '../Toast';
 import TestCaseService from '../../services/TestCaseService';
 import HistoryStatusScenarioService from '../../services/HistoryStatusScenarioService';
-import FileUpload from '../FileUpload'; 
+import EvidenceUploadModal from './EvidenceUploadModal'; // Importando o componente EvidenceUploadModal
 
 interface ExecuteTestCaseModalProps {
   open: boolean;
@@ -162,16 +162,10 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
           ) : (
             <p>Não há steps disponíveis para exibição.</p>
           )}
-          <div className='cardboard-style'>
-          <div className="input-container">
-          <span className='span-label'>Upload de arquivo:</span>
-          <FileUpload onFileChange={(file) => console.log('Arquivo selecionado:', file)} />
+          <div>
+         <span className='span-label'>Upload de evidência:</span>
+          <EvidenceUploadModal />
         </div>
-          </div>
-         
-
-         
-
           <Button
             className="team-modal-button"
             variant="contained"
