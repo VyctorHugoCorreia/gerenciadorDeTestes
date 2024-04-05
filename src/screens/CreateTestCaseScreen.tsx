@@ -16,7 +16,7 @@ import TestCaseService from '../services/TestCaseService';
 import ScenarioTypeInfo from '../components/TestCase/ScenarioTypeInfo';
 import HistoryStatusScenarioService from '../services/HistoryStatusScenarioService';
 import DynamicChip from '../components/DynamicChip';
-import FileUpload from '../components/FileUpload'; 
+import FileUpload from '../components/EvidenceTestCase/FileUpload'; 
 import EvidenceUploadModal from '../components/TestCase/EvidenceUploadModal';
 
 interface SelectedTeam {
