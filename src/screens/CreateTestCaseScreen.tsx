@@ -303,7 +303,7 @@ const CreateTestCaseScreen: React.FC = () => {
 
         <div className="input-container">
         <span className='span-label'>Upload de arquivo de teste:</span>
-          <EvidenceUploadModal />
+      
         </div>
 
 

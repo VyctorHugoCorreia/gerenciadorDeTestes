@@ -1,20 +1,71 @@
+import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import '../../styles/EvidenceUploadModal.css'
+import GetAppIcon from '@mui/icons-material/GetApp';
+import ScenarioEvidenceService from '../../services/ScenarioEvidenceService';
+import '../../styles/EvidenceUploadModal.css';
 
-const EvidenceUploadModal: React.FC = () => {
+interface Evidence {
+  fileName: string;
+  fileData: string;
+}
+
+interface EvidenceUploadModalProps {
+  idScenario: number;
+}
+
+const EvidenceUploadModal: React.FC<EvidenceUploadModalProps> = ({ idScenario }) => {
   const [filePreview, setFilePreview] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<Evidence | null>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    fetchScenarioEvidence();
+  }, [idScenario]);
+
+  const fetchScenarioEvidence = async () => {
+    try {
+      const evidenceList: Evidence[] = await ScenarioEvidenceService.getScenarioEvidence(idScenario.toString());
+      if (evidenceList.length > 0) {
+        const evidence = evidenceList[0];
+        setSelectedFile(evidence);
+        setFilePreview(`data:${getFileMimeType(evidence.fileName)};base64,${evidence.fileData}`);
+      } else {
+        setSelectedFile(null);
+        setFilePreview(null);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar evidência:', error);
+    }
+  };
+
+  const getFileMimeType = (fileName: string): string => {
+    const extension = fileName.split('.').pop() || '';
+    switch (extension.toLowerCase()) {
+      case 'pdf':
+        return 'application/pdf';
+      case 'png':
+        return 'image/png';
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'gif':
+        return 'image/gif';
+      case 'mp4':
+        return 'video/mp4';
+      default:
+        return 'application/octet-stream';
+    }
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const uploadedUrl = reader.result as string;
         setFilePreview(uploadedUrl);
-        setSelectedFile(file);
+        setSelectedFile({ fileName: file.name, fileData: uploadedUrl });
+        saveEvidence(file);
       };
       reader.readAsDataURL(file);
     }
@@ -29,6 +80,34 @@ const EvidenceUploadModal: React.FC = () => {
     }
   };
 
+  const handleDownloadFile = () => {
+    if (selectedFile) {
+      const blob = new Blob([selectedFile.fileData]);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = selectedFile.fileName;
+      document.body.appendChild(a);
+      a.click();
+      URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }
+  };
+
+  const saveEvidence = async (file: File) => {
+    try {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64Data = reader.result as string;
+        await ScenarioEvidenceService.addScenarioEvidence(idScenario.toString(), file.name, file);
+        console.log('Evidência enviada com sucesso');
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Erro ao enviar evidência:', error);
+    }
+  };
+
   return (
     <div className='evidence'>
       <input
@@ -37,34 +116,40 @@ const EvidenceUploadModal: React.FC = () => {
         style={{ display: 'none' }}
         accept="*/*"
         onChange={handleFileChange}
+        disabled={!!selectedFile}
       />
       <label htmlFor="fileInput">
-        <Button component="span" variant="outlined">
-          {selectedFile ? selectedFile.name : 'Selecionar arquivo'}
+        <Button component="span" variant="outlined" disabled={!!selectedFile}>
+          {selectedFile ? selectedFile.fileName : 'Selecionar arquivo'}
         </Button>
       </label>
       {selectedFile && (
-        <Button onClick={handleRemoveFile}>
-          <DeleteIcon style={{ color: 'red' }} />
-        </Button>
+        <>
+          <Button onClick={handleDownloadFile}>
+            <GetAppIcon />
+          </Button>
+          <Button onClick={handleRemoveFile}>
+            <DeleteIcon style={{ color: 'red' }} />
+          </Button>
+        </>
       )}
 
       {filePreview && (
         <div>
           <h3>Visualização:</h3>
-          {selectedFile?.type?.startsWith('video/') ? (
+          {selectedFile?.fileName.toLowerCase().endsWith('.pdf') ? (
+            <embed src={filePreview} type="application/pdf" width="100%" height="600px" />
+          ) : selectedFile?.fileName.toLowerCase().endsWith('.mp4') ? (
             <video controls style={{ maxWidth: '100%' }}>
-              <source src={filePreview} type={selectedFile.type} />
+              <source src={filePreview} type="video/mp4" />
               Seu navegador não suporta o elemento de vídeo.
             </video>
-          ) : selectedFile?.type === 'image/gif' ? (
-            <img src={filePreview} alt="gif" style={{ maxWidth: '100%' }} />
-          ) : selectedFile?.type?.startsWith('image/') ? (
-            <img src={filePreview} alt="image" style={{ maxWidth: '100%' }} />
-          ) : selectedFile?.type === 'application/pdf' ? (
-            <embed src={filePreview} type="application/pdf" width="100%" height="600px" />
+          ) : selectedFile?.fileName.toLowerCase().endsWith('.gif') ? (
+            <img src={filePreview} alt="Preview" style={{ maxWidth: '100%' }} />
+          ) : selectedFile?.fileName.toLowerCase().match(/\.(jpeg|jpg|png)$/) ? (
+            <img src={filePreview} alt="Preview" style={{ maxWidth: '100%' }} />
           ) : (
-            <p>Não foi possível ter uma visualização prévia.</p>
+            <p>Não foi possível exibir a visualização para este tipo de arquivo.</p>
           )}
         </div>
       )}

@@ -30,7 +30,7 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
     const fetchScenarioStatus = async () => {
       try {
         if (open && idScenario) {
-          const testCaseDetails = await TestCaseService.searchTestCase({idScenario});
+          const testCaseDetails = await TestCaseService.searchTestCase({ idScenario });
           if (testCaseDetails.length > 0) {
             setSelectedScenarioStatusId(testCaseDetails[0]?.idScenarioStatus?.idScenarioStatus || null);
             setTestCase(testCaseDetails[0]);
@@ -61,11 +61,10 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
 
   const handleExecute = async () => {
     try {
-      const filteredSteps = steps.filter(step => step.description.trim() !== ''); 
+      const filteredSteps = steps.filter(step => step.description.trim() !== '');
 
       const testCaseDetails = await TestCaseService.searchTestCase({ idScenario });
       const statusScenario = testCaseDetails[0]?.idScenarioStatus?.idScenarioStatus;
-
 
       const data = {
         idTeam: testCase.idTestSuite.idTestPlan.idProduct.idTeam.idTeam || 0,
@@ -99,7 +98,7 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
         }
 
         await HistoryStatusScenarioService.addHistoryStatusScenario(dataHistory);
-        
+
         setToastMessage('Caso de teste editado com sucesso!');
         setShowToast(true);
         onClose();
@@ -114,9 +113,11 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
     }
   };
 
+
+
   return (
     <>
-   
+
       <Modal
         open={open}
         onClose={onClose}
@@ -163,9 +164,13 @@ const ExecuteTestCaseModal: React.FC<ExecuteTestCaseModalProps> = ({ open, onClo
             <p>Não há steps disponíveis para exibição.</p>
           )}
           <div>
-         <span className='span-label'>Upload de evidência:</span>
-          <EvidenceUploadModal />
-        </div>
+            <div className='cardboard-style'>
+              <div className="input-container">
+                <span className='span-label'>Upload de evidência:</span>
+                <EvidenceUploadModal idScenario={idScenario} />
+              </div>
+            </div>
+          </div>
           <Button
             className="team-modal-button"
             variant="contained"
