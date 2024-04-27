@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate,useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/TestCase.css';
 import '../styles/Table.css';
 import TestCaseService from '../services/TestCaseService';
 import HistoryStatusTestCaseTable from '../components/TestCase/HistoryStatusTestCaseTable';
+import EvidenceUploadModal from '../components/TestCase/EvidenceUploadModal';
 
 interface SelectedTeam {
     idTeam: number;
@@ -15,11 +16,11 @@ interface DetailsTestCaseProps {
 
 
 
-const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
-    const { testCaseId } = useParams<{ testCaseId: string }>(); 
+const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ }) => {
+    const { testCaseId } = useParams<{ testCaseId: string }>();
 
     const navigate = useNavigate();
-    const idScenario = testCaseId ? parseInt(testCaseId, 10) : undefined;
+    const idScenario = testCaseId ? parseInt(testCaseId, 10) : 0;
     const [testCase, setTestCase] = useState<any>(null);
 
 
@@ -117,6 +118,10 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
 
                 </div>
             )}
+            <h2>Evidência</h2>
+            <div className='cardboard-style container'>
+                <EvidenceUploadModal  idScenario={idScenario} detailsTestCase={true}/>
+            </div>
             <h2>Informações adicionais</h2>
             <div className='cardboard-style-adicional container'>
                 <div>
@@ -152,10 +157,10 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({  }) => {
                     <span className='span-label'>Status da automação:</span>
                     <h4>{testCase ? testCase.idAutomationStatus.descAutomationStatus : 'Loading...'}</h4>
                 </div>
-                    <div>
-                        <span className='span-label'>Tags:</span>
-                        <h4>{testCase ? (testCase.tags ? testCase.tags.join(' | ') : '') : 'Loading...'}</h4>
-                    </div>
+                <div>
+                    <span className='span-label'>Tags:</span>
+                    <h4>{testCase ? (testCase.tags ? testCase.tags.join(' | ') : '') : 'Loading...'}</h4>
+                </div>
 
             </div>
             <div className='cardboard-style container'>
