@@ -5,7 +5,6 @@ import '../styles/Table.css';
 import TestCaseService from '../services/TestCaseService';
 import HistoryStatusTestCaseTable from '../components/TestCase/HistoryStatusTestCaseTable';
 import EvidenceUploadModal from '../components/TestCase/EvidenceUploadModal';
-import EvidenceViewer from '../components/EvidenceTestCase/EvidenceViewer';
 
 interface SelectedTeam {
     idTeam: number;
@@ -21,7 +20,7 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ }) => {
     const { testCaseId } = useParams<{ testCaseId: string }>();
 
     const navigate = useNavigate();
-    const idScenario = testCaseId ? parseInt(testCaseId, 10) : undefined;
+    const idScenario = testCaseId ? parseInt(testCaseId, 10) : 0;
     const [testCase, setTestCase] = useState<any>(null);
 
 
@@ -121,7 +120,7 @@ const DetailsTestCaseScreen: React.FC<DetailsTestCaseProps> = ({ }) => {
             )}
             <h2>Evidência</h2>
             <div className='cardboard-style container'>
-                <EvidenceViewer type="video" src="https://edisciplinas.usp.br/pluginfile.php/5196097/mod_resource/content/1/Teste.mp4" />
+                <EvidenceUploadModal  idScenario={idScenario} detailsTestCase={true}/>
             </div>
             <h2>Informações adicionais</h2>
             <div className='cardboard-style-adicional container'>

@@ -19,7 +19,7 @@ class ScenarioEvidenceService {
   }
   
 
-  static async deleteTeam(idScenario: number): Promise<void> {
+  static async deleteScenarioEvidence(idScenario: number): Promise<void> {
     return this.request('delete', `/api/scenario-evidence/${idScenario}`);
   }
 

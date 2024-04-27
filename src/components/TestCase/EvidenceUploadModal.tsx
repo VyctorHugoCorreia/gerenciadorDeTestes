@@ -12,9 +12,10 @@ interface Evidence {
 
 interface EvidenceUploadModalProps {
   idScenario: number;
+  detailsTestCase?: boolean;
 }
 
-const EvidenceUploadModal: React.FC<EvidenceUploadModalProps> = ({ idScenario }) => {
+const EvidenceUploadModal: React.FC<EvidenceUploadModalProps> = ({ idScenario,detailsTestCase }) => {
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<Evidence | null>(null);
 
@@ -72,11 +73,22 @@ const EvidenceUploadModal: React.FC<EvidenceUploadModalProps> = ({ idScenario })
   };
 
   const handleRemoveFile = () => {
+    handleDeleteScenarioEvidence(idScenario);
     setSelectedFile(null);
     setFilePreview(null);
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
     if (fileInput) {
       fileInput.value = '';
+    }
+  };
+
+
+  const handleDeleteScenarioEvidence = async (idScenario: number) => {
+    try {
+      await ScenarioEvidenceService.deleteScenarioEvidence(idScenario);
+      
+    } catch (err) {
+      console.error('Error deleting product:', err);
     }
   };
 
@@ -128,11 +140,21 @@ const EvidenceUploadModal: React.FC<EvidenceUploadModalProps> = ({ idScenario })
           <Button onClick={handleDownloadFile}>
             <GetAppIcon />
           </Button>
-          <Button onClick={handleRemoveFile}>
+        
+        </>
+      )
+      
+      }
+       {selectedFile && !detailsTestCase &&(
+        <>
+           <Button onClick={handleRemoveFile}>
             <DeleteIcon style={{ color: 'red' }} />
           </Button>
         </>
-      )}
+      )
+      
+      }
+      
 
       {filePreview && (
         <div>
