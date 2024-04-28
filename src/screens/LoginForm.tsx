@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import LoginService from '../services/LoginService';
 import { setAuthToken, setAcessProfile, setUsername } from '../authentication/token';
 import { setAuthentication } from '../authentication/authentication';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+
 import '../styles/login.css'
-import { Button, TextField } from '@mui/material';
+import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 
 interface LoginFormProps { }
 
@@ -13,9 +15,13 @@ const LoginForm: React.FC<LoginFormProps> = () => {
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string>('');
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
 
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   useEffect(() => {
     setIsButtonDisabled(!(login && password));
   }, [login, password]);
@@ -56,9 +62,18 @@ const LoginForm: React.FC<LoginFormProps> = () => {
           <TextField
             label="Preencha sua senha"
             variant="outlined"
-            type='password'
+            type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleTogglePasswordVisibility}>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </div>
         {error && <p className='error-message'>{error}</p>}
@@ -69,7 +84,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
           type="submit"
           disabled={isButtonDisabled}
         >
-          Login
+          Entrar
         </Button>
       </form>
     </div>

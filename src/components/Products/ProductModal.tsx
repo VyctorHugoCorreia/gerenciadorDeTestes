@@ -68,14 +68,12 @@ const ProductModal: React.FC<ProductModalProps> = ({
   };
 
   const handleSelectTeam = (team: { idTeam: number; nameTeam: string } | string) => {
-    if (!selectedProduct) {
       if (typeof team === 'string') {
         setSelectedTeam(null);
       } else {
         setError('');
         setSelectedTeam({ idTeam: team.idTeam, nameTeam: team.nameTeam });
       }
-    }
   };
 
   const handleAddProduct = async () => {
@@ -98,9 +96,8 @@ const ProductModal: React.FC<ProductModalProps> = ({
   const handleEditProduct = async () => {
     try {
       if (selectedTeam && selectedProduct) {
-        await ProductService.editProduct(selectedProduct.idProduct, productName);
+        await ProductService.editProduct( selectedProduct.idProduct, selectedTeam.idTeam, productName);
         setProductName('');
-        setSelectedTeam(null);
         onClose();
         fetchProducts();
         setShowToast(true)
@@ -129,7 +126,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
         <TeamsDropDown
           onSelectTeam={handleSelectTeam}
           selectedTeam={selectedTeam?.idTeam || null}
-          disabled={isEditing}
         />
 
         <TextField

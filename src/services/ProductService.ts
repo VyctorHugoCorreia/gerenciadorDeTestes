@@ -51,8 +51,8 @@ class ProductService {
     return this.request('get', '/api/product', undefined, { idTeam: searchValue });
   }
 
-  static async editProduct(idProduct: number,  descProduct: string): Promise<any> {
-    return this.request('put', `/api/product/${idProduct}`, { descProduct });
+  static async editProduct(idProduct: number, idTeam:number, descProduct: string): Promise<any> {
+    return this.request('put', `/api/product/${idProduct}`, { idTeam, descProduct });
   }
 
   private static async request(method: 'get' | 'post' | 'put' | 'delete', url: string, data?: any, params?: any): Promise<any> {
