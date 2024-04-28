@@ -76,7 +76,7 @@ const ProductDropDown: React.FC<ProductDropDownProps> = ({
       className="select-dropdown"
       disabled={disabled}
     >
-      {!isEditing && <option value="">Selecione o produto</option>}
+       <option value="">Selecione o produto</option>
       {products.map((product) => (
         <option key={product.idProduct} value={product.idProduct}>
           {product.descProduct}
