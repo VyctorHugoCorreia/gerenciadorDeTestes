@@ -25,10 +25,11 @@ const ProductDropDown: React.FC<ProductDropDownProps> = ({
   disabled = false,
   isEditing,
   resetDropdown,
-  selectedProductId 
+  selectedProductId,
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [selectedValue, setSelectedValue] = useState<string | number | null>(null); 
+  const [selectedValue, setSelectedValue] = useState<string | number | null>(null);
+  const [loading, setLoading] = useState<boolean>(true); 
 
   useEffect(() => {
     fetchProducts();
@@ -47,6 +48,7 @@ const ProductDropDown: React.FC<ProductDropDownProps> = ({
   }, [resetDropdown]);
 
   const fetchProducts = async () => {
+    setLoading(true);
     try {
       if (selectedTeamId) {
         const productsData = await ProductService.getProductsByTeam(selectedTeamId.toString());
@@ -54,6 +56,8 @@ const ProductDropDown: React.FC<ProductDropDownProps> = ({
       }
     } catch (error) {
       console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -74,14 +78,20 @@ const ProductDropDown: React.FC<ProductDropDownProps> = ({
       value={selectedValue || (selectedProductId !== null ? selectedProductId : '')}
       onChange={handleProductChange}
       className="select-dropdown"
-      disabled={disabled}
+      disabled={loading || products.length === 0}
     >
-       <option value="">Selecione o produto</option>
-      {products.map((product) => (
-        <option key={product.idProduct} value={product.idProduct}>
-          {product.descProduct}
-        </option>
-      ))}
+      {loading ? (
+        <option value="">Carregando...</option>
+      ) : (
+        <>
+          <option value="">Selecione o produto</option>
+          {products.map((product) => (
+            <option key={product.idProduct} value={product.idProduct}>
+              {product.descProduct}
+            </option>
+          ))}
+        </>
+      )}
     </select>
   );
 };

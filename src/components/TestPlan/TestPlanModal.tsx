@@ -54,7 +54,7 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
       setError('');
       setIsButtonDisabled(!selectedTestPlan.descTestPlan);
       setTestPlanName(selectedTestPlan.descTestPlan || '')
-      setSelectedTeam((selectedTestPlan.idProduct.idTeam )|| null);
+      setSelectedTeam((selectedTestPlan.idProduct.idTeam) || null);
       setSelectedTeamId(selectedTestPlan.idProduct.idTeam.idTeam || null);
       setSelectedProductId(selectedTestPlan.idProduct?.idProduct);
     } else {
@@ -78,7 +78,6 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
   };
 
   const handleSelectTeam = async (team: { idTeam: number; nameTeam: string } | string) => {
-    if (!selectedTestPlan) {
       if (typeof team === 'string') {
         setSelectedTeam(null);
         setSelectedTeamId(null);
@@ -100,7 +99,6 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
           setProducts([]);
         }
       }
-    }
   };
 
   const handleAddTestPlan = async () => {
@@ -124,11 +122,12 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
 
   const handleEditTestPlan = async () => {
     try {
-      if (selectedTeam && selectedTestPlan) {
-        await TestPlanService.editTestPlan(selectedTestPlan.idTestPlan, selectedTestPlan.idProduct.idTeam.idTeam, selectedTestPlan.idProduct.idProduct, TestPlanName);
+      if (selectedTeam && selectedTestPlan && selectedTeamId && selectedProductId) {
+        await TestPlanService.editTestPlan(selectedTestPlan.idTestPlan, selectedTeamId, selectedProductId, TestPlanName);
         setTestPlanName('');
         setSelectedTeam(null);
         setSelectedTeamId(null);
+        setSelectedProductId(null);
         onClose();
         fetchTestPlan();
         setShowToast(true)
@@ -162,9 +161,7 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
           />
 
           <ProductDropDown
-            onSelectProduct={(selectedProductId) => {
-              setSelectedProductId(selectedProductId);
-            }}
+            onSelectProduct={(productId) => setSelectedProductId(productId)}
             selectedTeamId={selectedTeamId}
             disabled={isEditing}
             isEditing={isEditing}

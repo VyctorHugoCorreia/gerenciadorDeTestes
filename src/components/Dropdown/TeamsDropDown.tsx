@@ -20,6 +20,7 @@ const TeamsDropDown: React.FC<TeamsDropDownProps> = ({
 }) => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [selectedValue, setSelectedValue] = useState<number | ''>('');
+  const [loading, setLoading] = useState<boolean>(true); 
 
   useEffect(() => {
     fetchTeams();
@@ -38,6 +39,8 @@ const TeamsDropDown: React.FC<TeamsDropDownProps> = ({
       setTeams(teamsData);
     } catch (error) {
       console.error('Error fetching teams:', error);
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -61,14 +64,20 @@ const TeamsDropDown: React.FC<TeamsDropDownProps> = ({
       value={selectedValue}
       onChange={handleTeamChange}
       className="select-dropdown"
-      disabled={disabled}
+      disabled={loading} 
     >
-      <option value="">Selecione o time</option>
-      {teams.map((team) => (
-        <option key={team.idTeam} value={team.idTeam}>
-          {team.nameTeam}
-        </option>
-      ))}
+      {loading ? (
+        <option value="">Carregando...</option>
+      ) : (
+        <>
+          <option value="">Selecione o time</option>
+          {teams.map((team) => (
+            <option key={team.idTeam} value={team.idTeam}>
+              {team.nameTeam}
+            </option>
+          ))}
+        </>
+      )}
     </select>
   );
 };
