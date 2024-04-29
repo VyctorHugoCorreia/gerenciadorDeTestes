@@ -56,7 +56,7 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
       setError('');
       setIsButtonDisabled(!selectedTestPlan.descTestPlan);
       setTestPlanName(selectedTestPlan.descTestPlan || '')
-      setSelectedTeam((selectedTestPlan.idProduct.idTeam )|| null);
+      setSelectedTeam((selectedTestPlan.idProduct.idTeam) || null);
       setSelectedTeamId(selectedTestPlan.idProduct.idTeam.idTeam || null);
       setSelectedProductId(selectedTestPlan.idProduct?.idProduct);
     } else {
@@ -70,21 +70,27 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
   }, [open, selectedTestPlan]);
 
   useEffect(() => {
-      setIsButtonDisabled(!selectedTeam || !selectedProductId || TestPlanName === '');
+    setIsButtonDisabled(!selectedTeam || !selectedProductId || TestPlanName === '');
   }, [selectedTeam, selectedProductId, TestPlanName]);
- 
-  
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTestPlanName(event.target.value);
     setError('');
   };
 
-  const handleSelectTeam = (team: { idTeam: number; nameTeam: string }) => {
-      setError('');
-      setSelectedTeam(team);
-      setSelectedTeamId(team.idTeam);
-      setSelectedProductId(null);
-      setResetProductDropdown(false);
+const handleSelectTeam = async (team: { idTeam: number; nameTeam: string } | string) => {
+      if (typeof team === 'string') {
+        console.log(team)
+        setSelectedTeam(null);
+        setSelectedTeamId(null);
+        setSelectedProductId(null);
+        setResetProductDropdown(true);
+      } else {
+        setError('');
+        setSelectedTeam(team);
+        setSelectedTeamId(team.idTeam);
+        setSelectedProductId(null);
+        setResetProductDropdown(false);
+      }
   };
 
   const handleAddTestPlan = async () => {
