@@ -8,7 +8,7 @@ interface Team {
 }
 
 interface TeamsDropDownProps {
-  onSelectTeam: (team: { idTeam: number; nameTeam: string } | string) => void;
+  onSelectTeam: (team: { idTeam: number; nameTeam: string }) => void;
   selectedTeam?: number | null;
   disabled?: boolean; 
 }
@@ -48,9 +48,7 @@ const TeamsDropDown: React.FC<TeamsDropDownProps> = ({
     const teamInfo = teams.find((team) => team.idTeam === selectedTeamId);
     if (teamInfo) {
       onSelectTeam({ idTeam: teamInfo.idTeam, nameTeam: teamInfo.nameTeam });
-    } else {
-      onSelectTeam('');
-    }
+    } 
   };
 
   const handleTeamChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

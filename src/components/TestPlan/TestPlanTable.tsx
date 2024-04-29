@@ -209,7 +209,7 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
         errorMessage={error}
       />
 
-<TestPlanModal
+      <TestPlanModal
         open={isEditModalOpen}
         onClose={handleCloseModal}
         fetchTestPlan={fetchTestPlans}
