@@ -38,7 +38,6 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
   const [isCreateTestPlanModalOpen, setIsCreateTestSuiteModalOpen] = useState(false);
   const [selectedCreateTestPlanId, setSelectedCreateTestPlanId] = useState<number | null>(null);
   const [selectedTestPlanId, setSelectedTestPlanId] = useState<number | null>(null);
-  const [isCreateTestCaseModalOpen, setIsCreateTestCaseModalOpen] = useState(false);
   const [error, setError] = useState<string>('');
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -81,7 +80,9 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
   };
 
   const handleCloseModal = () => {
+    setIsEditModalOpen(false);
     setSelectedTestPlanId(null);
+    setSelectedTestPlan(null)
   };
 
   const handleCloseErrorPopup = () => {
@@ -208,12 +209,9 @@ const TestPlanTable: React.FC<TestPlanTableProps> = ({ testPlans, fetchTestPlans
         errorMessage={error}
       />
 
-      <TestPlanModal
+<TestPlanModal
         open={isEditModalOpen}
-        onClose={() => {
-          setIsEditModalOpen(false);
-          setSelectedTestPlan(null);
-        }}
+        onClose={handleCloseModal}
         fetchTestPlan={fetchTestPlans}
         selectedTestPlan={selectedTestPlan}
       />
