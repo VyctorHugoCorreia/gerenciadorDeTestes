@@ -54,8 +54,8 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
       setError('');
       setIsButtonDisabled(!selectedTestPlan.descTestPlan);
       setTestPlanName(selectedTestPlan.descTestPlan || '')
-      setSelectedTeam((selectedTestPlan.idProduct.idTeam) || null);
-      setSelectedTeamId(selectedTestPlan.idProduct.idTeam.idTeam || null);
+      setSelectedTeam(selectedTestPlan.idProduct ? selectedTestPlan.idProduct.idTeam : null);
+      setSelectedTeamId(selectedTestPlan.idProduct ? selectedTestPlan.idProduct.idTeam.idTeam : null);
       setSelectedProductId(selectedTestPlan.idProduct?.idProduct);
     } else {
       setError('');
@@ -69,8 +69,7 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
 
   useEffect(() => {
     setIsButtonDisabled(selectedTeam === null || selectedProductId === null || TestPlanName === '');
-
-  });
+  }, [selectedTeam, selectedProductId, TestPlanName]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTestPlanName(event.target.value);
@@ -78,28 +77,21 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
   };
 
   const handleSelectTeam = async (team: { idTeam: number; nameTeam: string } | string) => {
-      if (typeof team === 'string') {
-        setSelectedTeam(null);
-        setSelectedTeamId(null);
-        setSelectedProductId(null);
-        setProducts([]);
-        setResetProductDropdown(true);
-      } else {
-        setError('');
-        setSelectedTeam(team);
-        setSelectedTeamId(team.idTeam);
-        setSelectedProductId(null);
-        setResetProductDropdown(false);
-
-        try {
-          const productsData = await ProductService.getProductsByTeam(team.idTeam.toString());
-          setProducts(productsData);
-        } catch (error) {
-          console.error('Error fetching products:', error);
-          setProducts([]);
-        }
-      }
+    if (typeof team === 'string') {
+      setSelectedTeam(null);
+      setSelectedTeamId(null);
+      setSelectedProductId(null);
+      setProducts([]);
+      setResetProductDropdown(true);
+    } else {
+      setError('');
+      setSelectedTeam(team);
+      setSelectedTeamId(team.idTeam);
+      setSelectedProductId(null);
+      setResetProductDropdown(false);
+    }
   };
+
 
   const handleAddTestPlan = async () => {
     try {
@@ -122,15 +114,20 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
 
   const handleEditTestPlan = async () => {
     try {
-      if (selectedTeam && selectedTestPlan && selectedTeamId && selectedProductId) {
-        await TestPlanService.editTestPlan(selectedTestPlan.idTestPlan, selectedTeamId, selectedProductId, TestPlanName);
+      if (selectedTeam && selectedTestPlan && selectedProductId) {
+        await TestPlanService.editTestPlan(
+          selectedTestPlan.idTestPlan,
+          selectedTeam.idTeam,
+          selectedProductId,
+          TestPlanName
+        );
         setTestPlanName('');
         setSelectedTeam(null);
         setSelectedTeamId(null);
         setSelectedProductId(null);
         onClose();
         fetchTestPlan();
-        setShowToast(true)
+        setShowToast(true);
       } else {
         setError('Selecione um time');
       }
@@ -138,6 +135,7 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
       setError(`${err}`);
     }
   };
+
 
   const isEditing = !!selectedTestPlan;
 
@@ -161,12 +159,14 @@ const TestPlanModal: React.FC<TestPlanModalProps> = ({
           />
 
           <ProductDropDown
-            onSelectProduct={(productId) => setSelectedProductId(productId)}
+            onSelectProduct={(selectedProductId) => {
+              setSelectedProductId(selectedProductId);
+            }}
             selectedTeamId={selectedTeamId}
             disabled={isEditing}
             isEditing={isEditing}
             resetDropdown={resetProductDropdown}
-            selectedProductId={selectedTestPlan?.idProduct.idProduct || null}
+            selectedProductId={selectedTestPlan?.idProduct?.idProduct || null}
           />
 
           <TextField
